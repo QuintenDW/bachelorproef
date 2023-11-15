@@ -7,7 +7,7 @@ Echter worden weinig van deze nieuwe environments effectief gebruikt.
 Zo toont onderzoek van ~\textcite{Greif2022} aan dat 93.6\% van de 29888 bevraagden Node.js regulier gebruiken.
 Dit tegenover de 4.3\% van de mensen die Bun regulier gebruiken.
 Momenteel wordt Node.JS nog altijd als standaard gebruikt bij elk project. 
-Er zijn echter nog tal van andere JavaScript-runtime-omgevingen, zoals Bun, 
+Er zijn echter nog tal van andere JavaScrip-runtime-omgevingen, zoals Bun, 
 die in staat zijn om specifieke noden te vervullen waar Node.js niet aan kan voldoen.
 Het doel van deze studie is te onderzoeken of Bun een correcte plaatsvervanger is voor Node.js 
 binnen de ontwikkeling van web applicaties bij Codifly. 
@@ -23,15 +23,27 @@ Ten laatste worden de resultaten van de vergelijking alsook de conclusie besprok
 \section{State-of-the-art}%
 \label{sec:state-of-the-art}
 
-Hier beschrijf je de \emph{state-of-the-art} rondom je gekozen onderzoeksdomein, d.w.z.\ een inleidende, doorlopende tekst over het onderzoeksdomein van je bachelorproef. Je steunt daarbij heel sterk op de professionele \emph{vakliteratuur}, en niet zozeer op populariserende teksten voor een breed publiek. Wat is de huidige stand van zaken in dit domein, en wat zijn nog eventuele open vragen (die misschien de aanleiding waren tot je onderzoeksvraag!)?
+Hier beschrijf je de \emph{state-of-the-art} rondom je gekozen onderzoeksdomein, d.w.z.\ een inleidende, 
+doorlopende tekst over het onderzoeksdomein van je bachelorproef. 
+Je steunt daarbij heel sterk op de professionele \emph{vakliteratuur}, 
+en niet zozeer op populariserende teksten voor een breed publiek. 
+Wat is de huidige stand van zaken in dit domein, en wat zijn nog eventuele open vragen 
+(die misschien de aanleiding waren tot je onderzoeksvraag!)?
 
-Je mag de titel van deze sectie ook aanpassen (literatuurstudie, stand van zaken, enz.). Zijn er al gelijkaardige onderzoeken gevoerd? Wat concluderen ze? Wat is het verschil met jouw onderzoek?
+Je mag de titel van deze sectie ook aanpassen (literatuurstudie, stand van zaken, enz.). 
+Zijn er al gelijkaardige onderzoeken gevoerd? Wat concluderen ze? Wat is het verschil met jouw onderzoek?
 
-Verwijs bij elke introductie van een term of bewering over het domein naar de vakliteratuur, bijvoorbeeld~\autocite{Hykes2013}! Denk zeker goed na welke werken je refereert en waarom.
+Verwijs bij elke introductie van een term of bewering over het domein naar de vakliteratuur, 
+bijvoorbeeld~\autocite{Hykes2013}! Denk zeker goed na welke werken je refereert en waarom.
 
-Draag zorg voor correcte literatuurverwijzingen! Een bronvermelding hoort thuis \emph{binnen} de zin waar je je op die bron baseert, dus niet er buiten! Maak meteen een verwijzing als je gebruik maakt van een bron. Doe dit dus \emph{niet} aan het einde van een lange paragraaf. Baseer nooit teveel aansluitende tekst op eenzelfde bron.
+Draag zorg voor correcte literatuurverwijzingen! Een bronvermelding hoort thuis 
+\emph{binnen} de zin waar je je op die bron baseert, dus niet er buiten! Maak meteen een verwijzing 
+als je gebruik maakt van een bron. Doe dit dus \emph{niet} aan het einde van een lange paragraaf. 
+Baseer nooit teveel aansluitende tekst op eenzelfde bron.
 
 Als je informatie over bronnen verzamelt in JabRef, zorg er dan voor dat alle nodige info aanwezig is om de bron terug te vinden (zoals uitvoerig besproken in de lessen Research Methods).
+
+
 
 % Voor literatuurverwijzingen zijn er twee belangrijke commando's:
 % \autocite{KEY} => (Auteur, jaartal) Gebruik dit als de naam van de auteur
@@ -39,9 +51,20 @@ Als je informatie over bronnen verzamelt in JabRef, zorg er dan voor dat alle no
 % \textcite{KEY} => Auteur (jaartal)  Gebruik dit als de auteursnaam wel een
 %   functie heeft in de zin (bv. ``Uit onderzoek door Doll & Hill (1954) bleek
 %   ...'')
-
-Je mag deze sectie nog verder onderverdelen in subsecties als dit de structuur van de tekst kan verduidelijken.
-
+JavaScript vormt de basis voor zowel Node.js als Bun. 
+JavaScript is een geïnterpreteerde programmeertaal dat vooral bekend is bij front-end web development voor web pagina's ~\autocite{Mozilla2023}.
+Echter kan het ook buiten browser omgevingen gebruikt worden met behulp van Javascript-runtime-omgevingen zoals Node.js en Bun ~\autocite{Mozilla2023}.
+De afgelopen jaren is het aantal van deze soort omgevingen sterk toegenomen. 
+De meest bekende en oudste is Node.js. 
+Node.js is een server-side framework dat wordt gebruikt voor schaalbare applicaties te maken ~\autocite{Gackenheimer2013}.
+De JavaScript binnenin Node.js wordt uitgevoerd door de V8 JavaScript engine, 
+dezelfde engine die toelaat om JavaScript uit te voeren in Chrome ~\autocite{Syed2014}.
+Doordat JavaScript files steeds groter werden, werd in 2009 CommonJS geïntroduceerd. 
+Dit specificeert een simpele API om modules te declareren die werken buiten de browser ~\autocite{Osmani2012}.
+Hierbij is een module een stuk herbruikbare code dat kan gebruikt worden in andere code ~\autocite{Osmani2012}.
+Node.js volgt de CommonJS module specificatie, waarbij elk bestand zijn eigen module vormt ~\autocite{Syed2014}.
+Buiten zelf modules te schrijven, bestaan er ook modules die geschreven zijn door andere mensen. 
+Deze zijn te vinden in de Node Package Manager (NPM) ~\autocite{Wittern2016}.
 %---------- Methodologie ------------------------------------------------------
 \section{Methodologie}%
 \label{sec:methodologie}

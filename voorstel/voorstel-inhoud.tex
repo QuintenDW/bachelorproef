@@ -54,17 +54,30 @@ Als je informatie over bronnen verzamelt in JabRef, zorg er dan voor dat alle no
 JavaScript vormt de basis voor zowel Node.js als Bun. 
 JavaScript is een geïnterpreteerde programmeertaal dat vooral bekend is bij front-end web development voor web pagina's ~\autocite{Mozilla2023}.
 Echter kan het ook buiten browser omgevingen gebruikt worden met behulp van Javascript-runtime-omgevingen zoals Node.js en Bun ~\autocite{Mozilla2023}.
+Zo een javascript runtime omgeving bestaat uit alle componenten om javascript correct te laten werken ~\autocite{Christopher}. 
+Het bevat een JavaScript engine, WEB API's en een callback queue ~\autocite{Christopher}. 
+Deze runtime zal dan JavaScript code omzetten in code die verstaanbaar is voor de computer.
+De omgeving specificeert waar dit wordt gedaan, dit kan in een browser maar ook in andere omgevingen.
 De afgelopen jaren is het aantal van deze soort omgevingen sterk toegenomen. 
 De meest bekende en oudste is Node.js. 
 Node.js is een server-side framework dat wordt gebruikt voor schaalbare applicaties te maken ~\autocite{Gackenheimer2013}.
-De JavaScript binnenin Node.js wordt uitgevoerd door de V8 JavaScript engine, 
+In het boek van ~\textcite{Ali2013}, wordt verteld hoe Node.js zich onderscheidt zich van andere platformen door het gebruikt van een event loop. 
+Wanneer in Node.js een I/O operatie wordt verwerkt zal een gebeurtenis worden uitgezonden. 
+De event loop zal continu kijken of er zo gebeurtenis voorkomen, 
+en wanneer dit zo is zal het plaatsen in de event wachtrij. 
+De event loop zal dan deze wachtrij doorgaan en 1 per 1 de event handlers uitvoeren. 
+Dit laat toe om I/O operaties asynchroon te maken.
+De JavaScript code binnenin Node.js wordt uitgevoerd door de V8 JavaScript engine, 
 dezelfde engine die toelaat om JavaScript uit te voeren in Chrome ~\autocite{Syed2014}.
+Hierbij wordt gebruik gemaakt van een call stack en een heap. 
+De call stack is de plaats waar de code wordt uitgevoerd,terwijl de heap de plaats is waar alle nodige objecten worden opgeslagen ~\autocite{Christopher}.
 Doordat JavaScript files steeds groter werden, werd in 2009 CommonJS geïntroduceerd. 
 Dit specificeert een simpele API om modules te declareren die werken buiten de browser ~\autocite{Osmani2012}.
-Hierbij is een module een stuk herbruikbare code dat kan gebruikt worden in andere code ~\autocite{Osmani2012}.
+Hierbij is een module een stuk herbruikbare code dat kan gebruikt worden in  andere code ~\autocite{Osmani2012}.
 Node.js volgt de CommonJS module specificatie, waarbij elk bestand zijn eigen module vormt ~\autocite{Syed2014}.
 Buiten zelf modules te schrijven, bestaan er ook modules die geschreven zijn door andere mensen. 
-Deze zijn te vinden in de Node Package Manager (NPM) ~\autocite{Wittern2016}.
+Deze zijn te vinden in de Node Package Manager (NPM) ~\autocite{Wittern2016}. 
+Deze modules kunnen dan gebruikt worden door andere mensen in hun eigen project ~\autocite{Ali2013}.
 %---------- Methodologie ------------------------------------------------------
 \section{Methodologie}%
 \label{sec:methodologie}

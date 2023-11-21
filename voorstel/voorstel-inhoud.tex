@@ -61,10 +61,10 @@ De omgeving specificeert waar dit wordt gedaan, dit kan in een browser maar ook 
 De afgelopen jaren is het aantal van deze soort omgevingen sterk toegenomen. 
 De meest bekende en oudste is Node.js. 
 Node.js is een server-side framework dat wordt gebruikt voor schaalbare applicaties te maken ~\autocite{Gackenheimer2013}.
-In het boek van ~\textcite{Ali2013}, wordt verteld hoe Node.js zich onderscheidt zich van andere platformen door het gebruikt van een event loop. 
+In het boek van ~\textcite{Ali2013} wordt verteld hoe Node.js zich onderscheidt zich van andere platformen door het gebruikt van een event loop. 
 Wanneer in Node.js een I/O operatie wordt verwerkt zal een gebeurtenis worden uitgezonden. 
-De event loop zal continu kijken of er zo gebeurtenis voorkomen, 
-en wanneer dit zo is zal het plaatsen in de event wachtrij. 
+De event loop zal continu kijken of er zo gebeurtenissen voorkomen, 
+en wanneer dit zo is zal het deze plaatsen in de event wachtrij. 
 De event loop zal dan deze wachtrij doorgaan en 1 per 1 de event handlers uitvoeren. 
 Dit laat toe om I/O operaties asynchroon te maken.
 De JavaScript code binnenin Node.js wordt uitgevoerd door de V8 JavaScript engine, 
@@ -78,6 +78,18 @@ Node.js volgt de CommonJS module specificatie, waarbij elk bestand zijn eigen mo
 Buiten zelf modules te schrijven, bestaan er ook modules die geschreven zijn door andere mensen. 
 Deze zijn te vinden in de Node Package Manager (NPM) ~\autocite{Wittern2016}. 
 Deze modules kunnen dan gebruikt worden door andere mensen in hun eigen project ~\autocite{Ali2013}.
+
+Performantie is 1 van de belangrijkste zaken bij een server-side framework. Daarom is Node.js dankzij zijn 
+event-gedreven I/O model een veelvoorkomende keuze als het gaat om server-side frameworks. 
+Echter wil Bun dit veranderen door nog meer focus te leggen op snelheid en performantie. 
+Om dit te bereiken maakt Bun gebruikt van JavaScriptCore in plaats van V8 JavaScript engine ~\autocite{McDonnel2023}.
+Dit is de ingebouwde engine voor WebKit, een web browser engine die wordt gebruikt op macOS en IOS ~\autocite{Pizlo2020}.
+Door het gebruik van de JavaScriptCore engine zou Bun 4 keer sneller kunnen opstarten dan Node.js ~\autocite{McDonnel2023}.
+Bun bevat daarnaast ook een test runner,script runner en een Node.js compatibele package manager, die volgens ~\textcite{McDonnel2023} 
+allemaal significant sneller zijn dan bestaande applicaties.
+Een ander verschil tussen Node.js en Bun is de ingebouwde support voor TypeScript en JSX. 
+Terwijl bij Node.js je hiervoor aparte packages nodig hebt, 
+zal bij Bun de transpiler deze bestanden automatisch converteren naar vanilla Javascript.
 %---------- Methodologie ------------------------------------------------------
 \section{Methodologie}%
 \label{sec:methodologie}

@@ -13,6 +13,7 @@ Het doel van deze studie is te onderzoeken of Bun een correcte plaatsvervanger i
 binnen de ontwikkeling van web applicaties bij Codifly. 
 Specifiek wordt de performantie en complexiteit tussen Node.js en Bun vergeleken alsook 
 hun respectievelijke package manager en bundler. 
+Hierbij wordt de performantie zowel vergeleken bij simpele applicaties als meer complexe applicaties.
 In wat volgt wordt eerst een overzicht gegeven van de actuele ontwikkelingen binnen het
 onderzoeksdomein aan de hand van een literatuurstudie, waarna de methodologie wordt besproken.
 Ten laatste worden de resultaten van de vergelijking alsook de conclusie besproken.
@@ -22,29 +23,6 @@ Ten laatste worden de resultaten van de vergelijking alsook de conclusie besprok
 
 \section{State-of-the-art}%
 \label{sec:state-of-the-art}
-
-Hier beschrijf je de \emph{state-of-the-art} rondom je gekozen onderzoeksdomein, d.w.z.\ een inleidende, 
-doorlopende tekst over het onderzoeksdomein van je bachelorproef. 
-Je steunt daarbij heel sterk op de professionele \emph{vakliteratuur}, 
-en niet zozeer op populariserende teksten voor een breed publiek. 
-Wat is de huidige stand van zaken in dit domein, en wat zijn nog eventuele open vragen 
-(die misschien de aanleiding waren tot je onderzoeksvraag!)?
-
-Je mag de titel van deze sectie ook aanpassen (literatuurstudie, stand van zaken, enz.). 
-Zijn er al gelijkaardige onderzoeken gevoerd? Wat concluderen ze? Wat is het verschil met jouw onderzoek?
-
-Verwijs bij elke introductie van een term of bewering over het domein naar de vakliteratuur, 
-bijvoorbeeld~\autocite{Hykes2013}! Denk zeker goed na welke werken je refereert en waarom.
-
-Draag zorg voor correcte literatuurverwijzingen! Een bronvermelding hoort thuis 
-\emph{binnen} de zin waar je je op die bron baseert, dus niet er buiten! Maak meteen een verwijzing 
-als je gebruik maakt van een bron. Doe dit dus \emph{niet} aan het einde van een lange paragraaf. 
-Baseer nooit teveel aansluitende tekst op eenzelfde bron.
-
-Als je informatie over bronnen verzamelt in JabRef, zorg er dan voor dat alle nodige info aanwezig is om de bron terug te vinden (zoals uitvoerig besproken in de lessen Research Methods).
-
-
-
 % Voor literatuurverwijzingen zijn er twee belangrijke commando's:
 % \autocite{KEY} => (Auteur, jaartal) Gebruik dit als de naam van de auteur
 %   geen onderdeel is van de zin.
@@ -93,8 +71,28 @@ zal bij Bun de transpiler deze bestanden automatisch converteren naar vanilla Ja
 
 Doordat Bun redelijk nieuw is, zijn er nog maar weinig onderzoeken over gedaan.
 Één van deze onderzoeken werd uitgevoerd door ~\textcite{Feroj2023}.
-Hierbij werd de performantie tussen Node.js en Bun vergeleken op basis van verschillende gebruiksgevallen. 
-Deze omvatten geheugengebruik, uitvoeringstijd, antwoordtijd en aanvraagdoorvoer.
+Hierbij werd de performantie tussen Node.js en Bun vergeleken op basis van verschillende performantie attributen. 
+Deze omvatten geheugengebruik, antwoordtijd en de algemene uitvoeringstijd. 
+Voor het testen van netwerk verzoeken werd bij beiden gebruik gemaakt van Bombardier. Hierbij werden in 3 aparte scenarios, 
+10 miljoen gemaakt met eerst 10 gelijktijdige connecties, dan 100 gelijktijdige connecties en
+uiteindelijk 500 gelijktijdige connecties. Hierbij kon de onderzoeker de performantie van de servers evalueren 
+aan de hand van responstijd en doorvoer. Aanvullend werden ook de geheugengebruik pieken bepaald.
+Daarnaast werd ook getest hoe beide runtimes een alleenstaand script afhandelen. 
+Dit werd gedaan aan de hand van Hyperfine, een command-line process benchmark hulpmiddel. 
+Hierbij werd de executie tijd gemeten in zowel Bun als Node.js voor het berekenen van Fibonacci nummers.
+Het eerste resultaat toont het verschil in geheugengebruik tussen Bun en Node.js. 
+Hierbij heeft Bun consistent een lager geheugengebruik tegenover Node.js en toont het aan dat Bun een beter geheugenbeheer heeft.
+De onderzoeker merkt op dat de oorzaak hiervan ligt bij Bun's gebruik van Zig, 
+een programmeertaal gekend voor zijn effectiviteit en geheugenbeheer. 
+Ook op vlak van executie tijd, responstijd en doorvoer presteerde Bun consistent beter dan Node.js. 
+Deze resultaten tonen aan dat Bun algemeen beter presteert in zowel het afhandelen van netwerk verzoeken 
+als het uitvoeren van computationele taken.
+De onderzoeker merkt echter ook op dat de keuze van een runtime niet alleen kan bepaald worden op basis van performantie. 
+Andere factoren, die hier niet getest zijn, zoals beveiling, stabiliteit en onderhoudbaarheid dragen ook bij tot de keuze. 
+Ook waren de geteste programma's redelijk simpel waardoor de resultaten mogelijks niet accuraat zijn voor complexere omgevingen.
+Verder onderzoek zou ook baat hebben om rekening te houden met verschillende omstandigen, 
+zoals CPU-gebonden en I/O-gebonden processen.
+
 %---------- Methodologie ------------------------------------------------------
 \section{Methodologie}%
 \label{sec:methodologie}

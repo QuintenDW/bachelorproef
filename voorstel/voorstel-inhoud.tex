@@ -13,7 +13,8 @@ Het doel van deze studie is te onderzoeken of één van deze nieuwe frameworks e
 binnen de ontwikkeling van complexe web applicaties bij Codifly. 
 Specifiek wordt de performantie en complexiteit tussen Node.js en de nieuwe frameworks vergeleken alsook 
 hun respectievelijke package manager. 
-Hierbij wordt de performantie zowel vergeleken bij simpele applicaties als meer complexe applicaties.
+Hierbij wordt de performantie zowel vergeleken bij simpele applicaties zoals het uitvoeren van logische berekenen
+als meer complexe applicaties waarbij netwerk verzoeken worden gebruikt.
 In wat volgt wordt eerst een overzicht gegeven van de actuele ontwikkelingen binnen het
 onderzoeksdomein aan de hand van een literatuurstudie, waarna de methodologie wordt besproken.
 Ten laatste worden de resultaten van de vergelijking alsook de conclusie besproken.
@@ -144,20 +145,27 @@ Probeer ook een tijdschatting te maken. Hoe lang zal je met elke fase van je ond
  \emph{deliverables} 
 in elke fase?
 
-Het onderzoek bevat 5 fasen.
-De eerste fase is het beschrijven van Node.js en Bun. 
+Het onderzoek bevat 7 fasen.
+De eerste fase is een algemene beschrijving van Node.js alsook een beschrijving van de mogelijke alternatieven. 
 Dit wordt gedaan aan de hand van een literatuurstudie van wetenschappelijke artikels en boeken. 
 De geschatte duurtijd van dit proces is 2 weken.
 
 De tweede fase bestaat uit het verzamelen van de de criteria die zal getest worden bij beide omgevingen. 
+De focus ligt hierbij op performantie en complexiteit.
 Dit gebeurt in samenspraak met de co-promotor. Hierbij worden deze criteria geordend volgens belang. 
 De verzameling van deze criteria duurt 1 week.
 
-In de derde fase wordt een proof-of-concept gemaakt voor zowel Node.js als Bun. 
-Hierbij wordt een applicatie ontwikkeld waarbij een gebruiker een recensie kan creëren over een bepaald onderwerp.
-Voor deze ontwikkeling is een geschatte duurtijd van 4 weken voorzien.
+In de derde fase wordt een long list opgesteld met mogelijke alternatieven voor Node.js. 
+Deze worden geanalyseerd aan de hand van een literatuuronderzoek. Deze analyse bedraagt 1 week en loop samen met het verzamelen van de criteria.
 
-In de vierde fase worden te testen uitgevoerd op de proof-of-concepts. 
+De vierde fase bestaat uit het selecteren van 1 framework uit de long list die voldoet aan de vereisten. 
+Dit proces zal 1 week in beslag nemen.
+
+In de vijfde fase wordt een proof-of-concept gemaakt voor zowel Node.js als het geselecteerde framework. 
+Hierbij wordt een applicatie ontwikkeld waarbij een gebruiker een recensie kan creëren over een bepaald onderwerp.
+Voor deze ontwikkeling is een geschatte duurtijd van 3 weken voorzien.
+
+In de zesde fase worden te testen uitgevoerd op de proof-of-concepts. 
 Hierbij zal gebruik gemaakt worden van benchmark tools Hyperfine en Bombardier om de performantie te testen.
 Voor het visualiseren van de metingen zal Seaborn worden gebruikt.
 Dit proces neemt 4 weken in beslag.

@@ -5,15 +5,15 @@
 In de afgelopen jaren zijn er heel wat nieuwe javascript runtime omgevingen geïntroduceerd. 
 Echter worden weinig van deze nieuwe environments effectief gebruikt. 
 Zo toont onderzoek van ~\textcite{Greif2022} aan dat 93.6\% van de 29888 bevraagden Node.js regulier gebruiken.
-Dit tegenover de 11.2\% en 4.3\% van de mensen die respectievelijk Deno en Bun regulier gebruiken.
+Dit tegenover de 11.2\% en 4.3\% van de mensen die respectievelijk Deno en Bun geregeld gebruiken.
 Momenteel wordt Node.JS nog altijd als standaard gebruikt bij elk project. 
-Er zijn echter nog tal van andere javaScript runtime omgevingen, zoals Bun en Deno, 
-die in staat zijn om specifieke noden te vervullen waar Node.js niet aan kan voldoen.
+Er zijn echter nog tal van andere javascript runtime omgevingen, zoals bovengenoemde Bun en Deno, 
+die in staat zijn om specifieke noden te vervullen waar Node.js niet kan aan voldoen.
 Het doel van deze studie is te onderzoeken of één van deze nieuwe frameworks een correcte plaatsvervanger is voor Node.js 
 binnen de ontwikkeling van complexe web applicaties bij Codifly. 
 Specifiek wordt de performantie en complexiteit tussen Node.js en de nieuwe frameworks vergeleken alsook 
 hun respectievelijke package manager. 
-Hierbij wordt de performantie zowel vergeleken bij simpele applicaties zoals het uitvoeren van logische berekenen
+Hierbij wordt de performantie zowel vergeleken bij simpele applicaties zoals het uitvoeren van logische berekeningen
 als meer complexe applicaties waarbij netwerk verzoeken worden gebruikt.
 In wat volgt wordt eerst een overzicht gegeven van de actuele ontwikkelingen binnen het
 onderzoeksdomein aan de hand van een literatuurstudie, waarna de methodologie wordt besproken.
@@ -30,17 +30,17 @@ Ten laatste worden de resultaten van de vergelijking alsook de conclusie besprok
 % \textcite{KEY} => Auteur (jaartal)  Gebruik dit als de auteursnaam wel een
 %   functie heeft in de zin (bv. ``Uit onderzoek door Doll & Hill (1954) bleek
 %   ...'')
-JavaScript vormt de basis voor alle Javascript runtime omgevingen. 
+Javascript vormt de basis voor alle Javascript runtime omgevingen. 
 Het is een geïnterpreteerde programmeertaal dat vooral bekend is bij front-end web development voor web pagina's ~\autocite{Mozilla2023}.
 Echter kan het ook buiten browser omgevingen gebruikt worden met behulp van javascript runtime omgevingen zoals Node.js,Bun en Deno ~\autocite{Mozilla2023}.
-Zo een javascript runtime omgeving bestaat uit alle componenten om javascript correct te laten werken ~\autocite{Christopher}. 
+Zo een omgeving bestaat uit alle componenten om javascript correct te laten werken ~\autocite{Christopher}. 
 Het bevat een JavaScript engine, WEB API's en een callback queue ~\autocite{Christopher}. 
-Deze runtime zal dan JavaScript code omzetten in code die verstaanbaar is voor de computer.
+Deze runtime zal dan javascript code omzetten in code die verstaanbaar is voor de computer.
 De omgeving specificeert waar dit wordt gedaan, dit kan in een browser maar ook in andere omgevingen.
 De afgelopen jaren is het aantal van deze soort omgevingen sterk toegenomen. 
 De meest bekende en oudste is Node.js. 
 Node.js is een server-side framework dat wordt gebruikt voor schaalbare applicaties te maken ~\autocite{Gackenheimer2013}.
-In het boek van ~\textcite{Ali2013} wordt verteld hoe Node.js zich onderscheidt van andere platformen door het gebruikt van een event loop. 
+In het boek van ~\textcite{Ali2013} wordt verteld hoe Node.js zich onderscheidt van andere platformen door het gebruik van een event loop. 
 Wanneer in Node.js een I/O operatie wordt verwerkt zal een gebeurtenis worden uitgezonden. 
 De event loop zal continu kijken of er zo gebeurtenissen voorkomen, 
 en wanneer dit zo is zal het deze plaatsen in de event wachtrij. 
@@ -48,7 +48,7 @@ De event loop zal dan deze wachtrij doorgaan en één per één de event handler
 Dit laat toe om I/O operaties asynchroon te maken.
 De JavaScript code binnenin Node.js wordt uitgevoerd door de V8 JavaScript engine, 
 dezelfde engine die toelaat om JavaScript uit te voeren in Chrome ~\autocite{Syed2014}.
-Hierbij wordt gebruik gemaakt van een call stack en een heap. 
+Hierbij wordt gebruikgemaakt van een call stack en een heap. 
 De call stack is de plaats waar de code wordt uitgevoerd,terwijl de heap de plaats is waar alle nodige objecten worden opgeslagen ~\autocite{Christopher}.
 Doordat JavaScript files steeds groter werden, werd in 2009 CommonJS geïntroduceerd. 
 Dit specificeert een simpele API om modules te declareren die werken buiten de browser ~\autocite{Osmani2012}.
@@ -58,10 +58,10 @@ Buiten zelf modules te schrijven, bestaan er ook modules die geschreven zijn doo
 Deze zijn te vinden in de Node Package Manager (NPM) ~\autocite{Wittern2016}. 
 Deze modules kunnen dan gebruikt worden door andere mensen in hun eigen project ~\autocite{Ali2013}.
 
-Performantie is 1 van de belangrijkste zaken bij een server-side framework. Daarom is Node.js dankzij zijn 
+Performantie is één van de belangrijkste zaken bij een server-side framework. Daarom is Node.js dankzij zijn 
 event-gedreven I/O model een veelvoorkomende keuze als het gaat om server-side frameworks. 
 Echter wil Bun dit veranderen door nog meer focus te leggen op snelheid en performantie. 
-Om dit te bereiken maakt Bun gebruikt van JavaScriptCore in plaats van V8 JavaScript engine ~\autocite{McDonnel2023}.
+Om dit te bereiken maakt Bun gebruik van JavaScriptCore in plaats van de V8 JavaScript engine ~\autocite{McDonnel2023}.
 Dit is de ingebouwde engine voor WebKit, een web browser engine die wordt gebruikt op macOS en IOS ~\autocite{Pizlo2020}.
 Door het gebruik van de JavaScriptCore engine zou Bun 4 keer sneller kunnen opstarten dan Node.js ~\autocite{McDonnel2023}.
 Bun bevat daarnaast ook een test runner,script runner en een Node.js compatibele package manager, die volgens ~\textcite{McDonnel2023} 
@@ -71,11 +71,11 @@ Terwijl bij Node.js je hiervoor aparte packages nodig hebt,
 zal bij Bun de transpiler deze bestanden automatisch converteren naar vanilla Javascript.
 
 Doordat Bun redelijk nieuw is, zijn er nog maar weinig onderzoeken over gedaan.
-Één van deze onderzoeken werd uitgevoerd door ~\textcite{Feroj2023}.
+Eén van deze onderzoeken werd uitgevoerd door ~\textcite{Feroj2023}.
 Hierbij werd de performantie tussen Node.js en Bun vergeleken op basis van verschillende performantie attributen. 
 Deze omvatten geheugengebruik, antwoordtijd en de algemene uitvoeringstijd. 
-Voor het testen van netwerk verzoeken werd bij beiden gebruik gemaakt van Bombardier. Hierbij werden in 3 aparte scenarios, 
-10 miljoen gemaakt met eerst 10 gelijktijdige connecties, dan 100 gelijktijdige connecties en
+Voor het testen van netwerk verzoeken werd bij beiden gebruikgemaakt van Bombardier. Hierbij werden in 3 aparte scenario's, 
+10 miljoen verzoeken gemaakt met eerst 10 gelijktijdige connecties, dan 100 gelijktijdige connecties en
 uiteindelijk 500 gelijktijdige connecties. Hierbij kon de onderzoeker de performantie van de servers evalueren 
 aan de hand van responstijd en doorvoer. Aanvullend werden ook de geheugengebruik pieken bepaald.
 Daarnaast werd ook getest hoe beide runtimes een alleenstaand script afhandelen. 
@@ -91,78 +91,53 @@ als het uitvoeren van computationele taken.
 De onderzoeker merkt echter ook op dat de keuze van een runtime niet alleen kan bepaald worden op basis van performantie. 
 Andere factoren, die hier niet getest zijn, zoals beveiling, stabiliteit en onderhoudbaarheid dragen ook bij tot de keuze. 
 Ook waren de geteste programma's redelijk simpel waardoor de resultaten mogelijks niet accuraat zijn voor complexere omgevingen.
-Verder onderzoek zou ook baat hebben om rekening te houden met verschillende omstandigen, 
+Verder onderzoek zou ook baat hebben om rekening te houden met verschillende omstandigheden, 
 zoals CPU-gebonden en I/O-gebonden processen.
 
 Een ander nieuw framework is Deno. 
-Dit framework werd geintroduceerd door ~\textcite{Dahl2021}, de maker van Node.js.
-Met Deno wil hij nieuw leven inblazen in het ecosysteem doormiddel van een modern, productief programmeer systeem aan te bedien dat zich houdt aan browser API's.
+Dit framework werd geïntroduceerd door ~\textcite{Dahl2021}, de maker van Node.js.
+Met Deno wil hij nieuw leven inblazen in het ecosysteem door middel van een modern, productief programmeer systeem aan te bieden dat zich houdt aan browser API's.
 Net zoals Node.js gebruikt Deno de V8 Javascript engine ~\autocite{DenoLand2023}. Echter werd Deno ontwikkeld in Rust, terwijl Node in C en C++ ~\autocite{DenoLand2023}. 
 Eén van de kenmerken van Deno is de beveiliging. Zo is er standaard runtime-beveiliging, 
 waarbij je als ontwikkelaar expliciet moet toestaan dat code toegang mag krijgen tot gevoelige API's ~\autocite{DenoLand2023}.
 Technisch gezien heeft Deno geen package manager. Het maakt gebruik van URL's om externe modules te importeren ~\autocite{DenoLand2023}.
-Het voordeel hierbij is dat wanneer je een module importeerd, deze automatsich wordt gecached ~\autocite{DenoLand2023}.
+Het voordeel hierbij is dat wanneer je een module importeert, deze automatisch wordt gecached ~\autocite{DenoLand2023}.
 
 Doordat Deno redelijk recent, zijn er ook hier nog maar weinig onderzoeken over gedaan.
 Eén van deze onderzoeken werd uitgevoerd door ~\textcite{VanKerkvoorde2021}. 
 Hierbij werd Node.js vergeleken met Deno op verschillende vlakken zoals performantie en beveiliging.
-Op vlak van beveiliging belooft Deno een secure runtime te zijn doormiddel van standaard geen toegang te geven tot de folderstructuur en omgeving. 
+Op vlak van beveiliging scoort Deno beter dan Node.js door middel van standaard geen toegang te geven tot de folderstructuur en omgeving. 
 Ook kunnen er standaard geen netwerk connecties worden gemaakt. 
 Voor de performantie te testen van beide frameworks werd allereerst een logica test uitgevoerd op beiden. 
 De onderzoeker heeft hierbij ondervonden dat Deno gemiddeld 31.98\% sneller was dan Node.js. Ook gebruikte Node hier 10.81 keer meer geheugen.
 Als tweede test werden de Http modules van beide frameworks vergeleken. Hiervoor werd een simpele GET request verstuurd naar beiden. 
 Hierbij was er geen significant verschil tussen beiden volgens de onderzoeker.
-Echter heeft de onderzoeken voor beide frameworks ook een concrete backend geschreven. Voor Node.js werd hierbij Express gebruikt terwijl bij Deno Oak.
+Echter heeft de onderzoeker voor beide frameworks ook een concrete backend geschreven. Voor Node.js werd hierbij Express gebruikt terwijl bij Deno Oak.
 Hierbij werd er wel een groot verschil waargenomen tussen de 2 frameworks, waarbij Deno performanter was dan Node.
 Volgens de onderzoeker blijkt uit de testen dat Deno beter scoort dan Node op vlak van verwerkingstijd en geheugengebruiker.
 De onderzoeker merkt wel op dat door het gebrek aan bepaalde metrieken binnen Deno, zaken zoals CPU- en GPU-belasting niet konden worden gemeten.
 %---------- Methodologie ------------------------------------------------------
 \section{Methodologie}%
 \label{sec:methodologie}
-
-Hier beschrijf je hoe je van plan bent het onderzoek te voeren. 
-Welke onderzoekstechniek ga je toepassen om elk van je onderzoeksvragen te beantwoorden? 
-Gebruik je hiervoor literatuurstudie, interviews met belanghebbenden (bv.~voor requirements-analyse),
- experimenten, simulaties, vergelijkende studie, risico-analyse, PoC, \ldots?
-
-Valt je onderwerp onder één van de typische soorten bachelorproeven die besproken zijn in de lessen Research Methods 
-(bv.\ vergelijkende studie of risico-analyse)? Zorg er dan ook voor dat we duidelijk de verschillende stappen 
-terug vinden die we verwachten in dit soort onderzoek!
-
-Vermijd onderzoekstechnieken die geen objectieve, meetbare resultaten kunnen opleveren. Enquêtes,
- bijvoorbeeld, zijn voor een bachelorproef informatica meestal \textbf{niet geschikt}. 
-De antwoorden zijn eerder meningen dan feiten en in de praktijk blijkt het ook bijzonder moeilijk om 
-voldoende respondenten te vinden. Studenten die een enquête willen voeren,
- hebben meestal ook geen goede definitie van de populatie,
- waardoor ook niet kan aangetoond worden dat eventuele resultaten representatief zijn.
-
-Uit dit onderdeel moet duidelijk naar voor komen dat je bachelorproef ook technisch voldoen\-de diepgang zal bevatten.
-Het zou niet kloppen als een bachelorproef informatica ook door bv.\ een student marketing zou kunnen uitgevoerd worden.
-
-Je beschrijft ook al welke tools (hardware, software, diensten, \ldots) je denkt hiervoor te gebruiken of te ontwikkelen.
-
-Probeer ook een tijdschatting te maken. Hoe lang zal je met elke fase van je onderzoek bezig zijn en wat zijn de concrete
- \emph{deliverables} 
-in elke fase?
-
 Het onderzoek bevat 7 fasen.
 De eerste fase is een algemene beschrijving van Node.js alsook een beschrijving van de mogelijke alternatieven. 
 Dit wordt gedaan aan de hand van een literatuurstudie van wetenschappelijke artikels en boeken. 
 De geschatte duurtijd van dit proces is 2 weken.
 
-De tweede fase bestaat uit het verzamelen van de de criteria die zal getest worden bij beide omgevingen. 
+De tweede fase bestaat uit het verzamelen van de criteria die zal getest worden bij beide omgevingen. 
 De focus ligt hierbij op performantie en complexiteit.
 Dit gebeurt in samenspraak met de co-promotor. Hierbij worden deze criteria geordend volgens belang. 
 De verzameling van deze criteria duurt 1 week.
 
 In de derde fase wordt een long list opgesteld met mogelijke alternatieven voor Node.js. 
-Deze worden geanalyseerd aan de hand van een literatuuronderzoek. Deze analyse bedraagt 1 week en loop samen met het verzamelen van de criteria.
+Deze worden geanalyseerd aan de hand van een literatuuronderzoek. Deze analyse bedraagt 1 week en loopt samen met het verzamelen van de criteria.
 
-De vierde fase bestaat uit het selecteren van 1 framework uit de long list die voldoet aan de vereisten. 
+De vierde fase bestaat uit het selecteren van één framework uit de long list die het beste voldoet aan de vereisten. 
 Dit proces zal 1 week in beslag nemen.
 
 In de vijfde fase wordt een proof-of-concept gemaakt voor zowel Node.js als het geselecteerde framework. 
-Hierbij wordt een applicatie ontwikkeld waarbij een gebruiker een recensie kan creëren over een bepaald onderwerp.
+Hierbij wordt een applicatie ontwikkeld waarbij een gebruiker een recensie kan creëren over een bepaald onderwerp, 
+alsook een script dat een algoritme bevat.
 Voor deze ontwikkeling is een geschatte duurtijd van 3 weken voorzien.
 
 In de zesde fase worden te testen uitgevoerd op de proof-of-concepts. 
@@ -191,12 +166,13 @@ het is dan juist interessant om te onderzoeken waarom jouw hypothesen niet overe
 Op basis van literatuuronderzoek zal gekozen worden om Bun te vergelijken met Node.js doordat dit framework zich focust op performantie.
 De verwachte resultaten zijn metingen van de proof-of-concepts die aantonen dat Bun performanter is dan de Node.js. 
 Deze metingen werden uitgevoerd met behulp van benchmark tools Hyperfine en Bombardier.
-Ook wordt verwacht dat de package manager van Bun een snellere installatietijd heeft dan de Node Package Manager.
+Ook wordt verwacht dat de package manager van Bun een snellere installatietijd heeft dan de Node Package Manager en dat Bun minder complex is dan Node.js.
 Deze verwachtingen komen mede doordat Bun zich bij de ontwikkeling specifiek heeft gefocust op performantie-optimalisatie.
+Ook heeft Bun redelijk wat zaken, zoals een test-runner, al ingebouwd wat het minder complex maakt dan Node.js.
 Op basis van deze metingen kan een onderbouwde keuze worden gemaakt tussen het gebruik van Node.js en Bun bij de ontwikkeling
 van complexe webapplicaties.
 
 Doordat Node.js nog altijd de norm is, zal het zeer veel tijd vragen tegen dat Bun deze effectief kan vervangen.
-Het is toch belangrijk dat er nu al een keuze kan gemaakt worden tussen javascript runtime
+Het is toch belangrijk dat er nu een keuze kan gemaakt worden tussen javascript runtime
 omgevingen bij de ontwikkeling van applicaties.
 

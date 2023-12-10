@@ -151,28 +151,25 @@ Dit neemt 1 week in beslag
 %---------- Verwachte resultaten ----------------------------------------------
 \section{Verwacht resultaat, conclusie}%
 \label{sec:verwachte_resultaten}
-
-Hier beschrijf je welke resultaten je verwacht. Als je metingen en simulaties uitvoert, 
-kan je hier al mock-ups maken van de grafieken samen met de verwachte conclusies. 
-Benoem zeker al je assen en de onderdelen van de grafiek die je gaat gebruiken. 
-Dit zorgt ervoor dat je concreet weet welk soort data je moet verzamelen en hoe je die moet meten.
-
-Wat heeft de doelgroep van je onderzoek aan het resultaat? Op welke manier zorgt jouw bachelorproef voor een meerwaarde?
-
-Hier beschrijf je wat je verwacht uit je onderzoek, met de motivatie waarom.
-Het is \textbf{niet} erg indien uit je onderzoek andere resultaten en conclusies vloeien dan dat je hier beschrijft: 
-het is dan juist interessant om te onderzoeken waarom jouw hypothesen niet overeenkomen met de resultaten.
-
 Op basis van literatuuronderzoek zal gekozen worden om Bun te vergelijken met Node.js doordat dit framework zich focust op performantie.
-De verwachte resultaten zijn metingen van de proof-of-concepts die aantonen dat Bun performanter is dan de Node.js. 
+De verwachte resultaten zijn metingen van de proof-of-concepts die aantonen dat Bun performanter is dan de Node.js (zie figuur~\ref{fig:uitvoeringstijd} en~\ref{fig:responstijd}). 
 Deze metingen werden uitgevoerd met behulp van benchmark tools Hyperfine en Bombardier.
-Ook wordt verwacht dat de package manager van Bun een snellere installatietijd heeft dan de Node Package Manager en dat Bun minder complex is dan Node.js.
+Ook wordt verwacht dat de package manager van Bun een snellere installatietijd heeft dan de Node Package Manager en dat Bun minder complex is dan Node.js (zie figuur~\ref{fig:installatietijd}).
 Deze verwachtingen komen mede doordat Bun zich bij de ontwikkeling specifiek heeft gefocust op performantie-optimalisatie.
 Ook heeft Bun redelijk wat zaken, zoals een test-runner, al ingebouwd wat het minder complex maakt dan Node.js.
 Op basis van deze metingen kan een onderbouwde keuze worden gemaakt tussen het gebruik van Node.js en Bun bij de ontwikkeling
-van complexe webapplicaties.
+van performante webapplicaties.
 
 Doordat Node.js nog altijd de norm is, zal het zeer veel tijd vragen tegen dat Bun deze effectief kan vervangen.
 Het is toch belangrijk dat er nu een keuze kan gemaakt worden tussen javascript runtime
 omgevingen bij de ontwikkeling van applicaties.
 
+\begin{figure}
+    \centering
+    \includegraphics[width=.4\textwidth]{graphics/diagram.png}
+    \caption{\label{fig:uitvoeringstijd}}We zien dat Bun een betere uitvoeringstijd heeft dan Node.js bij de uitvoering van een simpel algoritme.
+    \includegraphics[width=.4\textwidth]{graphics/installatietijd.png}
+    \caption{\label{fig:installatietijd}}We zien dat Bun een betere installatietijd heeft dan Node.js bij het installeren van dependencies.
+    \includegraphics[width=.4\textwidth]{graphics/Responstijd.png}
+    \caption{\label{fig:responstijd}}We zien dat Bun een betere responstijd heeft dan Node.js bij het afhandelen van concurrent requests.
+\end{figure}

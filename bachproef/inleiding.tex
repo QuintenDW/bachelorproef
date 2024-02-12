@@ -17,18 +17,30 @@ De inleiding moet de lezer net genoeg informatie verschaffen om het onderwerp te
   \item \ldots
 \end{itemize}
 
-In de afgelopen jaren zijn er heel wat nieuwe javascript runtime-omgevingen geïntroduceerd. 
-Echter worden weinig van deze nieuwe environments effectief gebruikt. 
-Zo toont onderzoek van ~\textcite{Greif2022} aan dat 93.6\% van de 29888 bevraagden Node.js regulier gebruiken.
-Dit tegenover de 11.2\% en 4.3\% van de mensen die respectievelijk Deno en Bun geregeld gebruiken.
-Momenteel wordt Node.JS nog altijd als standaard gebruikt bij elk project. 
-Er zijn echter nog tal van andere javascript runtime-omgevingen, zoals bovengenoemde Bun en Deno, 
-die in staat zijn om specifieke noden te vervullen waar Node.js niet kan aan voldoen.
+Door de jaren heen zijn applicaties alsmaar complexer geworden. Hierbij worden vaak achterliggend netwerk verzoeken afgehandeld door een 
+javascript runtime-omgeving. Deze omgeving vormt een webserver en bevindt zich buiten de browser.
+De meest populaire omgeving is Node.js. Zo toont onderzoek van ~\textcite{Greif2022} aan dat 93.6\% van de 29888 bevraagden Node.js 
+regulier gebruiken.
+Dit tegenover de 11.2\% en 4.3\% van de mensen die andere omgevingen zoals respectievelijk Deno en Bun gebruiken.
+Deze 2 omgevingen zijn relatief jonger dan Node.js.
 
 \section{\IfLanguageName{dutch}{Probleemstelling}{Problem Statement}}%
 \label{sec:probleemstelling}
 
-Uit je probleemstelling moet duidelijk zijn dat je onderzoek een meerwaarde heeft voor een concrete doelgroep. De doelgroep moet goed gedefinieerd en afgelijnd zijn. Doelgroepen als ``bedrijven,'' ``KMO's'', systeembeheerders, enz.~zijn nog te vaag. Als je een lijstje kan maken van de personen/organisaties die een meerwaarde zullen vinden in deze bachelorproef (dit is eigenlijk je steekproefkader), dan is dat een indicatie dat de doelgroep goed gedefinieerd is. Dit kan een enkel bedrijf zijn of zelfs één persoon (je co-promotor/opdrachtgever).
+Uit je probleemstelling moet duidelijk zijn dat je onderzoek een meerwaarde heeft voor een concrete doelgroep. 
+De doelgroep moet goed gedefinieerd en afgelijnd zijn. Doelgroepen als ``bedrijven,'' ``KMO's'', systeembeheerders, enz.~zijn nog te vaag. 
+Als je een lijstje kan maken van de personen/organisaties die een meerwaarde zullen vinden in deze bachelorproef (dit is eigenlijk je steekproefkader), 
+dan is dat een indicatie dat de doelgroep goed gedefinieerd is. Dit kan een enkel bedrijf zijn of zelfs één persoon (je co-promotor/opdrachtgever).
+
+Performantie is doorheen de tijd alsmaar belangrijker geworden. 
+Een performante webapplicatie zorgt hierbij voor een betere gebruikerservaring. 
+Momenteel wordt Node.js nog altijd als standaard gebruikt bij elk project. Echter zijn er nog tal van andere javascript runtime-omgevingen
+, zoals Bun, die in staat zijn om specifieke noden te vervullen waar Node.js niet aan kan voldoen. In deze bachelorproef wordt geprobeerd 
+een inzicht te verschaffen over de performantie van Node.js en Bun alsook hun complexiteit 
+om zo een correcte keuze te kunnen maken bij de ontwikkeling van webapplicaties.
+Dit onderzoek is relevant voor het bedrijf Codifly en kan gebruikt worden als basis 
+voor het maken van een back-end keuze bij de ontwikkeling van performante webapplicaties. Dit onderzoek kan 
+ook door andere actoren worden gebruikt om inzicht te krijgen in de capaciteiten van Bun.
 
 \section{\IfLanguageName{dutch}{Onderzoeksvraag}{Research question}}%
 \label{sec:onderzoeksvraag}

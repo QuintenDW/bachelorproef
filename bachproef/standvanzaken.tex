@@ -7,12 +7,114 @@
 
 % Pas na deze inleidende paragraaf komt de eerste sectiehoofding.
 
-Dit hoofdstuk bevat je literatuurstudie. De inhoud gaat verder op de inleiding, maar zal het onderwerp van de bachelorproef *diepgaand* uitspitten. De bedoeling is dat de lezer na lezing van dit hoofdstuk helemaal op de hoogte is van de huidige stand van zaken (state-of-the-art) in het onderzoeksdomein. Iemand die niet vertrouwd is met het onderwerp, weet nu voldoende om de rest van het verhaal te kunnen volgen, zonder dat die er nog andere informatie moet over opzoeken \autocite{Pollefliet2011}.
+Dit hoofdstuk bevat je literatuurstudie. 
+De inhoud gaat verder op de inleiding, maar zal het onderwerp van de bachelorproef *diepgaand* uitspitten. 
+De bedoeling is dat de lezer na lezing van dit hoofdstuk helemaal op de hoogte is van de huidige stand van zaken (state-of-the-art) 
+in het onderzoeksdomein. 
+Iemand die niet vertrouwd is met het onderwerp, 
+weet nu voldoende om de rest van het verhaal te kunnen volgen, 
+zonder dat die er nog andere informatie moet over opzoeken \autocite{Pollefliet2011}.
 
-Je verwijst bij elke bewering die je doet, vakterm die je introduceert, enz.\ naar je bronnen. In \LaTeX{} kan dat met het commando \texttt{$\backslash${textcite\{\}}} of \texttt{$\backslash${autocite\{\}}}. Als argument van het commando geef je de ``sleutel'' van een ``record'' in een bibliografische databank in het Bib\LaTeX{}-formaat (een tekstbestand). Als je expliciet naar de auteur verwijst in de zin (narratieve referentie), gebruik je \texttt{$\backslash${}textcite\{\}}. Soms is de auteursnaam niet expliciet een onderdeel van de zin, dan gebruik je \texttt{$\backslash${}autocite\{\}} (referentie tussen haakjes). Dit gebruik je bv.~bij een citaat, of om in het bijschrift van een overgenomen afbeelding, broncode, tabel, enz. te verwijzen naar de bron. In de volgende paragraaf een voorbeeld van elk.
+Je verwijst bij elke bewering die je doet, vakterm die je introduceert, enz.\ naar je bronnen. 
+In \LaTeX{} kan dat met het commando \texttt{$\backslash${textcite\{\}}} of \texttt{$\backslash${autocite\{\}}}. 
+Als argument van het commando geef je de ``sleutel'' van een ``record'' in een bibliografische databank in het Bib\LaTeX{}-formaat
+ (een tekstbestand). Als je expliciet naar de auteur verwijst in de zin (narratieve referentie), 
+ gebruik je \texttt{$\backslash${}textcite\{\}}. Soms is de auteursnaam niet expliciet een onderdeel van de zin, 
+ dan gebruik je \texttt{$\backslash${}autocite\{\}} (referentie tussen haakjes). Dit gebruik je bv.~bij een citaat, 
+ of om in het bijschrift van een overgenomen afbeelding, broncode, tabel, enz. te verwijzen naar de bron. 
+ In de volgende paragraaf een voorbeeld van elk.
 
-\textcite{Knuth1998} schreef een van de standaardwerken over sorteer- en zoekalgoritmen. Experten zijn het erover eens dat cloud computing een interessante opportuniteit vormen, zowel voor gebruikers als voor dienstverleners op vlak van informatietechnologie~\autocite{Creeger2009}.
+\textcite{Knuth1998} schreef een van de standaardwerken over sorteer- en zoekalgoritmen. 
+Experten zijn het erover eens dat cloud computing een interessante opportuniteit vormen, zowel voor gebruikers als voor dienstverleners op vlak van informatietechnologie~\autocite{Creeger2009}.
 
-Let er ook op: het \texttt{cite}-commando voor de punt, dus binnen de zin. Je verwijst meteen naar een bron in de eerste zin die erop gebaseerd is, dus niet pas op het einde van een paragraaf.
+Let er ook op: het \texttt{cite}-commando voor de punt, dus binnen de zin. Je verwijst meteen naar een bron in de eerste zin die erop gebaseerd is, 
+dus niet pas op het einde van een paragraaf.
 
-\lipsum[7-20]
+
+
+Dit hoofdstuk bevat een literatuurstudie die de gebruikten technologieën gaat omschrijven. 
+Daarnaast worden ook eerdere studies naar deze technologieën vermeld. 
+Ten eerste wordt een precieze beschrijving gegeven over de programmeertaal javascript en hoe deze wordt gebruikt bij de runtime-omgevingen.
+Nadien wordt verder ingegaan op 2 van deze omgevingen namelijk Node.js en Bun.
+
+\section{Javascript}
+Javascript is een programmeertaal die gebruikt wordt om applicaties te ontwikkelen. 
+Specifiek is het een scripting taal die gebruikt om web pagina's interactief te maken~\autocite{Mozilla2023}.
+Hierbij spreken we over client-side Javascript. Wanneer een web pagina wordt bekeken zal de javascript code worden 
+gedownload en uitgevoerd~\autocite{JonathanBrownCFA2024}. Langs de andere kant heb je ook nog Server-side javascript. 
+Hierbij wordt de code uitgevoerd op de server in plaats van op de client~\autocite{JonathanBrownCFA2024}. 
+Voor deze code dan te laten uitvoeren is een javascript runtime-omgeving nodig. 
+
+\subsection{Javascript runtime-omgeving}
+Een javascript-omgeving bestaat uit alle componenten om javascript correct te laten werken ~\autocite{Christopher}. 
+Het bevat een JavaScript engine, WEB APIs en een callback queue ~\autocite{Christopher}. 
+Deze runtime zal dan javascript code omzetten in code die verstaanbaar is voor de computer.
+De omgeving specificeert waar dit wordt gedaan, dit kan in een browser maar ook in andere omgevingen zoals een server.
+Met behulp van javascript runtime-omgevingen zoals Node.js en Bun kan javascript code ook buiten de browser worden uitgevoerd~\autocite{Mozilla2023}.
+
+\subsubsection{Javascript engine, WEB APIs en callback queue}
+
+In een artikel van ~\textcite{Christopher}, 
+wordt uitgelegd dat de javascript engine een simpel computer programma is dat de code kan interpreteren en uitvoeren.
+Elk browser heeft zijn eigen Javascript engine achterliggend. Het meest bekende hiervan is de
+V8 engine die zowel bij Google chrome als Node.js wordt gebruikt. 
+Wanneer een stuk code in de engine wordt gestoken zal deze eerst gelezen worden (parsing). 
+De code wordt hierbij omgezet in een data structuur genaamd abstract syntax tree (AST).
+Wanneer deze boom is aangemaakt zal de compiler deze omzetten naar machine code. 
+Eenmaal deze code is gegenereerd zal de engine execution contexts aanmaken om de code uit te voeren.
+In figuur ~\ref{fig:javascriptengine} wordt hiervan een visuele voorstelling getoond.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.9\textwidth]{graphics/javascriptengine.jpeg}
+    \caption{\label{fig:javascriptengine}}Visuele voorstelling van werking javascript engine ~\autocite{Christopher}.
+\end{figure}
+
+Naast een Javascript engine bevat een runtime-omgeving ook WEB APIs en een callback queue. 
+WEB APIs zijn functionaliteiten die specifiek voor de runtime omgeving zijn en dus geen deel uitmaken van de javascript taal.
+De callback queue zorgt ervoor dat callback functions volgens de First-In-First-Out methode worden uitgevoerd.
+
+\section{Node.js}
+De afgelopen jaren is het aantal runtime-omgevingen sterk toegenomen. De meest bekende en oudste hiervan is Node.js.
+Node.js is een server-side framework dat wordt gebruikt voor schaalbare applicaties te maken ~\autocite{Gackenheimer2013}.
+Node.js maakt gebruik van de javascript V8 engine van Google en heeft zijn eigen package manager genaamd Node Package Manager (npm).
+
+\subsection{Event loop}
+In het boek van ~\textcite{Ali2013} wordt verteld hoe Node.js zich onderscheidt van andere platformen door het gebruik van een event loop.
+Wanneer in Node data wordt gelezen of geschreven zal een gebeurtenis worden uitgezonden. 
+Aan de hand van zelfgedefinieerde callbacks,verwijzingen naar uitvoerbare code, kan gereageerd worden op deze gebeurtenissen. 
+De event loop zal hierbij continu kijken of er gebeurtenissen voorkomen, en wanneer dit zo is zal het deze in de event wachtrij plaatsen.
+De event loop zal dan deze wachtrij doorgaan en één per één de event handlers uitvoeren. 
+Dit laat toe om I/O operaties asynchroon te maken zonder hierbij multithreading te gebruiken.
+In figuur ~\ref{fig:eventloop} wordt hiervan een visuele voorstelling getoond.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=.9\textwidth]{graphics/eventloop.png}
+    \caption{\label{fig:eventloop}}Visuele voorstelling van de event loop ~\autocite{Luxembourg2023}.
+\end{figure}
+
+\subsection{Node Package Manager}
+Node.js maakt gebruik van modules om code te hergebruiken. 
+Zo vormt een module een stuk herbruikbare javascript code 
+die je kan importeren in een ander javascript bestand ~\autocite{Semah2022}.
+Naast deze zelf te maken kan je ook modules of packages van andere ontwikkelaars gebruiken met behulp van de Node Package Manager.
+Veel van deze packages hangen af van nog andere packages om correct te werken \autocite{kula2017}.
+Aan de hand van een package.json bestand kunnen packages toegevoegd worden aan een project.
+\begin{minted}{js}
+{
+  "dependencies": {
+    "foo": "1.0.0 - 2.9999.9999",
+    "bar": ">=1.0.2 <2.1.2",
+    "baz": ">1.0.2 <=2.3.4",
+    "boo": "2.0.1",
+    "qux": "<1.0.0 || >=2.3.1 <2.4.5 || >=2.5.2 <3.0.0",
+    "asd": "http://asdf.com/asdf.tar.gz",
+    "til": "~1.2",
+    "elf": "~1.2.3",
+    "two": "2.x",
+    "thr": "3.3.x",
+    "lat": "latest",
+    "dyl": "file:../dyl"
+}
+}
+\end{minted}
+Voorbeeld package.json \autocite{Kaplan2024}

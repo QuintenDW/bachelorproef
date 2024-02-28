@@ -201,3 +201,35 @@ waar naarmate meerdere malen over een stuk code wordt geïtereerd, doormiddel va
     \includegraphics[width=.9\textwidth]{graphics/javascriptcore.png}
     \caption{\label{fig:javascriptcore}}Voorbeeld tijdslijn van een simpele loop uitgevoerd in JavaScriptCore ~\autocite{Pizlo2020}.
 \end{figure}
+
+
+\subsection{Test runner}
+Bun bevat een ingebouwde test runner die volgens ~\textcite{McDonnel2023} 10-30 keer sneller werkt als jest.
+De test runner ondersteund zowel javascript als typescript. Hierbij is het ook mogelijk om mocks gebruiken.
+Dit zijn valse objecten die de achterliggende functionaliteit simuleren om zo externe afhankelijkheden zelf te controleren.
+In figuur ~\ref{fig:testbun} wordt een voorbeeld van een test binnen bun weergegeven.
+\begin{figure}[H]
+    \centering
+    \begin{minted}[bgcolor=bg,
+        fontfamily=tt,
+        linenos=true,
+        numberblanklines=true,
+        numbersep=5pt,
+        gobble=0,
+        framesep=2mm,
+        tabsize=4,
+        obeytabs=false,
+        breaklines=true,
+        mathescape=false
+        samepage=false,
+        showspaces=false,
+        showtabs =false,
+        texcl=false]{js}
+        import { expect, test } from "bun:test";
+
+        test("1 + 1", () => {
+            expect(1 + 1).toBe(2);
+        });
+        \end{minted}
+        \caption{\label{fig:testbun}}Voorbeeld test binnen Bun.
+\end{figure}

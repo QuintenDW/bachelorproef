@@ -76,7 +76,7 @@ De callback queue zorgt ervoor dat callback functions volgens de First-In-First-
 \section{Node.js}
 De afgelopen jaren is het aantal runtime-omgevingen sterk toegenomen. De meest bekende en oudste hiervan is Node.js.
 Node.js is een server-side framework dat wordt gebruikt voor schaalbare applicaties te maken ~\autocite{Gackenheimer2013}.
-Het maakt gebruik van de javascript V8 engine ontwikkeld door Google en heeft zijn eigen package manager genaamd Node Package Manager (npm).
+Het maakt gebruik van de V8 javascript engine ontwikkeld door Google en heeft zijn eigen package manager genaamd Node Package Manager (npm).
 
 \subsection{Event loop}
 In het boek van ~\textcite{Ali2013} wordt verteld hoe Node.js zich onderscheidt van andere platformen door het gebruik van een event loop.
@@ -99,7 +99,8 @@ die je kan importeren in een ander javascript bestand ~\autocite{Semah2022}.
 Naast deze zelf te maken kan je ook modules of packages van andere ontwikkelaars gebruiken met behulp van de Node Package Manager.
 Veel van deze packages hangen af van nog andere packages om correct te werken \autocite{kula2017}.
 Aan de hand van een package.json bestand kunnen packages toegevoegd worden aan een project.
-\begin{figure}[h!]
+
+\begin{figure}[H]
     \centering
     \begin{minted}[bgcolor=bg,
         fontfamily=tt,
@@ -136,6 +137,33 @@ Aan de hand van een package.json bestand kunnen packages toegevoegd worden aan e
         \caption{Voorbeeld package.json \autocite{Kaplan2024}}
 \end{figure}
 
+\subsection{V8 Javascript Engine}
+Zoals hierboven uitgelegd bestaat elk javascript runtime-environment uit een javascript engine die de code kan interpreteren en uitvoeren.
+Node.js gebruikt hiervoor de V8 Javascript engine van google en voegt hierbij extra functionaliteit toe zoals de event loop.
+In een artikel van ~\textcite{Lyamkin2020} wordt uitgelegd hoe de V8 engine precies werkt. 
+Zo zal wanneer een javascript bestand wordt uitgevoerd eerst de code moeten omgezet worden op een manier dat verstaanbaar is voor de compiler.
+Dit proces heet parsing en houdt in dat de code wordt omgezet in een AST. 
+Nadien wordt deze doorgegeven aan de compiler zodat het dit kan omzetten in machine code. 
+In de meeste programmeertalen zoals Java en C++ wordt dit gedaan voor de executie van het programma (compilatie).
+Bij dynamisch getypeerde talen zoals javascript wordt dit echter at runtime gedaan (interpretatie). 
+Dit omwille dat het onmogelijk is het exacte type te weten voor de executie.
+Interpretatie is vaak trager dan compilatie doordat het geen optimalisaties kan doen.
+Om deze transformatie sneller te laten gebeuren wordt Just-In-Time compilatie gebruikt.
+Hierbij gebruikt de V8 javascript engine een interpreter genaamd Ignition. Deze neemt de AST en zal hieruit de byte code genereren.
+Nadien worden tijdens de executie de instructies geïnterpreteerd aan de hand van een tabel die de handler functies bevat en gekoppeld is aan de byte code.
+Hierbij wordt ook type feedback verzameld over de code. 
+Wanneer een functie vaak wordt gebruikt zal het geoptimaliseerd worden in de Turbofan compiler.
+Deze neemt de byte code en type feedback en gaat op basis daarvan geoptimaliseerde machine code produceren.
+Hier bestaat echter de kans dat het type kan veranderen door de dynamische aard van javascript. 
+Dan wordt de gecompileerde gedeoptimaliseerd en wordt er weer interpretatie uitgevoerd.
+Nadien kan de functie opnieuw gecompileerd worden met de nieuwe type feedback.
+In figuur ~\ref{fig:v8} wordt dit proces nog eens visueel voorgesteld.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=.9\textwidth]{graphics/v8.png}
+    \caption{\label{fig:v8}}Visuele voorstelling van de werking van v8 ~\autocite{Lyamkin2020}.
+\end{figure}
+
 \section{Bun}
 Performantie is één van de belangrijkste zaken bij een server-side framework. 
 Daarom is Node.js dankzij zijn event-gedreven I/O model een veelvoorkomende keuze als het gaat om server-side frameworks.
@@ -166,3 +194,10 @@ Via de Low-Level Interpreter zal een profile voor elke instructie aangemaakt wor
 Aan de hand hiervan weet de engine hoeveel keer een instructie wordt uitgevoerd en in welk niveau ze zitten.
 LLINT zorgt ervoor dat het geheugengebruik wordt gereduceerd. Zo kost het genereren van machine code zeer veel geheugen.
 Doormiddel van LLINT moeten we niet voor alle javascript code de bijhorende machine code genereren.
+In figuur ~\ref{fig:javascriptcore} wordt een visuele voorstelling getoond 
+waar naarmate meerdere malen over een stuk code wordt geïtereerd, doormiddel van een loop, de respectievelijke compiler telkens wordt gestart.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.9\textwidth]{graphics/javascriptcore.png}
+    \caption{\label{fig:javascriptcore}}Voorbeeld tijdslijn van een simpele loop uitgevoerd in JavaScriptCore ~\autocite{Pizlo2020}.
+\end{figure}

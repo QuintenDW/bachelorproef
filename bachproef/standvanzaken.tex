@@ -25,7 +25,8 @@ Als argument van het commando geef je de ``sleutel'' van een ``record'' in een b
  In de volgende paragraaf een voorbeeld van elk.
 
 \textcite{Knuth1998} schreef een van de standaardwerken over sorteer- en zoekalgoritmen. 
-Experten zijn het erover eens dat cloud computing een interessante opportuniteit vormen, zowel voor gebruikers als voor dienstverleners op vlak van informatietechnologie~\autocite{Creeger2009}.
+Experten zijn het erover eens dat cloud computing een interessante opportuniteit vormen, 
+zowel voor gebruikers als voor dienstverleners op vlak van informatietechnologie~\autocite{Creeger2009}.
 
 Let er ook op: het \texttt{cite}-commando voor de punt, dus binnen de zin. Je verwijst meteen naar een bron in de eerste zin die erop gebaseerd is, 
 dus niet pas op het einde van een paragraaf.
@@ -35,7 +36,9 @@ dus niet pas op het einde van een paragraaf.
 Dit hoofdstuk bevat een literatuurstudie die de gebruikten technologieën gaat omschrijven. 
 Daarnaast worden ook eerdere studies naar deze technologieën vermeld. 
 Ten eerste wordt een precieze beschrijving gegeven over de programmeertaal javascript en hoe deze wordt gebruikt bij de runtime-omgevingen.
-Nadien wordt verder ingegaan op 2 van deze omgevingen namelijk Node.js en Bun.
+Nadien wordt verder ingegaan op 2 van deze omgevingen namelijk Node.js en Bun. 
+Hierbij wordt gekeken naar hun respectievelijke javascript engine, package managers, bundlers en functionaliteiten.
+Als laatste wordt gekeken naar eerder onderzoek over deze onderwerpen.
 
 \section{Javascript}
 Javascript is een programmeertaal die gebruikt wordt om applicaties te ontwikkelen. 
@@ -80,6 +83,7 @@ Zo legt ~\textcite{Laurila2020} in haar thesis uit dat sommige modules afhankeli
 Hierdoor moeten deze in de juiste volgorde worden uitgevoerd. Een bundler zal aan de hand van deze afhankelijkheden 
 een afhankelijkheidsgrafiek maken om ze de modules in 1 of meerdere bestanden te bundelen. 
 Na de transformatie van de modules worden er ook nog optimalisaties gedaan zoals het verwijderen van opmerkingen en witte ruimte.
+Daarnaast zorgt het bundelen van modules in 1 of meerdere bestanden ervoor dat er minder netwerk verzoeken moeten gedaan worden.
 
 \section{Node.js}
 De afgelopen jaren is het aantal runtime-omgevingen sterk toegenomen. De meest bekende en oudste hiervan is Node.js.
@@ -173,6 +177,13 @@ In figuur ~\ref{fig:v8} wordt dit proces nog eens visueel voorgesteld.
     \caption{\label{fig:v8}}Visuele voorstelling van de werking van v8 ~\autocite{Lyamkin2020}.
 \end{figure}
 
+\subsection{Bundler}
+Binnen Node.js zijn er verschillende mogelijkheden voor een bundler. De meest bekende hiervan is Webpack. 
+Deze kan bestanden zoals Javascript, SASS en andere bestanden bundelen naar hun respectievelijke bestandstype ~\autocite{Laurila2020}. 
+Webpack kan ook nog aangevuld worden met andere loaders om een bepaald soort bestand te bundelen. Een andere populaire bundler is Esbuild.
+Hierbij wordt de focus gelegd op snelheid en performantie. Zo wordt er beweerd dat deze bundler 10 tot 100 keer sneller is dan de andere bundlers ~\autocite{Couriol2020}.
+Het kan deze snelheid behalen doordat het geschreven is in de programmeertaal Go waarbij taken worden geparallelliseert om zo gebruik te maken van meerkernige processoren ~\autocite{Couriol2020}.
+
 \section{Bun}
 Performantie is één van de belangrijkste zaken bij een server-side framework. 
 Daarom is Node.js dankzij zijn event-gedreven I/O model een veelvoorkomende keuze als het gaat om server-side frameworks.
@@ -216,7 +227,8 @@ Een andere manier hoe Bun performanter probeert te zijn is door te kiezen voor d
 In een interview met ~\textcite{Motroc2017} legt de oprichter van Zig, Andrew Kelley, bedoeld is als opvolger van de programmeertaal C.
 Zo probeert hij met Zig het mogelijk te maken hoogperformante en onderhoudbare software te ontwikkelen 
 zonder de moeilijkheden die voorkomen in andere programmeertalen zoals C, de programmeertaal gebruikt door Node.js.
-
+Daarnaast is er nog altijd enige vorm van compatibiliteit met C, 
+zo kunnen bijvoorbeeld functies geexporteerd worden zodat ze kunnen worden opgeroepen uit C.
 
 \subsection{Test runner}
 Bun bevat een ingebouwde test runner die volgens ~\textcite{McDonnel2023} 10-30 keer sneller werkt als jest.
@@ -255,10 +267,125 @@ Deze is compatibel met Node.js waardoor dus ook een package.json kan gebruikt wo
 Onderzoek van ~\textcite{McDonnel2023} zou aantonen dat de package manager 
 van Bun tot 25 keer sneller packages zou kunnen installeren tegenover Node.js.
 Hierbij wordt tijdens het installeren van een package, 
-het gedownload in een globale package cache. Zo kan bij toekomstige installaties 
+deze et gedownload in een globale package cache. Zo kan bij toekomstige installaties 
 eerst de cache gecontroleerd om onnodige downloads te vermijden. Na de installatie zal Bun een binaire lockfile maken. 
 Deze bevat zaken zoals de packages, de metadata van deze packages, versies etc. Door het binaire formaat kan er sneller gelezen worden dan bij JSON-gebaseerde lockfiles zoals in Node.js.
+Daarnaast kan Bun, in tegenstelling tot npm, ook aan tree shaking doen waarbij ongebruikte code niet wordt meegenomen ~\autocite{Aghdasi2023}.
+
+
+\subsection{Bundler}
+Bun heeft een ingebouwde bundler die zowel via de commandolijn als binnen de code zelf kan worden aangeroepen. 
+De bundler helpt op verschillende vlakken ~\autocite{McDonnel2023}:
+\begin{itemize}
+    \item De bundler helpt om het aantal HTTP verzoeken te verminderen door het kleiner aantal bestanden dat moet worden ingeladen.
+    \item De bundler zal Typescript en CSS modules omzetten naar gewone javascript en css. 
+    Hierbij worden de bytecode operaties omgezet naar een template van machine code zonder veel optimalisaties. Deze laag is snel.
+    \item Frameworks zijn afhankelijk van bundler plugins om algemene zaken te implementeren zoals de routering van bestandssystemen.
+\end{itemize}
+De bundler van Bun zou bovendien ook sneller zijn dan bestaande bundlers zoals Esbuild en Webpack.
 
 \subsection{Typescript ondersteuning}
 In tegenstellig tot Node.js ondersteunt Bun typescript als standaard. 
 Zo zal de interne transpiler van Bun de typescript automatisch omzetten in javascript vóór de executie.
+Hierbij kan ook gebruik gemaakt worden van een tsconfig.json bestand om de nodige configuratie in te stellen.
+In figuur ~\ref{fig:nodevbun} wordt een visuele voorstelling getoond van de verschillen tussen Node.js en Bun
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.9\textwidth]{graphics/nodevbun.png}
+    \caption{\label{fig:nodevbun}}Visuele voorstelling van de verschillen tussen Node.js en Bun ~\autocite{Aghdasi2023}.
+\end{figure}
+
+\section{Bun tegenover Node.js}
+Doordat Bun redelijk nieuw is, zijn er nog maar weinig onderzoeken over gedaan. Eén van deze weinige
+onderzoeken werd uitgevoerd door ~\textcite{Feroj2023}. 
+
+In dit onderzoek werd de performantie tussen Node.js en Bun vergeleken op basis van het product kwaliteit model binnen ISO/IEC 25010.
+Deze software kwaliteit standaard helpt volgens ~\textcite{Britton2021} te bepalen of de software van hoge kwaliteit is.
+Deze bestaat concreet uit 8 product kwaliteit karakteristieken waarbij binnen het ondezoek gefocust werd om performantie efficiëntie.
+Aan de hand performantie metrieken kan de software worden geëvalueerd. 
+Hierbij verwijst peformantie efficiëntie naar het aantal middelen die worden gebruikt.
+Dit kan onderverdeeld worden in 3 zaken:
+\begin{itemize}
+    \item Het tijdgedrag wat verwijst naar de respons- en verwerkingstijden alsook de doorvoersnelheden wanneer een systeem zijn functies uitvoert.
+    \item Het gebruik van middelen dat wordt verbruikt tijdens de uitvoering.
+    \item De capaciteit dat verwijst naar de limieten van het systeem.
+\end{itemize}
+
+
+
+In het onderzoek werd binnen de context van tijdgedrag gekeken naar de responstijd en uitvoeringstijd. 
+Dit is de tijd die het systeem respectievelijk nodig heeft om te antwoorden op een gebeurtenis en de functie effectief uit te voeren.
+Daarnaast werd ook gekeken naar het gebruik van middelen op vlak van geheugen.
+Als laatste werd ook de capaciteit van het systeem bekeken door het gebruik van aparte scenario's met telkens een verschillend aantal connecties.
+In het onderzoek werden 2 soort omgevingen gemaakt. Allereerst werd voor zowel Node.js als Bun een server gemaakt die netwerkverzoeken moet afhandelen.
+Daarnaast werd ook getest hoe beide runtimes een alleenstaand script afhandelden.
+Om de server te testen werd gebruik gemaakt van Bombardier. Dit is een HTTP benchmarking software ontwikkeld door ~\textcite{Fedoseev2023}.
+\begin{figure}[H]
+    \centering
+    \begin{minted}[bgcolor=bg,
+        fontfamily=tt,
+        linenos=true,
+        numberblanklines=true,
+        numbersep=5pt,  
+        gobble=0,
+        framesep=2mm,
+        tabsize=4,
+        obeytabs=false,
+        breaklines=true,
+        mathescape=false
+        samepage=false,
+        showspaces=false,
+        showtabs =false,
+        texcl=false]{shell}
+        > bombardier -c 125 -n 10000000 http://localhost:8080
+        Bombarding http://localhost:8080 with 10000000 requests using 125 connections
+         10000000 / 10000000 [============================================] 100.00% 37s Done!
+        Statistics        Avg      Stdev        Max
+          Reqs/sec    264560.00   10733.06     268434
+          Latency      471.00us   522.34us    51.00ms
+          HTTP codes:
+            1xx - 0, 2xx - 10000000, 3xx - 0, 4xx - 0, 5xx - 0
+            others - 0
+          Throughput:   292.92MB/s
+        \end{minted}
+        \caption{Voorbeeld gebruik bombardier \autocite{Fedoseev2023}}
+\end{figure}
+
+Bij de testen werd gewerkt met 3 aparta scenario's, 10 miljoen verzoeken met 10 gelijktijdige connecties, dan 100 gelijktijdige connecties en uiteindelijk 500 gelijktijdige connecties.
+Hierbij kon de onderzoeker de performantie van de servers evalueren aan de hand van respons- en doorvoertijd. Aanvullend werden ook de geheugengebruik pieken bepaald.
+Op vlak van geheugengebruik zit Bun consistent lager dan Node.js wat volgens de onderzoeker aantoont dat Bun een beter geheugenbeheer heeft. 
+De onderzoeker merkt op dat de oorzaak hiervan ligt bij Bun's gebruik van de programmeertaal Zig. 
+Ook op vlak van responstijd en doorvoertijd presteerde Bun consistent beter dan Node.js.
+
+
+Voor de andere test werd de executie tijd gemeten bij het berekenen van de Fibonacci nummers in zowel Node.js als Bun. 
+Dit werd gedaan met behulp de benchmarking software Hyperfine ontwikkeld door ~\textcite{Pompeii2024}.
+\begin{figure}[H]
+    \centering
+    \begin{minted}[bgcolor=bg,
+        fontfamily=tt,
+        linenos=true,
+        numberblanklines=true,
+        numbersep=5pt,  
+        gobble=0,
+        framesep=2mm,
+        tabsize=4,
+        obeytabs=false,
+        breaklines=true,
+        mathescape=false
+        samepage=false,
+        showspaces=false,
+        showtabs =false,
+        texcl=false]{shell-session}
+        > hyperfine 'sleep 0.3'
+        \end{minted}
+        \caption{Voorbeeld gebruik hyperfine commando \autocite{Pompeii2024}}
+\end{figure}
+Ook bij deze test presteerde Bun beter op vlak van executie tijd. De resultaten tonen aan dat 
+Bun algemeen beter presteert in zowel het afhandelen van netwerk verzoeken als het uitvoeren van computationele taken.
+De onderzoeker merkt echter ook op dat de keuze van een runtime niet alleen kan bepaald worden op basis van 
+performantie. Andere factoren, die hier niet getest zijn, zoals beveiling, stabiliteit en onderhoudbaarheid dragen ook bij tot de keuze. 
+Ook waren de geteste programma's redelijk simpel waardoor de resultaten mogelijks niet accuraat zijn voor complexere omgevingen. 
+Verder onderzoek zou ook baat hebben om rekening te houden met verschillende omstandigheden, zoals CPU-gebonden
+en I/O-gebonden processen.

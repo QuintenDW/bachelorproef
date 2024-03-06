@@ -73,10 +73,19 @@ Naast een Javascript engine bevat een runtime-omgeving ook WEB APIs en een callb
 WEB APIs zijn functionaliteiten die specifiek voor de runtime omgeving zijn en dus geen deel uitmaken van de javascript taal.
 De callback queue zorgt ervoor dat callback functions volgens de First-In-First-Out methode worden uitgevoerd.
 
+\subsection{Javascript bundler}
+In de meeste projecten worden er verschillende modules gemaakt met javascript code. 
+Om te zorgen dat deze modules goed kunnen samenwerken wordt een bundler gebruikt. 
+Zo legt ~\textcite{Laurila2020} in haar thesis uit dat sommige modules afhankelijk van elkaar kunnen zijn. 
+Hierdoor moeten deze in de juiste volgorde worden uitgevoerd. Een bundler zal aan de hand van deze afhankelijkheden 
+een afhankelijkheidsgrafiek maken om ze de modules in 1 of meerdere bestanden te bundelen. 
+Na de transformatie van de modules worden er ook nog optimalisaties gedaan zoals het verwijderen van opmerkingen en witte ruimte.
+
 \section{Node.js}
 De afgelopen jaren is het aantal runtime-omgevingen sterk toegenomen. De meest bekende en oudste hiervan is Node.js.
 Node.js is een server-side framework dat wordt gebruikt voor schaalbare applicaties te maken ~\autocite{Gackenheimer2013}.
 Het maakt gebruik van de V8 javascript engine ontwikkeld door Google en heeft zijn eigen package manager genaamd Node Package Manager (npm).
+Node.js is hoofdzakelijk geschreven in C en C++.
 
 \subsection{Event loop}
 In het boek van ~\textcite{Ali2013} wordt verteld hoe Node.js zich onderscheidt van andere platformen door het gebruik van een event loop.
@@ -106,7 +115,7 @@ Aan de hand van een package.json bestand kunnen packages toegevoegd worden aan e
         fontfamily=tt,
         linenos=true,
         numberblanklines=true,
-        numbersep=5pt,
+        numbersep=5pt,  
         gobble=0,
         framesep=2mm,
         tabsize=4,
@@ -142,11 +151,11 @@ Zoals hierboven uitgelegd bestaat elk javascript runtime-environment uit een jav
 Node.js gebruikt hiervoor de V8 Javascript engine van google en voegt hierbij extra functionaliteit toe zoals de event loop.
 In een artikel van ~\textcite{Lyamkin2020} wordt uitgelegd hoe de V8 engine precies werkt. 
 Zo zal wanneer een javascript bestand wordt uitgevoerd eerst de code moeten omgezet worden op een manier dat verstaanbaar is voor de compiler.
-Dit proces heet parsing en houdt in dat de code wordt omgezet in een AST. 
+Dit proces heet parsing en houdt in dat de code wordt omgezet in een AST (Abstract Syntax Tree). 
 Nadien wordt deze doorgegeven aan de compiler zodat het dit kan omzetten in machine code. 
-In de meeste programmeertalen zoals Java en C++ wordt dit gedaan voor de executie van het programma (compilatie).
-Bij dynamisch getypeerde talen zoals javascript wordt dit echter at runtime gedaan (interpretatie). 
-Dit omwille dat het onmogelijk is het exacte type te weten voor de executie.
+In de meeste programmeertalen zoals Java en C++ wordt dit gedaan vóór de executie van het programma (compilatie).
+Bij dynamisch getypeerde talen zoals javascript wordt dit echter tijdens de runtime gedaan (interpretatie). 
+Dit omwille dat het onmogelijk is het exacte type te weten vóór de executie.
 Interpretatie is vaak trager dan compilatie doordat het geen optimalisaties kan doen.
 Om deze transformatie sneller te laten gebeuren wordt Just-In-Time compilatie gebruikt.
 Hierbij gebruikt de V8 javascript engine een interpreter genaamd Ignition. Deze neemt de AST en zal hieruit de byte code genereren.
@@ -202,6 +211,12 @@ waar naarmate meerdere malen over een stuk code wordt geïtereerd, doormiddel va
     \caption{\label{fig:javascriptcore}}Voorbeeld tijdslijn van een simpele loop uitgevoerd in JavaScriptCore ~\autocite{Pizlo2020}.
 \end{figure}
 
+\subsection{Zig}
+Een andere manier hoe Bun performanter probeert te zijn is door te kiezen voor de imperatieve, statisch getypeerde programmeertaal Zig. 
+In een interview met ~\textcite{Motroc2017} legt de oprichter van Zig, Andrew Kelley, bedoeld is als opvolger van de programmeertaal C.
+Zo probeert hij met Zig het mogelijk te maken hoogperformante en onderhoudbare software te ontwikkelen 
+zonder de moeilijkheden die voorkomen in andere programmeertalen zoals C, de programmeertaal gebruikt door Node.js.
+
 
 \subsection{Test runner}
 Bun bevat een ingebouwde test runner die volgens ~\textcite{McDonnel2023} 10-30 keer sneller werkt als jest.
@@ -233,3 +248,17 @@ In figuur ~\ref{fig:testbun} wordt een voorbeeld van een test binnen bun weergeg
         \end{minted}
         \caption{\label{fig:testbun}}Voorbeeld test binnen Bun.
 \end{figure}
+
+\subsection{Package manager}
+Net zoals Node.js bevat ook Bun een package manager. 
+Deze is compatibel met Node.js waardoor dus ook een package.json kan gebruikt worden.
+Onderzoek van ~\textcite{McDonnel2023} zou aantonen dat de package manager 
+van Bun tot 25 keer sneller packages zou kunnen installeren tegenover Node.js.
+Hierbij wordt tijdens het installeren van een package, 
+het gedownload in een globale package cache. Zo kan bij toekomstige installaties 
+eerst de cache gecontroleerd om onnodige downloads te vermijden. Na de installatie zal Bun een binaire lockfile maken. 
+Deze bevat zaken zoals de packages, de metadata van deze packages, versies etc. Door het binaire formaat kan er sneller gelezen worden dan bij JSON-gebaseerde lockfiles zoals in Node.js.
+
+\subsection{Typescript ondersteuning}
+In tegenstellig tot Node.js ondersteunt Bun typescript als standaard. 
+Zo zal de interne transpiler van Bun de typescript automatisch omzetten in javascript vóór de executie.

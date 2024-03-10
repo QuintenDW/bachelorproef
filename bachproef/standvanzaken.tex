@@ -32,13 +32,15 @@ Let er ook op: het \texttt{cite}-commando voor de punt, dus binnen de zin. Je ve
 dus niet pas op het einde van een paragraaf.
 
 
-
+\section{Introductie}
 Dit hoofdstuk bevat een literatuurstudie die de gebruikten technologieën gaat omschrijven. 
 Daarnaast worden ook eerdere studies naar deze technologieën vermeld. 
 Ten eerste wordt een precieze beschrijving gegeven over de programmeertaal javascript en hoe deze wordt gebruikt bij de runtime-omgevingen.
 Nadien wordt verder ingegaan op 2 van deze omgevingen namelijk Node.js en Bun. 
 Hierbij wordt gekeken naar hun respectievelijke javascript engine, package managers, bundlers en functionaliteiten.
-Als laatste wordt gekeken naar eerder onderzoek over deze onderwerpen.
+Als laatste wordt gekeken naar eerder onderzoek over deze onderwerpen. 
+Hierbij wordt verder ingegaan over de performantie metrieken die kunnen gebruikt worden alsook de bijhorende 
+software om deze te achterhalen.
 
 \section{Javascript}
 Javascript is een programmeertaal die gebruikt wordt om applicaties te ontwikkelen. 
@@ -74,7 +76,9 @@ In figuur ~\ref{fig:javascriptengine} wordt hiervan een visuele voorstelling get
 
 Naast een Javascript engine bevat een runtime-omgeving ook WEB APIs en een callback queue. 
 WEB APIs zijn functionaliteiten die specifiek voor de runtime omgeving zijn en dus geen deel uitmaken van de javascript taal.
+Voorbeelden hiervan zijn het manipuleren van documenten of het ophalen van data.
 De callback queue zorgt ervoor dat callback functions volgens de First-In-First-Out methode worden uitgevoerd.
+Dit zijn functies die als parameters aan andere functies kunnen worden doorgegeven en daarbinnen kunnen worden opgeroepen ~\autocite{Eygi2020}.
 
 \subsection{Javascript bundler}
 In de meeste projecten worden er verschillende modules gemaakt met javascript code. 
@@ -163,7 +167,8 @@ Dit omwille dat het onmogelijk is het exacte type te weten vóór de executie.
 Interpretatie is vaak trager dan compilatie doordat het geen optimalisaties kan doen.
 Om deze transformatie sneller te laten gebeuren wordt Just-In-Time compilatie gebruikt.
 Hierbij gebruikt de V8 javascript engine een interpreter genaamd Ignition. Deze neemt de AST en zal hieruit de byte code genereren.
-Nadien worden tijdens de executie de instructies geïnterpreteerd aan de hand van een tabel die de handler functies bevat en gekoppeld is aan de byte code.
+Nadien worden tijdens de executie de instructies geïnterpreteerd aan de hand van een tabel die de handler functies bevat en gekoppeld 
+is aan de byte code.
 Hierbij wordt ook type feedback verzameld over de code. 
 Wanneer een functie vaak wordt gebruikt zal het geoptimaliseerd worden in de Turbofan compiler.
 Deze neemt de byte code en type feedback en gaat op basis daarvan geoptimaliseerde machine code produceren.
@@ -174,7 +179,7 @@ In figuur ~\ref{fig:v8} wordt dit proces nog eens visueel voorgesteld.
 \begin{figure}[h]
     \centering
     \includegraphics[width=.9\textwidth]{graphics/v8.png}
-    \caption{\label{fig:v8}}Visuele voorstelling van de werking van v8 ~\autocite{Lyamkin2020}.
+    \caption{\label{fig:v8}}Visuele voorstelling van de werking van V8 ~\autocite{Lyamkin2020}.
 \end{figure}
 
 \subsection{Bundler}
@@ -224,7 +229,7 @@ waar naarmate meerdere malen over een stuk code wordt geïtereerd, doormiddel va
 
 \subsection{Zig}
 Een andere manier hoe Bun performanter probeert te zijn is door te kiezen voor de imperatieve, statisch getypeerde programmeertaal Zig. 
-In een interview met ~\textcite{Motroc2017} legt de oprichter van Zig, Andrew Kelley, bedoeld is als opvolger van de programmeertaal C.
+In een interview met ~\textcite{Motroc2017} legt de oprichter van Zig, Andrew Kelley, uit dat Zig bedoeld is als opvolger van de programmeertaal C.
 Zo probeert hij met Zig het mogelijk te maken hoogperformante en onderhoudbare software te ontwikkelen 
 zonder de moeilijkheden die voorkomen in andere programmeertalen zoals C, de programmeertaal gebruikt door Node.js.
 Daarnaast is er nog altijd enige vorm van compatibiliteit met C, 
@@ -351,16 +356,19 @@ Om de server te testen werd gebruik gemaakt van Bombardier. Dit is een HTTP benc
         \end{minted}
         \caption{Voorbeeld gebruik bombardier \autocite{Fedoseev2023}}
 \end{figure}
-
-Bij de testen werd gewerkt met 3 aparta scenario's, 10 miljoen verzoeken met 10 gelijktijdige connecties, dan 100 gelijktijdige connecties en uiteindelijk 500 gelijktijdige connecties.
+Hiernaast werd ook het ingebouwde "time" commando gebruikt om het geheugengebruik tijdens zware belastingen te meten.
+Bij de testen werd gewerkt met 3 aparta scenario's waarbij telkens 10 miljoen verzoeken werden verstuurd met eerst 10 gelijktijdige connecties, 
+dan 100 gelijktijdige connecties en uiteindelijk 500 gelijktijdige connecties.
 Hierbij kon de onderzoeker de performantie van de servers evalueren aan de hand van respons- en doorvoertijd. Aanvullend werden ook de geheugengebruik pieken bepaald.
-Op vlak van geheugengebruik zit Bun consistent lager dan Node.js wat volgens de onderzoeker aantoont dat Bun een beter geheugenbeheer heeft. 
+Op vlak van geheugengebruik zat Bun consistent lager dan Node.js wat volgens de onderzoeker aantoont dat Bun een beter geheugenbeheer heeft. 
 De onderzoeker merkt op dat de oorzaak hiervan ligt bij Bun's gebruik van de programmeertaal Zig. 
-Ook op vlak van responstijd en doorvoertijd presteerde Bun consistent beter dan Node.js.
+Ook op vlak van responstijd en doorvoertijd presteerde Bun beter dan Node.js in alle 3 scenario's.
+De onderzoeker merkt hierbij op dat de reden hiervoor ligt bij Bun's beter geoptimaliseerde code.
 
 
-Voor de andere test werd de executie tijd gemeten bij het berekenen van de Fibonacci nummers in zowel Node.js als Bun. 
-Dit werd gedaan met behulp de benchmarking software Hyperfine ontwikkeld door ~\textcite{Pompeii2024}.
+Voor de andere test werd de executie tijd gemeten bij het berekenen van het veertigste Fibonacci nummer in zowel Node.js als Bun. 
+Dit werd gedaan met behulp van de benchmarking software Hyperfine ontwikkeld door ~\textcite{Pompeii2024}. 
+Het script werd 10 keer uitgevoerd waarbij de gemiddelde tijd werd genomen.
 \begin{figure}[H]
     \centering
     \begin{minted}[bgcolor=bg,
@@ -382,10 +390,11 @@ Dit werd gedaan met behulp de benchmarking software Hyperfine ontwikkeld door ~\
         \end{minted}
         \caption{Voorbeeld gebruik hyperfine commando \autocite{Pompeii2024}}
 \end{figure}
-Ook bij deze test presteerde Bun beter op vlak van executie tijd. De resultaten tonen aan dat 
-Bun algemeen beter presteert in zowel het afhandelen van netwerk verzoeken als het uitvoeren van computationele taken.
+Ook bij deze test presteerde Bun beter op vlak van executie tijd wat volgens de onderzoeker aantoont dat Bun effectiever is in het voltooien van computationele taken.
+De resultaten tonen aan dat 
+Bun algemeen beter presteert in alle gemeten performantie aspecten.
 De onderzoeker merkt echter ook op dat de keuze van een runtime niet alleen kan bepaald worden op basis van 
 performantie. Andere factoren, die hier niet getest zijn, zoals beveiling, stabiliteit en onderhoudbaarheid dragen ook bij tot de keuze. 
 Ook waren de geteste programma's redelijk simpel waardoor de resultaten mogelijks niet accuraat zijn voor complexere omgevingen. 
-Verder onderzoek zou ook baat hebben om rekening te houden met verschillende omstandigheden, zoals CPU-gebonden
-en I/O-gebonden processen.
+Verder onderzoek zou volgens de onderzoeker ook baat hebben om rekening te houden met verschillende omstandigheden, zoals CPU-gebonden
+en I/O-gebonden processen, en andere performantie factoren.

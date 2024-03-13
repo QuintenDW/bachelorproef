@@ -8,60 +8,60 @@
 % Pas na deze inleidende paragraaf komt de eerste sectiehoofding.
 
 
-In de afgelopen jaren zijn er heel wat nieuwe javascript runtime-omgevingen geïntroduceerd. Echter worden weinig van deze omgevingen effectief gebruikt.
+In de afgelopen jaren zijn er heel wat nieuwe JavaScript runtime-omgevingen geïntroduceerd. Echter worden weinig van deze omgevingen effectief gebruikt.
 Zo toont het eerder vermelde onderzoek van \textcite{Greif2022} aan dat Node.js nog steeds als standaard gebruikt wordt bij de meeste projecten 
 ondanks de tal van nieuwe runtime-omgevingen.
 In dit onderzoek wordt nagegaan of één van deze nieuwe frameworks
 een correcte plaatsvervanger kan zijn voor Node.js bij de ontwikkeling van webapplicaties waar performantie centraal staat.
 Daarom wordt er dieper ingegaan op deze technologieën om zo een beter inzicht te krijgen in het onderzoeksdomein.
-Ten eerste wordt een precieze beschrijving gegeven over de programmeertaal javascript en hoe deze wordt gebruikt bij de runtime-omgevingen.
-Hierbij wordt de architectuur van een javascript runtime-omgeving beschreven.
+Ten eerste wordt een precieze beschrijving gegeven over de programmeertaal JavaScript en hoe deze wordt gebruikt bij de runtime-omgevingen.
+Hierbij wordt de architectuur van een JavaScript runtime-omgeving beschreven.
 Nadien wordt verder ingegaan op 3 van deze omgevingen namelijk Node.js, Deno en Bun. 
-Hierbij wordt gekeken naar hun respectievelijke javascript engine, package managers, bundlers en functionaliteiten.
+Hierbij wordt gekeken naar hun respectievelijke JavaScript engine, package managers, bundlers en functionaliteiten.
 Als laatste wordt gekeken naar eerder onderzoek over deze onderwerpen. 
 Hierbij wordt verder ingegaan op de performantie metrieken die kunnen gebruikt worden alsook de bijhorende 
 software om deze te achterhalen.
 
-\section{Javascript}
-Javascript is een programmeertaal die gebruikt wordt om applicaties te ontwikkelen. 
+\section{JavaScript}
+JavaScript is een programmeertaal die gebruikt wordt om applicaties te ontwikkelen. 
 Specifiek is het een scripting taal die gebruikt om web pagina's interactief te maken~\autocite{Mozilla2023}.
-Hierbij spreken we over client-side Javascript. Wanneer een web pagina wordt bekeken zal de javascript code worden 
-gedownload en uitgevoerd~\autocite{JonathanBrownCFA2024}. Langs de andere kant heb je ook nog Server-side javascript. 
+Hierbij spreken we over client-side JavaScript. Wanneer een web pagina wordt bekeken zal de JavaScript code worden 
+gedownload en uitgevoerd~\autocite{JonathanBrownCFA2024}. Langs de andere kant heb je ook nog Server-side JavaScript. 
 Hierbij wordt de code uitgevoerd op de server in plaats van op de client~\autocite{JonathanBrownCFA2024}. 
-Voor deze code dan te laten uitvoeren is een javascript runtime-omgeving nodig. 
+Voor deze code dan te laten uitvoeren is een JavaScript runtime-omgeving nodig. 
 
-\subsection{Javascript runtime-omgeving}
-Een javascript-omgeving bestaat uit alle componenten om javascript correct te laten werken ~\autocite{Christopher}. 
+\subsection{JavaScript runtime-omgeving}
+Een JavaScript-omgeving bestaat uit alle componenten om JavaScript correct te laten werken ~\autocite{Christopher}. 
 Het bevat een JavaScript engine, WEB APIs en een callback queue ~\autocite{Christopher}. 
-Deze runtime zal dan javascript code omzetten in code die verstaanbaar is voor de computer.
+Deze runtime zal dan JavaScript code omzetten in code die verstaanbaar is voor de computer.
 De omgeving specificeert waar dit wordt gedaan, dit kan in een browser maar ook in andere omgevingen zoals een server.
-Met behulp van javascript runtime-omgevingen zoals Node.js en Bun kan javascript code ook buiten de browser worden uitgevoerd~\autocite{Mozilla2023}.
+Met behulp van JavaScript runtime-omgevingen zoals Node.js en Bun kan JavaScript code ook buiten de browser worden uitgevoerd~\autocite{Mozilla2023}.
 
-\subsubsection{Javascript engine, WEB APIs en callback queue}
+\subsubsection{JavaScript engine, WEB APIs en callback queue}
 
 In een artikel van ~\textcite{Christopher}, 
-wordt uitgelegd dat de javascript engine een simpel computer programma is dat de code kan interpreteren en uitvoeren.
-Elk browser heeft zijn eigen Javascript engine achterliggend. Het meest bekende hiervan is de
+wordt uitgelegd dat de JavaScript engine een simpel computer programma is dat de code kan interpreteren en uitvoeren.
+Elk browser heeft zijn eigen JavaScript engine achterliggend. Het meest bekende hiervan is de
 V8 engine die zowel bij Google chrome als Node.js wordt gebruikt. 
 Wanneer een stuk code in de engine wordt gestoken zal deze eerst gelezen worden (parsing). 
 De code wordt hierbij omgezet in een data structuur genaamd abstract syntax tree (AST).
 Wanneer deze boom is aangemaakt zal de compiler deze omzetten naar machine code. 
 Eenmaal deze code is gegenereerd zal de engine zogenaamde execution contexts aanmaken om de code uit te voeren.
-In figuur ~\ref{fig:javascriptengine} wordt hiervan een visuele voorstelling getoond.
+In figuur ~\ref{fig:JavaScriptengine} wordt hiervan een visuele voorstelling getoond.
 \begin{figure}[H]
     \centering
     \includegraphics[width=.9\textwidth]{graphics/javascriptengine.jpeg}
-    \caption{\label{fig:javascriptengine}}Visuele voorstelling van werking javascript engine ~\autocite{Christopher}.
+    \caption{\label{fig:JavaScriptengine}Visuele voorstelling van werking JavaScript engine ~\autocite{Christopher}}
 \end{figure}
 
-Naast een Javascript engine bevat een runtime-omgeving ook WEB APIs en een callback queue. 
-WEB APIs zijn functionaliteiten die specifiek voor de runtime omgeving zijn en dus geen deel uitmaken van de javascript taal.
+Naast een JavaScript engine bevat een runtime-omgeving ook WEB APIs en een callback queue. 
+WEB APIs zijn functionaliteiten die specifiek voor de runtime omgeving zijn en dus geen deel uitmaken van de JavaScript taal.
 Voorbeelden hiervan zijn het manipuleren van documenten of het ophalen van data.
 De callback queue zorgt ervoor dat callback functions volgens de First-In-First-Out methode worden uitgevoerd.
 Dit zijn functies die als parameters aan andere functies kunnen worden doorgegeven en daarbinnen kunnen worden opgeroepen ~\autocite{Eygi2020}.
 
-\subsection{Javascript bundler}
-In de meeste projecten worden er verschillende modules gemaakt met javascript code. 
+\subsection{JavaScript bundler}
+In de meeste projecten worden er verschillende modules gemaakt met JavaScript code. 
 Om te zorgen dat deze modules goed kunnen samenwerken wordt een bundler gebruikt. 
 Zo legt ~\textcite{Laurila2020} in haar thesis uit dat sommige modules afhankelijk van elkaar kunnen zijn. 
 Hierdoor moeten deze in de juiste volgorde worden uitgevoerd. Een bundler zal aan de hand van deze afhankelijkheden 
@@ -72,7 +72,7 @@ Daarnaast zorgt het bundelen van modules in 1 of meerdere bestanden ervoor dat e
 \section{Node.js}
 De afgelopen jaren is het aantal runtime-omgevingen sterk toegenomen. De meest bekende en oudste hiervan is Node.js.
 Node.js is een server-side framework dat wordt gebruikt voor schaalbare applicaties te maken ~\autocite{Gackenheimer2013}.
-Het maakt gebruik van de V8 javascript engine ontwikkeld door Google en heeft zijn eigen package manager genaamd Node Package Manager (npm).
+Het maakt gebruik van de V8 JavaScript engine ontwikkeld door Google en heeft zijn eigen package manager genaamd Node Package Manager (npm).
 Node.js is hoofdzakelijk geschreven in C en C++.
 
 \subsection{Event loop}
@@ -88,18 +88,18 @@ In figuur ~\ref{fig:eventloop} wordt hiervan een visuele voorstelling getoond.
 \begin{figure}[h]
     \centering
     \includegraphics[width=.9\textwidth]{graphics/eventloop.png}
-    \caption{\label{fig:eventloop}}Visuele voorstelling van de event loop ~\autocite{Luxembourg2023}.
+    \caption{\label{fig:eventloop}Visuele voorstelling van de event loop ~\autocite{Luxembourg2023}}
 \end{figure}
 
 \subsection{Node Package Manager}
 Node.js maakt gebruik van modules om code te hergebruiken. 
-Zo vormt een module een stuk herbruikbare javascript code 
-die je kan importeren in een ander javascript bestand ~\autocite{Semah2022}.
+Zo vormt een module een stuk herbruikbare JavaScript code 
+die je kan importeren in een ander JavaScript bestand ~\autocite{Semah2022}.
 Naast deze zelf te maken kan je ook modules of packages van andere ontwikkelaars gebruiken met behulp van de Node Package Manager.
 Veel van deze packages hangen af van nog andere packages om correct te werken \autocite{kula2017}.
 Aan de hand van een package.json bestand kunnen packages toegevoegd worden aan een project.
 
-\begin{figure}[H]
+\begin{listing}[H]
     \centering
     \begin{minted}[bgcolor=bg,
         fontfamily=tt,
@@ -134,51 +134,183 @@ Aan de hand van een package.json bestand kunnen packages toegevoegd worden aan e
         }
         \end{minted}
         \caption{Voorbeeld package.json \autocite{Kaplan2024}}
-\end{figure}
+\end{listing}
 
-\subsection{V8 Javascript Engine}
-Zoals hierboven uitgelegd bestaat elk javascript runtime-environment uit een javascript engine die de code kan interpreteren en uitvoeren.
-Node.js gebruikt hiervoor de V8 Javascript engine van google en voegt hierbij extra functionaliteit toe zoals de event loop.
+\subsection{V8 JavaScript Engine}
+Zoals hierboven uitgelegd bestaat elk JavaScript runtime-environment uit een JavaScript engine die de code kan interpreteren en uitvoeren.
+Node.js gebruikt hiervoor de V8 JavaScript engine van google en voegt hierbij extra functionaliteit toe zoals de event loop.
 In een artikel van ~\textcite{Lyamkin2020} wordt uitgelegd hoe de V8 engine precies werkt. 
-Zo zal wanneer een javascript bestand wordt uitgevoerd eerst de code moeten omgezet worden op een manier dat verstaanbaar is voor de compiler.
+Zo zal wanneer een JavaScript bestand wordt uitgevoerd eerst de code moeten omgezet worden op een manier dat verstaanbaar is voor de compiler.
 Dit proces heet parsing en houdt in dat de code wordt omgezet in een AST (Abstract Syntax Tree). 
 Nadien wordt deze doorgegeven aan de compiler zodat het dit kan omzetten in machine code. 
 In de meeste programmeertalen zoals Java en C++ wordt dit gedaan vóór de executie van het programma (compilatie).
-Bij dynamisch getypeerde talen zoals javascript wordt dit echter tijdens de runtime gedaan (interpretatie). 
+Bij dynamisch getypeerde talen zoals JavaScript wordt dit echter tijdens de runtime gedaan (interpretatie). 
 Dit omwille dat het onmogelijk is het exacte type te weten vóór de executie.
 Interpretatie is vaak trager dan compilatie doordat het geen optimalisaties kan doen.
 Om deze transformatie sneller te laten gebeuren wordt Just-In-Time compilatie gebruikt.
-Hierbij gebruikt de V8 javascript engine een interpreter genaamd Ignition. Deze neemt de AST en zal hieruit de byte code genereren.
+Hierbij gebruikt de V8 JavaScript engine een interpreter genaamd Ignition. Deze neemt de AST en zal hieruit de byte code genereren.
 Nadien worden tijdens de executie de instructies geïnterpreteerd aan de hand van een tabel die de handler functies bevat en gekoppeld 
 is aan de byte code.
 Hierbij wordt ook type feedback verzameld over de code. 
 Wanneer een functie vaak wordt gebruikt zal het geoptimaliseerd worden in de Turbofan compiler.
 Deze neemt de byte code en type feedback en gaat op basis daarvan geoptimaliseerde machine code produceren.
-Hier bestaat echter de kans dat het type kan veranderen door de dynamische aard van javascript. 
+Hier bestaat echter de kans dat het type kan veranderen door de dynamische aard van JavaScript. 
 Dan wordt de gecompileerde gedeoptimaliseerd en wordt er weer interpretatie uitgevoerd.
 Nadien kan de functie opnieuw gecompileerd worden met de nieuwe type feedback.
 In figuur ~\ref{fig:v8} wordt dit proces nog eens visueel voorgesteld.
 \begin{figure}[h]
     \centering
     \includegraphics[width=.9\textwidth]{graphics/v8.png}
-    \caption{\label{fig:v8}}Visuele voorstelling van de werking van V8 ~\autocite{Lyamkin2020}.
+    \caption{\label{fig:v8}Visuele voorstelling van de werking van V8 ~\autocite{Lyamkin2020}}
 \end{figure}
 
 \subsection{Bundler}
 Binnen Node.js zijn er verschillende mogelijkheden voor een bundler. De meest bekende hiervan is Webpack. 
-Deze kan bestanden zoals Javascript, SASS en andere bestanden bundelen naar hun respectievelijke bestandstype ~\autocite{Laurila2020}. 
+Deze kan bestanden zoals JavaScript, SASS en andere bestanden bundelen naar hun respectievelijke bestandstype ~\autocite{Laurila2020}. 
 Webpack kan ook nog aangevuld worden met andere loaders om een bepaald soort bestand te bundelen. Een andere populaire bundler is Esbuild.
 Hierbij wordt de focus gelegd op snelheid en performantie. Zo wordt er beweerd dat deze bundler 10 tot 100 keer sneller is dan de andere bundlers ~\autocite{Couriol2020}.
 Het kan deze snelheid behalen doordat het geschreven is in de programmeertaal Go waarbij taken worden geparallelliseert om zo gebruik te maken van meerkernige processoren ~\autocite{Couriol2020}.
+
+\section{Deno}
+In 2021 werd een nieuw runtime-omgeving geïntroduceerd door ~\textcite{Dahl2021} genaamd Deno.
+Dahl, de maker van Node.js, en Belder willen met Deno nieuw leven inblazen in het ecosysteem doormiddel van een
+modern, productief programmeersysteem aan te bieden dat zich houdt aan browser APIs.
+
+\subsection{Architectuur}
+Net zoals Node.js gebruikt Deno onderliggende de V8 JavaScript engine ~\autocite{DenoLand2023}. 
+Echter werd gekozen om Deno te ontwikkelen in Rust in plaats van C en C++ zoals bij Node.js ~\autocite{DenoLand2023}.
+Een van de voornaamste doelen bij Deno is om de server side JavaScript dichter bij de browser JavaScript te krijgen.
+Dit wordt bereikt door dezelfde APIs aan te bieden langs de server kant en de browser kant ~\autocite{Barrow2022}.
+
+\subsection{Beveiliging}
+Een belangrijk kenmerk van Deno is de standaard runtime-beveiliging.
+Dit houdt in dat de code expliciet toegang moet geven tot gevoelige APIs zoals bestandssystemen, netwerken etc ~\autocite{DenoLand2023}. 
+Hierbij wordt gebruik gemaakt van permissie vlaggen die toegang geven tot een bepaald iets zoals te zien is in ~\ref{fig:denocli}.
+
+\begin{listing}[H]
+    \centering
+    \begin{minted}[bgcolor=bg,
+        fontfamily=tt,
+        linenos=true,
+        numberblanklines=true,
+        numbersep=5pt,  
+        gobble=0,
+        framesep=2mm,
+        tabsize=4,
+        obeytabs=false,
+        breaklines=true,
+        mathescape=false
+        samepage=false,
+        showspaces=false,
+        showtabs =false,
+        texcl=false]{shell}
+        deno run --allow-net hello.ts
+        \end{minted}
+        \caption{\label{fig:denocli}Voorbeeld toelaten netwerk permissie met de --alow-net vlag \autocite{DenoLand2023}}
+\end{listing}
+
+\subsection{Package manager}
+In tegenstelling tot Node.js komt Deno niet meegeleverd met een package manager. 
+Het maakt echter gebruik van URLs om externe packages te importeren \autocite{DenoLand2023}.
+Dit laat package developers toe om hun code te hosten waar ze zelf willen \autocite{Barrow2022}.
+\textcite{Choubey2021} merkt echter op dat dit voor beschikbaarheidsproblemen kan zorgen. 
+Terwijl er bij NPM een gegarandeerde beschikbaarheid was van de packages, is dit niet het geval bij Deno.
+Een oplossing hiervoor is gebruik te maken van een apart bestand waarbij alle packages worden gedownload en gecachet op voorhand zoals in ~\ref{list:dept.ts}.
+\begin{listing}[H]
+    \centering
+    \begin{minted}[bgcolor=bg,
+        fontfamily=tt,
+        linenos=true,
+        numberblanklines=true,
+        numbersep=5pt,
+        gobble=0,
+        framesep=2mm,
+        tabsize=4,
+        obeytabs=false,
+        breaklines=true,
+        mathescape=false
+        samepage=false,
+        showspaces=false,
+        showtabs =false,
+        texcl=false]{js}
+            //deps.ts
+            //directly from GitHub
+            export * as bodyParser from "https://raw.githubusercontent.com/mayankchoubey/deno-native-body-parser/v0.1.3/mod.ts";
+            //From Deno's standard library
+            export * as httpServer from "https://deno.land/std@0.96.0/http/server.ts";
+            //From Deno's third-party module service
+            export * as jwt from "https://deno.land/x/djwt@v2.2/mod.ts";
+        \end{minted}
+        \caption{\label{list:dept.ts}Voorbeeld bestand waar alle packages worden gedownload en geexporteerd om te gebruiken binnen de applicatie  ~\autocite{Choubey2021}} 
+\end{listing}
+
+\subsection{Typescript ondersteuning}
+In tegenstellig tot Node.js ondersteunt Deno typescript als standaard. 
+Deno zal Typescript als een eerste klas taal behandelen wat betekent dat TypeScript kan gebruikt worden zonder externe modules te installeren ~\autocite{DenoLand2023}.
+Onderliggend zal de ingebouwde TypeScript compiler, in samenwerking met de Rust bibliotheek swc, 
+de code gaan type checken en transformeren in JavaScript ~\autocite{DenoLand2023}.
+
+\subsection{Test runner}
+Deno heeft een ingebouwde test runner die zowel kan gebruikt worden om JavaScript als Typescript code te testen ~\autocite{DenoLand2023}.
+Deze ondersteunt zaken zoals mocking en test coverage. In het codefragment \ref{list:test} is een voorbeeld van een simpele test binnen Deno te zien.
+
+\begin{listing}[H]
+    \centering
+    \begin{minted}[bgcolor=bg,
+        fontfamily=tt,
+        linenos=true,
+        numberblanklines=true,
+        numbersep=5pt,
+        gobble=0,
+        framesep=2mm,
+        tabsize=4,
+        obeytabs=false,
+        breaklines=true,
+        mathescape=false
+        samepage=false,
+        showspaces=false,
+        showtabs =false,
+        texcl=false]{js}
+            // url_test.ts
+            import { assertEquals } from "https://deno.land/std@0.219.0/assert/mod.ts";
+
+            Deno.test("url test", () => {
+            const url = new URL("./foo.js", "https://deno.land/");
+            assertEquals(url.href, "https://deno.land/foo.js");
+            });
+        \end{minted}
+        \caption{\label{list:test}Voorbeeld test bestand in Deno ~\autocite{DenoLand2023}} 
+\end{listing}
+
+\section{Deno tegenover Node.js}
+Doordat Deno redelijk recent, zijn er ook hier nog maar weinig onderzoeken over gedaan. 
+Eén van deze onderzoeken werd uitgevoerd door \textcite{VanKerkvoorde2021}.
+Hierbij werd Node.js vergeleken met Deno op verschillende vlakken zoals performantie en beveiliging.
+De onderzoeker concludeert dat op vlak van beveiliging Deno beter scoort dan Node.js. Dit komt doordat Deno
+standaard geen toegang geeft tot de folderstructuur en omgeving. Ook kunnen er standaard geen netwerk connecties worden gemaakt.
+Voor de performantie te testen van beide frameworks werd allereerst een logica test uitgevoerd op beiden. De onderzoeker heeft hierbij
+ondervonden dat Deno gemiddeld 31.98\% sneller
+was dan Node.js. Ook gebruikte Node hier 10.81 keer meer geheugen en was Node in 10.58\% van de gevallen sneller dan Node.js.
+Als tweede test werden de Http modules van beide frameworks vergeleken.
+Hiervoor werd een simpele GET request verstuurd naar beiden. Hierbij was er geen significant
+verschil tussen beiden volgens de onderzoeker.
+Echter heeft de onderzoeker voor beide frameworks ook een concrete backend geschreven wat een meer representatieve situatie geeft.
+Voor Node.js werd hierbij het framework Express gebruikt terwijl bij Deno het framework Oak. Hierbij werd er wel een groot
+verschil waargenomen tussen de 2 frameworks, waarbij Deno performanter was dan Node. Volgens de onderzoeker blijkt uit de testen dat Deno
+beter scoort dan Node op vlak van verwerkingstijd en geheugengebruik. De onderzoeker merkt
+wel op dat door het gebrek aan bepaalde metrieken
+binnen Deno, zaken zoals CPU- en GPU-belasting niet konden worden gemeten.
+
 
 \section{Bun}
 Performantie is één van de belangrijkste zaken bij een server-side framework. 
 Daarom is Node.js dankzij zijn event-gedreven I/O model een veelvoorkomende keuze als het gaat om server-side frameworks.
 Echter wil Bun dit veranderen door nog meer focus te leggen op snelheid en performantie.
 
-\subsection{JavascriptCore}
-Eén van de manieren waardoor Bun dit bereikt is door het gebruiken van een andere Javascript engine.
-Bun gebruikt JavaScriptCore in plaats van de V8 Javascript engine die Node.js gebruikt. 
+
+\subsection{JavaScriptCore}
+Eén van de manieren waardoor Bun dit bereikt is door het gebruiken van een andere JavaScript engine.
+Bun gebruikt JavaScriptCore in plaats van de V8 JavaScript engine die Node.js gebruikt. 
 Deze zou volgens ~\textcite{McDonnel2023} ervoor zorgen dat Bun 4 keer sneller opstart dan Node.js. 
 De engine is ingebouwd in WebKit, een web browser engine die wordt gebruikt binnen het Apple ecosysteem voor macOS en IOS.
 In een artikel van ~\textcite{Pizlo2020} wordt uitgelegd dat bij de executie een script door verschillende fases gaat:
@@ -188,7 +320,7 @@ In een artikel van ~\textcite{Pizlo2020} wordt uitgelegd dat bij de executie een
     \item De Low-Level Interpreter (LLINT) zal bytecode produceren dat JavaScriptCore kan uitvoeren.
 \end{itemize}
 Daarnaast zijn er hierbij ook nog optimalisaties voor instructies die vaak terugkeren. 
-JavascriptCore zal instructies in 4 verschillende lagen uitvoeren, afhankelijk van hoeveel keer ze worden uitgevoerd:
+JavaScriptCore zal instructies in 4 verschillende lagen uitvoeren, afhankelijk van hoeveel keer ze worden uitgevoerd:
 \begin{enumerate}
     \item De Low-Level Interpreter (LLINT) zal zoals hierboven beschreven instructies omzetten in bytecode.
     \item De baseline JIT zal een stuk code at runtime uitvoeren in plaats van ervoor. 
@@ -200,13 +332,13 @@ JavascriptCore zal instructies in 4 verschillende lagen uitvoeren, afhankelijk v
 Via de Low-Level Interpreter zal een profile voor elke instructie aangemaakt worden. 
 Aan de hand hiervan weet de engine hoeveel keer een instructie wordt uitgevoerd en in welk niveau ze zitten.
 LLINT zorgt ervoor dat het geheugengebruik wordt gereduceerd. Zo kost het genereren van machine code zeer veel geheugen.
-Doormiddel van LLINT moeten we niet voor alle javascript code de bijhorende machine code genereren.
-In figuur ~\ref{fig:javascriptcore} wordt een visuele voorstelling getoond 
+Doormiddel van LLINT moeten we niet voor alle JavaScript code de bijhorende machine code genereren.
+In figuur ~\ref{fig:JavaScriptcore} wordt een visuele voorstelling getoond 
 waar naarmate meerdere malen over een stuk code wordt geïtereerd, doormiddel van een loop, de respectievelijke compiler telkens wordt gestart.
 \begin{figure}[H]
     \centering
     \includegraphics[width=.9\textwidth]{graphics/javascriptcore.png}
-    \caption{\label{fig:javascriptcore}}Voorbeeld tijdslijn van een simpele loop uitgevoerd in JavaScriptCore ~\autocite{Pizlo2020}.
+    \caption{\label{fig:JavaScriptcore}Voorbeeld tijdslijn van een simpele loop uitgevoerd in JavaScriptCore ~\autocite{Pizlo2020}}
 \end{figure}
 
 \subsection{Zig}
@@ -219,10 +351,10 @@ zo kunnen bijvoorbeeld functies geexporteerd worden zodat ze kunnen worden opger
 
 \subsection{Test runner}
 Bun bevat een ingebouwde test runner die volgens ~\textcite{McDonnel2023} 10-30 keer sneller werkt als jest, een ander test-framework dat vaak wordt gebruikt in Node.js projecten.
-De test runner ondersteund zowel javascript als typescript. Hierbij is het ook mogelijk om mocks gebruiken.
+De test runner ondersteund zowel JavaScript als typescript. Hierbij is het ook mogelijk om mocks gebruiken.
 Dit zijn valse objecten die de achterliggende functionaliteit simuleren om zo externe afhankelijkheden zelf te controleren.
-In figuur ~\ref{fig:testbun} wordt een voorbeeld van een test binnen bun weergegeven.
-\begin{figure}[H]
+In het codefragment ~\ref{list:testbun} wordt een voorbeeld van een test binnen bun weergegeven.
+\begin{listing}[H]
     \centering
     \begin{minted}[bgcolor=bg,
         fontfamily=tt,
@@ -245,8 +377,8 @@ In figuur ~\ref{fig:testbun} wordt een voorbeeld van een test binnen bun weergeg
             expect(1 + 1).toBe(2);
         });
         \end{minted}
-        \caption{\label{fig:testbun}}Voorbeeld test binnen Bun ~\autocite{McDonnel2023}. 
-\end{figure}
+        \caption{\label{list:testbun}Voorbeeld test binnen Bun ~\autocite{McDonnel2023}}
+\end{listing}
 
 \subsection{Package manager}
 Net zoals Node.js bevat ook Bun een package manager. 
@@ -265,22 +397,22 @@ Bun heeft een ingebouwde bundler die zowel via de commandolijn als binnen de cod
 De bundler helpt op verschillende vlakken ~\autocite{McDonnel2023}:
 \begin{itemize}
     \item De bundler helpt om het aantal HTTP verzoeken te verminderen door het kleiner aantal bestanden dat moet worden ingeladen.
-    \item De bundler zal Typescript en CSS modules omzetten naar gewone javascript en css. 
+    \item De bundler zal Typescript en CSS modules omzetten naar gewone JavaScript en css. 
     Hierbij worden de bytecode operaties omgezet naar een template van machine code zonder veel optimalisaties. Deze laag is snel.
     \item Frameworks zijn afhankelijk van bundler plugins om algemene zaken te implementeren zoals de routering van bestandssystemen.
 \end{itemize}
 De bundler van Bun zou bovendien ook sneller zijn dan bestaande bundlers zoals Esbuild en Webpack.
 
 \subsection{Typescript ondersteuning}
-In tegenstellig tot Node.js ondersteunt Bun typescript als standaard. 
-Zo zal de interne transpiler van Bun de typescript automatisch omzetten in javascript vóór de executie.
+Net zoals Deno ondersteunt Bun typescript als standaard. 
+Zo zal de interne transpiler van Bun de typescript automatisch omzetten in JavaScript vóór de executie.
 Hierbij kan ook gebruik gemaakt worden van een tsconfig.json bestand om de nodige configuratie in te stellen.
 In figuur ~\ref{fig:nodevbun} wordt een visuele voorstelling getoond van de verschillen tussen Node.js en Bun
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=.9\textwidth]{graphics/nodevbun.png}
-    \caption{\label{fig:nodevbun}}Visuele voorstelling van de verschillen tussen Node.js en Bun ~\autocite{Aghdasi2023}.
+    \caption{\label{fig:nodevbun}Visuele voorstelling van de verschillen tussen Node.js en Bun ~\autocite{Aghdasi2023}}
 \end{figure}
 
 \section{Bun tegenover Node.js}
@@ -308,7 +440,7 @@ Als laatste werd ook de capaciteit van het systeem bekeken door het gebruik van 
 In het onderzoek werden 2 soort omgevingen gemaakt. Allereerst werd voor zowel Node.js als Bun een server gemaakt die netwerkverzoeken moet afhandelen.
 Daarnaast werd ook getest hoe beide runtimes een alleenstaand script afhandelden.
 Om de server te testen werd gebruik gemaakt van Bombardier. Dit is een HTTP benchmarking software ontwikkeld door ~\textcite{Fedoseev2023}.
-\begin{figure}[H]
+\begin{listing}[H]
     \centering
     \begin{minted}[bgcolor=bg,
         fontfamily=tt,
@@ -337,7 +469,7 @@ Om de server te testen werd gebruik gemaakt van Bombardier. Dit is een HTTP benc
           Throughput:   292.92MB/s
         \end{minted}
         \caption{Voorbeeld gebruik bombardier \autocite{Fedoseev2023}}
-\end{figure}
+\end{listing}
 Hiernaast werd ook het ingebouwde "time" commando gebruikt om het geheugengebruik tijdens zware belastingen te meten.
 Bij de testen werd gewerkt met 3 aparta scenario's waarbij telkens 10 miljoen verzoeken werden verstuurd met eerst 10 gelijktijdige connecties, 
 dan 100 gelijktijdige connecties en uiteindelijk 500 gelijktijdige connecties.
@@ -351,7 +483,7 @@ De onderzoeker merkt hierbij op dat de reden hiervoor ligt bij Bun's beter geopt
 Voor de andere test werd de executie tijd gemeten bij het berekenen van het veertigste Fibonacci nummer in zowel Node.js als Bun. 
 Dit werd gedaan met behulp van de benchmarking software Hyperfine ontwikkeld door ~\textcite{Pompeii2024}. 
 Het script werd 10 keer uitgevoerd waarbij de gemiddelde tijd werd genomen.
-\begin{figure}[H]
+\begin{listing}[H]
     \centering
     \begin{minted}[bgcolor=bg,
         fontfamily=tt,
@@ -371,7 +503,7 @@ Het script werd 10 keer uitgevoerd waarbij de gemiddelde tijd werd genomen.
         > hyperfine 'sleep 0.3'
         \end{minted}
         \caption{Voorbeeld gebruik hyperfine commando \autocite{Pompeii2024}}
-\end{figure}
+\end{listing}
 Ook bij deze test presteerde Bun beter op vlak van executie tijd wat volgens de onderzoeker aantoont dat Bun effectiever is in het voltooien van computationele taken.
 De resultaten tonen aan dat 
 Bun algemeen beter presteert in alle gemeten performantie aspecten.

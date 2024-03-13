@@ -7,39 +7,19 @@
 
 % Pas na deze inleidende paragraaf komt de eerste sectiehoofding.
 
-Dit hoofdstuk bevat je literatuurstudie. 
-De inhoud gaat verder op de inleiding, maar zal het onderwerp van de bachelorproef *diepgaand* uitspitten. 
-De bedoeling is dat de lezer na lezing van dit hoofdstuk helemaal op de hoogte is van de huidige stand van zaken (state-of-the-art) 
-in het onderzoeksdomein. 
-Iemand die niet vertrouwd is met het onderwerp, 
-weet nu voldoende om de rest van het verhaal te kunnen volgen, 
-zonder dat die er nog andere informatie moet over opzoeken \autocite{Pollefliet2011}.
 
-Je verwijst bij elke bewering die je doet, vakterm die je introduceert, enz.\ naar je bronnen. 
-In \LaTeX{} kan dat met het commando \texttt{$\backslash${textcite\{\}}} of \texttt{$\backslash${autocite\{\}}}. 
-Als argument van het commando geef je de ``sleutel'' van een ``record'' in een bibliografische databank in het Bib\LaTeX{}-formaat
- (een tekstbestand). Als je expliciet naar de auteur verwijst in de zin (narratieve referentie), 
- gebruik je \texttt{$\backslash${}textcite\{\}}. Soms is de auteursnaam niet expliciet een onderdeel van de zin, 
- dan gebruik je \texttt{$\backslash${}autocite\{\}} (referentie tussen haakjes). Dit gebruik je bv.~bij een citaat, 
- of om in het bijschrift van een overgenomen afbeelding, broncode, tabel, enz. te verwijzen naar de bron. 
- In de volgende paragraaf een voorbeeld van elk.
-
-\textcite{Knuth1998} schreef een van de standaardwerken over sorteer- en zoekalgoritmen. 
-Experten zijn het erover eens dat cloud computing een interessante opportuniteit vormen, 
-zowel voor gebruikers als voor dienstverleners op vlak van informatietechnologie~\autocite{Creeger2009}.
-
-Let er ook op: het \texttt{cite}-commando voor de punt, dus binnen de zin. Je verwijst meteen naar een bron in de eerste zin die erop gebaseerd is, 
-dus niet pas op het einde van een paragraaf.
-
-
-\section{Introductie}
-Dit hoofdstuk bevat een literatuurstudie die de gebruikten technologieën gaat omschrijven. 
-Daarnaast worden ook eerdere studies naar deze technologieën vermeld. 
+In de afgelopen jaren zijn er heel wat nieuwe javascript runtime-omgevingen geïntroduceerd. Echter worden weinig van deze omgevingen effectief gebruikt.
+Zo toont het eerder vermelde onderzoek van \textcite{Greif2022} aan dat Node.js nog steeds als standaard gebruikt wordt bij de meeste projecten 
+ondanks de tal van nieuwe runtime-omgevingen.
+In dit onderzoek wordt nagegaan of één van deze nieuwe frameworks
+een correcte plaatsvervanger kan zijn voor Node.js bij de ontwikkeling van webapplicaties waar performantie centraal staat.
+Daarom wordt er dieper ingegaan op deze technologieën om zo een beter inzicht te krijgen in het onderzoeksdomein.
 Ten eerste wordt een precieze beschrijving gegeven over de programmeertaal javascript en hoe deze wordt gebruikt bij de runtime-omgevingen.
-Nadien wordt verder ingegaan op 2 van deze omgevingen namelijk Node.js en Bun. 
+Hierbij wordt de architectuur van een javascript runtime-omgeving beschreven.
+Nadien wordt verder ingegaan op 3 van deze omgevingen namelijk Node.js, Deno en Bun. 
 Hierbij wordt gekeken naar hun respectievelijke javascript engine, package managers, bundlers en functionaliteiten.
 Als laatste wordt gekeken naar eerder onderzoek over deze onderwerpen. 
-Hierbij wordt verder ingegaan over de performantie metrieken die kunnen gebruikt worden alsook de bijhorende 
+Hierbij wordt verder ingegaan op de performantie metrieken die kunnen gebruikt worden alsook de bijhorende 
 software om deze te achterhalen.
 
 \section{Javascript}
@@ -238,7 +218,7 @@ Daarnaast is er nog altijd enige vorm van compatibiliteit met C,
 zo kunnen bijvoorbeeld functies geexporteerd worden zodat ze kunnen worden opgeroepen uit C.
 
 \subsection{Test runner}
-Bun bevat een ingebouwde test runner die volgens ~\textcite{McDonnel2023} 10-30 keer sneller werkt als jest.
+Bun bevat een ingebouwde test runner die volgens ~\textcite{McDonnel2023} 10-30 keer sneller werkt als jest, een ander test-framework dat vaak wordt gebruikt in Node.js projecten.
 De test runner ondersteund zowel javascript als typescript. Hierbij is het ook mogelijk om mocks gebruiken.
 Dit zijn valse objecten die de achterliggende functionaliteit simuleren om zo externe afhankelijkheden zelf te controleren.
 In figuur ~\ref{fig:testbun} wordt een voorbeeld van een test binnen bun weergegeven.
@@ -265,7 +245,7 @@ In figuur ~\ref{fig:testbun} wordt een voorbeeld van een test binnen bun weergeg
             expect(1 + 1).toBe(2);
         });
         \end{minted}
-        \caption{\label{fig:testbun}}Voorbeeld test binnen Bun.
+        \caption{\label{fig:testbun}}Voorbeeld test binnen Bun ~\autocite{McDonnel2023}. 
 \end{figure}
 
 \subsection{Package manager}

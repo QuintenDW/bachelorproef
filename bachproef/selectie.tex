@@ -1,0 +1,140 @@
+%%=============================================================================
+%% Selectie
+%%=============================================================================
+
+\chapter{\IfLanguageName{dutch}{Selectie omgeving}{Selection environment}}%
+\label{ch:selectie}
+
+In dit hoofdstuk wordt aan de hand van een requirements-analyse een selectie gemaakt voor de JavaScript runtime omgeving 
+die het meest geschikt zou zijn als potentiële plaatsvervanger voor Node.js binnen de context van performante applicaties.
+Er wordt gestart met een oplijsting van de requirements op basis van de MoSCoW-techniek in de categorieën “must-have”, “should-have” en “nice-to-have”. 
+Daarna worden de alternatieven in de lange lijst afgetoetst aan deze requirements om zo tot tot één geschikte omgeving te komen die wordt vergeleken met Node.js.
+
+\section*{Requirements}
+In de volgende sectie wordt eerst uitgelegd wat MoSCoW betekent, 
+waarna deze methode wordt toegepast om de verschillende requirements te bepalen.
+\subsection{MoSCoW}
+Voor de oplijsting van de requirements wordt gebruik gemaakt van de MoSCoW methode. 
+In het boek van \textcite{Vliet2007} wordt uitgelegd wat deze methode precies inhoud. 
+Zo dient MoSCoW om requirements te prioritiseren. Het bestaat uit 4 lagen:
+\begin{itemize}
+    \item Must haves zijn requirements die zeker nodig zijn.
+    \item Should haves zijn requirements die belangrijk zijn, maar niet absoluut nodig voor een werkend systeem.
+    \item Could haves zijn requirements die niet belangrijk zijn maar wel goed zijn om te hebben.
+    \item Won't haves zijn requirements die niet nodig zijn.
+\end{itemize}
+In het onderzoek wordt deze methode toegepast om te weten waaraan een gepaste JavaScript omgeving moet voldoen.
+
+\subsection{Must have requirements}
+In volgende lijst zijn de requirements die zeker nodig zijn bij een JavaScript runtime-omgeving opgesomd:
+\begin{itemize}
+    \item De omgeving moet door een aanzienlijk aantal ontwikkelaars worden gebruikt.
+    \item De omgeving moet goede prestaties bieden voor zowel CPU- als I/O-gebaseerde taken.
+    \item De omgeving moet platformonafhankelijk zijn, wat betekent dat het op verschillende besturingssytemen kan draaien.
+    \item De omgeving moet een modulesysteem bieden voor het hergebruiken van code.
+    \item Er moet een verscheidenheid aan bibliotheken en packages beschikbaar zijn voor de omgeving.
+    \item De omgeving moet stabiel zijn en regelmatig updates ontvangen.
+\end{itemize}
+Aangezien dit onderzoek kan gebruikt worden als leidraad bij de keuze van een JavaScript runtime omgeving, 
+moet de omgeving platformonafhankelijk zijn en al door een aanzienlijk aantal ontwikkelaars worden gebruikt.
+Dit wordt bepaald aan de hand van het jaarlijks onderzoek van \textcite{Greif2022} 
+waarbij een minimumgrens van 1\% van de beantwoorden wordt genomen.
+waarbij aan een groot aantal ontwikkelaars wordt gevraagd welke runtime omgevingen ze vaak gebruiken.
+Hierbij moet de omgeving ook stabiel en onderhouden zijn.
+Daarnaast moet de omgeving ook een modulesyteem met een verscheidenheid aan bibliotheken bevatten 
+zodat deze kan uitgebreid worden in functionaliteit. 
+Als laatste moet de omgeving goede prestaties bieden aangezien dit onderzoek zich focust op de performantie van de omgevingen.
+
+\subsection{Should have requirements}
+In volgende lijst zijn de requirements die belangrijk zijn bij een JavaScript runtime omgeving opgesomd:
+\begin{itemize}
+    \item Er moet documentatie aanwezig zijn over de runtime-omgeving.
+    \item De omgeving moet asynchrone I/O-operaties ondersteunen.
+\end{itemize}
+Voor de implementatie van de omgevingen is het belangrijk dat er voldoende documentatie aanwezig zijn.
+Ook moeten deze asynchrone I/O-operaties ondersteunen zodat deze even performant of performanter kunnen werken als Node.js
+
+\subsection{Could have requirements}
+In volgende lijst zijn de requirements die “nice-to-have” zijn:
+\begin{itemize}
+    \item De omgeving heeft geïntegreerde ondersteuning voor TypeScript.
+    \item De omgeving heeft een geïntegreerde test-runner.
+    \item De omgeving heeft een geïntegreerde bundler.
+\end{itemize}
+Deze requirements zijn niet noodzakelijk maar kunnen behulpzaam zijn voor de gebruiker en de performantie van de runtime-omgeving.
+
+\subsection{Won't have requirements}
+In volgende lijst zijn de Won't have requirements:
+\begin{itemize}
+    \item De omgeving ondersteunt geen JavaScript.
+    \item De omgeving laat geen benchmark testen toe. 
+    \item De omgeving is closed-source.
+\end{itemize}
+De omgeving mag niet beschikken over deze requirements. 
+Zo is het verplicht dat de omgeving een JavaScript runtime-omgeving is en dat deze benchmark testen toe laat om de performantie te meten.
+Daarnaast moet deze ook open-source zijn zodat er transparantie en onafhankelijkheid is.
+
+\section{Selectie}
+Nu dat de requirements bepaald zijn, worden de JavaScript runtime-omgevingen hier tegen over afgetoetst.
+De lange lijst van JavaScript runtime-omgevingen is gebasseerd op de samengestelde lijst van \textcite{Errilaz2023} 
+die te vinden zijn in tabel \ref{tab:omgevingen}.
+In tabel \ref{tab:requirements} worden deze omgevingen afgetoetst aan de requirements. 
+Deze zal als basis dienen om uit de lange lijst de runtime-omgeving te kiezen voor de vergelijking met Node.js.
+\begin{table}[H]
+    \begin{tabular}{|c|}
+    \hline
+    \textbf{Runtime omgevingen} \\ \hline
+    Bun                         \\
+    Deno                        \\
+    Just                        \\
+    Txiki.js                    \\
+    Napa.js                     \\
+    Elsa                        \\ \hline
+    \end{tabular}
+    \caption{\label{tab:omgevingen}Lijst van runtime omgevingen}
+\end{table}
+
+\begin{table}[]
+    \begin{tabular}{|c|cccccc|}
+    \hline
+    \textbf{}                                                                                                                             & \multicolumn{6}{c|}{\textbf{Runtime omgevingen}}                                                                                                                       \\ \hline
+    \textbf{Requirements}                                                                                                                 & \multicolumn{1}{l}{Bun} & \multicolumn{1}{l}{Deno} & \multicolumn{1}{l}{Just} & \multicolumn{1}{l}{Txiki.js} & \multicolumn{1}{l}{Napa.js} & \multicolumn{1}{l|}{Elsa} \\ \cline{1-1}
+    \begin{tabular}[c]{@{}c@{}}De omgeving moet door\\ een aanzienlijk aantal ontwikkelaars\\ worden gebruikt\end{tabular}                & x                       & x                        &                          &                              &                             &                           \\
+    \begin{tabular}[c]{@{}c@{}}De omgeving moet goede prestaties \\ bieden voor zowel CPU- als I/O-gebaseerde taken\end{tabular}          & x                       & x                        &                          &                              & x                           &                           \\
+    De omgeving moet platformonafhankelijk zijn                                                                                           & x                       & x                        &                          &                              & x                           & x                         \\
+    \begin{tabular}[c]{@{}c@{}}De omgeving moet een modulesysteem\\  bieden voor het hergebruiken van code\end{tabular}                   & x                       & x                        &                          & x                            & x                           & x                         \\
+    \begin{tabular}[c]{@{}c@{}}Er moet een verscheidenheid aan bibliotheken\\  en packages beschikbaar zijn voor de omgeving\end{tabular} & x                       & x                        &                          & x                            & x                           &                           \\
+    \begin{tabular}[c]{@{}c@{}}De omgeving moet stabiel zijn \\ en regelmatig updates ontvangen\end{tabular}                              & x                       & x                        &                          & x                            &                             &                           \\
+    \begin{tabular}[c]{@{}c@{}}Er is documentatie \\ aanwezig over de runtime-omgeving\end{tabular}                                       & x                       & x                        &                          & x                            & x                           &                           \\
+    \begin{tabular}[c]{@{}c@{}}De omgeving moet asynchrone \\ I/O-operaties ondersteunen\end{tabular}                                     & x                       & x                        &                          & x                            & x                           &                           \\
+    \begin{tabular}[c]{@{}c@{}}De omgeving heeft geïntegreerde\\  ondersteuning voor TypeScript\end{tabular}                              & x                       & x                        &                          &                              &                             & x                         \\
+    De omgeving heeft een geïntegreerde test-runner.                                                                                      & x                       & x                        &                          & x                            &                             &                           \\
+    De omgeving heeft een geïntegreerde bundler.                                                                                          & x                       &                          &                          &                              &                             &                           \\ \hline
+    \end{tabular}
+    \caption{\label{tab:requirements}Omgevingen afgetoetst aan de requirements}
+    \end{table}
+
+\subsection{Just}
+Just is sinds 17 November 2023 niet meer actief onderhouden waardoor het niet voldoet aan de Must 
+have requirement dat de omgeving regelmatig updates moet ontvangen \autocite{Johnston2023}.
+Daarnaast werkt deze enkel op Linux waardoor het ook niet platformonafhankelijk is, 
+een requirement om te kunnen vergelijken met Node.js \autocite{Johnston2023}.
+
+\subsection{txiki.js}
+Txiki is bedoelt als een klein maar krachtig JavaScript runtime. 
+Het is gemaakt door \textcite{Corretge2024} gebruikmakend van de QuickJS-ng engine. 
+Het maakt gebruik van NPM om packages toe te voegen en heeft zelf een ingebouwde test runner. 
+Echter is deze niet volledig platformonafhankelijk. 
+Zo concludeert \textcite{Corretge2024} dat txiki.js nog niet optimaal werkt op Windows platformen.
+
+\subsection{Napa.js}
+Napa.js is een multi-threaded JavaScript runtime omgeving ontwikkeld door \textcite{Microsoft2018}. 
+Het is gebouwd op de V8 engine en werd oorspronkelijk gemaakt om iteratieve services in Bing te maken.
+De JavaScript executie performantie in napa.js is gelijkaardig aan die in Node.js. 
+Het wordt weergegeven als een NPM module, maar er is ook de mogelijkheid om te werken zonder Node.js.
+Ondanks al deze functionaliteiten is de omgeving inactief en heeft het zijn laatste update in 2018 ontvangen.
+
+\subsection{Elsa}
+Elsa is een minimale JavaScript en TypeScript runtime geschreven in Go \autocite{Garcia2022}. 
+Het is gebouwd bovenop de QuickJS engine en gebruikt een module systeem gelijkaardig aan Deno waarbij de imports via een url worden gedaan \autocite{Garcia2022}.
+Echter heeft deze runtime al 2 jaar geen updates gehad waardoor deze niet actief wordt ontwikkeld.

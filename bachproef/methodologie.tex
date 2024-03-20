@@ -26,5 +26,31 @@
 %% Maak voor elke fase (behalve het literatuuronderzoek) een NIEUW HOOFDSTUK aan
 %% en geef het een gepaste titel.
 
-\lipsum[21-25]
-
+Het onderzoek bevat 4 fasen. 
+De eerste fase bestaat uit het verzamelen van informatie over het onderzoeksdomein om zo een duidelijk beeld ervan te schetsen.
+Dit wordt gedaan aan de hand van een literatuurstudie die te vinden is in hoofdstuk \ref{ch:stand-van-zaken}. 
+Hierbij wordt eerst een algemene beschrijving over Javascript runtime-omgevingen besproken waarna 
+er dieper wordt ingegaan op Node.js alsook zijn opvolger Deno en de nieuwe runtime Bun. 
+Specifiek worden hun respectievelijke package managers, javascript engines, bundlers en extra functionaliteiten besproken.
+Nadat er een duidelijker beeld is over het onderzoeksdomein wordt in de tweede fase, aan de hand van een requirements-analyse, 
+één omgeving geselecteerd die het meest geschikt is als potentiële plaatsvervanger voor Node.js binnen de context van performante applicaties.
+De requirements worden hier onderverdeeld via de MoSCoW-techniek in de categorieën “must-have”, “should-have” en “nice-to-have”. 
+De alternatieven worden afgetoets aan de requirements om zo tot één geschikte omgeving te komen die wordt vergeleken met Node.js.
+In de derde fase worden zelfgemaakte proof-of-concepts opgesteld en getest (zie hoofdstuk \ref{label}) voor beide omgevingen. 
+Hierbij wordt een applicatie ontwikkeld waarbij een gebruiker
+een recensie kan creëren over een bepaald onderwerp,
+alsook een script dat een algoritme bevat. Hierdoor kunnen zowel metingen gedaan worden op computationele taken als I/O-taken (Input/Output).
+De metingen worden uitgevoerd door 2 benchmark tools, Hyperfine en Bombardier, om volgende zaken te meten:
+\begin{itemize}
+    \item De responstijd op HTTP-verzoeken
+    \item De uitvoeringstijd bij de applicatie.
+    \item De verwerkingstijd bij het uitvoeren van de berekeningen van het algoritme.
+    \item Het geheugengebruik bij beiden.
+    \item De installatietijd voor de respectievelijke package managers.
+    \item Het CPU-gebruik bij beiden.
+\end{itemize}
+Daarnaast zal ook gekeken worden naar de extra functionaliteiten en hoe deze de complexiteit beïnvloeden.
+Aan de hand van deze resultaten komen we tot de laatste fase namelijk de conclusie. 
+Hierbij worden de data geanalyseerd om zo een antwoord te formuleren op de onderzoeksvragen.
+Hieruit wordt afgeleid of het gekozen framework een geschikte plaatsvervange kan zijn voor Node.js binnen 
+de ontwikkeling van webapplicaties waar performantie centraal staat.

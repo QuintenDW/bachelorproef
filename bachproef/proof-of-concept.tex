@@ -1,0 +1,89 @@
+%%=============================================================================
+%% Selectie
+%%=============================================================================
+
+\chapter{\IfLanguageName{dutch}{Proof-of-concept}{Proof-of-concept}}%
+\label{ch:proof-of-concept}
+
+In dit hoofdstuk wordt de proof-of-concept besproken 
+waarbij een beoordeling wordt gevormd van de omgevingen op basis van de performantie metingen.
+Allereerst wordt de opzet van de proof-of-concepts voor beide omgevingen besproken.
+Hierna worden de performantie metingen uitgevoerd voor beide omgevingen waarna de resultaten worden besproken.
+Als laatste worden alle resultaten samengevat op zo het te bekijken of Bun een geschikte plaatsvervanger van Node.js kan zijn.
+
+\subsection{Opzet proof-of-concept}
+Voor de performantie te meten wordt er per omgeving 2 proof-of-concepts gemaakt. 
+De eerste proof-of-concept zal bestaan uit een script dat het Quick Sort algoritme bevat. 
+Deze zal dienen om de computationele verwerking van elke omgeving te beoordelen. Hierbij wordt rekening gehouden met volgende metingen:
+\begin{itemize}
+    \item De gemiddelde uitvoeringstijd.
+    \item Het gemiddelde CPU-gebruik.
+    \item Het gemiddelde geheugengebruik.
+\end{itemize}
+Het Quick Sort algoritme zal een meegegeven array sorteren door een spil element te kiezen binnen de array, 
+en hierna de array in 2 arrays opsplitsen. De eerste array zal elementen bevatten die kleiner zijn dan het spil element 
+en de andere array zal elementen bevatten die groter zijn. 
+De 2 arrays worden vervolgens telkens recursief gesorteerd met dezelfde methode om zo een gesorteerde array te bekomen.
+In het codevoorbeeld ~\ref{code:quicksort} kan de code voor het Quick Sort algoritme gevonden worden.
+Hierbij is er de mogelijkheid de grootte van de te sorteren array mee te geven via de command-line.
+
+\begin{listing}[H]
+    \centering
+    \begin{minted}[bgcolor=bg,
+        fontfamily=tt,
+        linenos=true,
+        numberblanklines=true,
+        numbersep=5pt,
+        gobble=0,
+        framesep=2mm,
+        tabsize=4,
+        obeytabs=false,
+        breaklines=true,
+        mathescape=false
+        samepage=false,
+        showspaces=false,
+        showtabs =false,
+        texcl=false]{js}
+const quickSort = (array) => {
+  if (array.length <= 1) {
+    return array;
+  }
+
+  let pivot = array[0];
+  let smallArray = [];
+  let bigArray = [];
+
+  for (let index = 1; index < array.length; index++) {
+    if (array[index] < pivot) {
+      smallArray.push(array[index]);
+    } else {
+      bigArray.push(array[index]);
+    }
+  }
+
+  return [...quickSort(smallArray), pivot, ...quickSort(bigArray)];
+};
+
+const args = process.argv.slice(1); // get length of array
+let myArray = Array.from({ length: args[1] }, () =>
+  Math.floor(Math.random() * 9)
+);
+quickSort(myArray);
+        \end{minted}
+        \caption{\label{code:quicksort}Code voorbeeld quicksort}
+\end{listing}
+
+Naast de computationele verwerking te meten, wordt ook performantie bij I/O-taken gemeten.
+Dit wordt gedaan door een proof-of-concept op te stellen die een applicatie back-end voorstelt in de respectievelijke omgeving.
+Hierbij kan een gebruiker een recensie creëren over een bepaald onderwerp. 
+Binnen de proof-of-concepts zal hierbij getest worden met zowel een Postgres databank als een MySQL databank.
+Hierbij wordt rekening gehouden met volgende metingen:
+\begin{itemize}
+    \item De gemiddelde uitvoeringstijd.
+    \item Het gemiddelde CPU-gebruik.
+    \item Het gemiddelde geheugengebruik.
+    \item De responstijd.
+    \item Het aantal gelijktijdige connecties.
+    \item Het aantal verzoeken.
+\end{itemize}
+

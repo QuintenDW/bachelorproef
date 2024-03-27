@@ -6,7 +6,7 @@
 \label{ch:selectie}
 
 In dit hoofdstuk wordt aan de hand van een requirements-analyse een selectie gemaakt voor de JavaScript runtime omgeving 
-die het meest geschikt zou zijn als potentiële plaatsvervanger voor Node.js binnen de context van performante applicaties.
+die het meest geschikt zou zijn als potentiële plaatsvervanger van Node.js binnen de context van performante applicaties.
 Er wordt gestart met een oplijsting van de requirements op basis van de MoSCoW-techniek in de categorieën “must-have”, “should-have” en “nice-to-have”. 
 Daarna worden de alternatieven in de lange lijst afgetoetst aan deze requirements om zo tot tot één geschikte omgeving te komen die wordt vergeleken met Node.js.
 
@@ -19,7 +19,7 @@ In het boek van \textcite{Vliet2007} wordt uitgelegd wat deze methode precies in
 Zo dient MoSCoW om requirements te prioritiseren. Het bestaat uit 4 lagen:
 \begin{itemize}
     \item Must haves zijn requirements die zeker nodig zijn.
-    \item Should haves zijn requirements die belangrijk zijn, maar niet absoluut nodig voor een werkend systeem.
+    \item Should haves zijn requirements die belangrijk zijn, maar niet absoluut nodig zijn voor een werkend systeem.
     \item Could haves zijn requirements die niet belangrijk zijn maar wel goed zijn om te hebben.
     \item Won't haves zijn requirements die niet nodig zijn.
 \end{itemize}
@@ -39,7 +39,6 @@ Aangezien dit onderzoek kan gebruikt worden als leidraad bij de keuze van een Ja
 moet de omgeving platformonafhankelijk zijn en al door een aanzienlijk aantal ontwikkelaars worden gebruikt.
 Dit wordt bepaald aan de hand van het jaarlijks onderzoek van \textcite{Greif2022} 
 waarbij een minimumgrens van 1\% van de beantwoorden wordt genomen.
-waarbij aan een groot aantal ontwikkelaars wordt gevraagd welke runtime omgevingen ze vaak gebruiken.
 Hierbij moet de omgeving ook stabiel en onderhouden zijn.
 Daarnaast moet de omgeving ook een modulesyteem met een verscheidenheid aan bibliotheken bevatten 
 zodat deze kan uitgebreid worden in functionaliteit. 
@@ -94,29 +93,48 @@ Deze zal als basis dienen om uit de lange lijst de runtime-omgeving te kiezen vo
     \caption{\label{tab:omgevingen}Lijst van runtime omgevingen}
 \end{table}
 
+
 \begin{table}[]
     \begin{tabular}{|c|cccccc|}
     \hline
-    \textbf{}                                                                                                                             & \multicolumn{6}{c|}{\textbf{Runtime omgevingen}}                                                                                                                       \\ \hline
-    \textbf{Requirements}                                                                                                                 & \multicolumn{1}{l}{Bun} & \multicolumn{1}{l}{Deno} & \multicolumn{1}{l}{Just} & \multicolumn{1}{l}{Txiki.js} & \multicolumn{1}{l}{Napa.js} & \multicolumn{1}{l|}{Elsa} \\ \cline{1-1}
-    \begin{tabular}[c]{@{}c@{}}De omgeving moet door\\ een aanzienlijk aantal ontwikkelaars\\ worden gebruikt\end{tabular}                & x                       & x                        &                          &                              &                             &                           \\
-    \begin{tabular}[c]{@{}c@{}}De omgeving moet goede prestaties \\ bieden voor zowel CPU- als I/O-gebaseerde taken\end{tabular}          & x                       & x                        &                          &                              & x                           &                           \\
-    De omgeving moet platformonafhankelijk zijn                                                                                           & x                       & x                        &                          &                              & x                           & x                         \\
-    \begin{tabular}[c]{@{}c@{}}De omgeving moet een modulesysteem\\  bieden voor het hergebruiken van code\end{tabular}                   & x                       & x                        &                          & x                            & x                           & x                         \\
-    \begin{tabular}[c]{@{}c@{}}Er moet een verscheidenheid aan bibliotheken\\  en packages beschikbaar zijn voor de omgeving\end{tabular} & x                       & x                        &                          & x                            & x                           &                           \\
-    \begin{tabular}[c]{@{}c@{}}De omgeving moet stabiel zijn \\ en regelmatig updates ontvangen\end{tabular}                              & x                       & x                        &                          & x                            &                             &                           \\
-    \begin{tabular}[c]{@{}c@{}}Er is documentatie \\ aanwezig over de runtime-omgeving\end{tabular}                                       & x                       & x                        &                          & x                            & x                           &                           \\
-    \begin{tabular}[c]{@{}c@{}}De omgeving moet asynchrone \\ I/O-operaties ondersteunen\end{tabular}                                     & x                       & x                        &                          & x                            & x                           &                           \\
-    \begin{tabular}[c]{@{}c@{}}De omgeving heeft geïntegreerde\\  ondersteuning voor TypeScript\end{tabular}                              & x                       & x                        &                          &                              &                             & x                         \\
-    De omgeving heeft een geïntegreerde test-runner.                                                                                      & x                       & x                        &                          & x                            &                             &                           \\
-    De omgeving heeft een geïntegreerde bundler.                                                                                          & x                       &                          &                          &                              &                             &                           \\ \hline
+    \textbf{}                                                                                                                               & \multicolumn{6}{c|}{\textbf{Runtime omgevingen}}                                                                                                                       \\ \hline
+    \textbf{Requirements}                                                                                                                   & \multicolumn{1}{l}{Bun} & \multicolumn{1}{l}{Deno} & \multicolumn{1}{l}{Just} & \multicolumn{1}{l}{Txiki.js} & \multicolumn{1}{l}{Napa.js} & \multicolumn{1}{l|}{Elsa} \\ \cline{1-1}
+    \begin{tabular}[c]{@{}c@{}}De omgeving moet door\\ een aanzienlijk aantal ontwikkelaars\\ worden gebruikt\end{tabular}                  & x                       & x                        &                          &                              &                             &                           \\ \cline{1-1}
+    \begin{tabular}[c]{@{}c@{}}De omgeving moet goede prestaties \\ bieden voor zowel CPU- \\ als I/O-gebaseerde taken\end{tabular}         & x                       & x                        &                          &                              & x                           &                           \\ \cline{1-1}
+    \begin{tabular}[c]{@{}c@{}}De omgeving moet platformonafhankelijk\\  zijn\end{tabular}                                                  & x                       & x                        &                          &                              & x                           & x                         \\ \cline{1-1}
+    \begin{tabular}[c]{@{}c@{}}De omgeving moet een modulesysteem\\  bieden voor het hergebruiken van code\end{tabular}                     & x                       & x                        &                          & x                            & x                           & x                         \\ \cline{1-1}
+    \begin{tabular}[c]{@{}c@{}}Er moet een verscheidenheid \\ aan bibliothekenen packages beschikbaar \\ zijn voor de omgeving\end{tabular} & x                       & x                        &                          & x                            & x                           &                           \\ \cline{1-1}
+    \begin{tabular}[c]{@{}c@{}}De omgeving moet stabiel zijn \\ en regelmatig updates ontvangen\end{tabular}                                & x                       & x                        &                          & x                            &                             &                           \\ \cline{1-1}
+    \begin{tabular}[c]{@{}c@{}}Er is documentatie \\ aanwezig over de runtime-omgeving\end{tabular}                                         & x                       & x                        &                          & x                            & x                           &                           \\ \cline{1-1}
+    \begin{tabular}[c]{@{}c@{}}De omgeving moet asynchrone \\ I/O-operaties ondersteunen\end{tabular}                                       & x                       & x                        &                          & x                            & x                           &                           \\ \cline{1-1}
+    \begin{tabular}[c]{@{}c@{}}De omgeving heeft geïntegreerde\\  ondersteuning voor TypeScript\end{tabular}                                & x                       & x                        &                          &                              &                             & x                         \\ \cline{1-1}
+    \begin{tabular}[c]{@{}c@{}}De omgeving heeft een \\ geïntegreerde test-runner.\end{tabular}                                             & x                       & x                        &                          & x                            &                             &                           \\ \cline{1-1}
+    \begin{tabular}[c]{@{}c@{}}De omgeving heeft een \\ geïntegreerde bundler.\end{tabular}                                                 & x                       &                          &                          &                              &                             &                           \\ \hline
     \end{tabular}
     \caption{\label{tab:requirements}Omgevingen afgetoetst aan de requirements}
     \end{table}
 
+\subsection{Bun}
+Zoals beschreven in hoofdstuk \ref{ch:stand-van-zaken} is Bun een omgeving waar de focus ligt op performantie.
+Het probeert dit te behalen door de JavaScriptCore engine te gebruiken die volgens ~\textcite{McDonnel2023} ervoor zorgt dat Bun 4 keer sneller opstart dan Node.js.
+Daarnaast heeft Bun ook een package manager die volgens ~\textcite{McDonnel2023} tot 25 keer sneller packages zou kunnen installeren tegenover Node.js.
+Bovendien heeft Bun veel zaken ingebouwd zoals: een bundler, test-runner en TypeScript ondersteuning.
+Volgens onderzoek van \textcite{Greif2022} is Bun redelijk populair en werd het door 4.3\% van de 29888 bevraagden regelmatig gebruikt.
+Uit eerder onderzoek van ~\textcite{Feroj2023} bleek ook dat Bun beter presteert dan Node.js op vlak van responstijd, uitvoeringstijd en geheugengebruik.
+
+\subsection{Deno}
+Zoals beschreven in hoofdstuk \ref{ch:stand-van-zaken} werd Deno geïntroduceerd in 2021 door ~\textcite{Dahl2021} om zo nieuw leven in het ecosysteem in te blazen.
+In het onderzoek \textcite{Greif2022} wordt aangetoond dat 11.2\% van de 29888 bevraagden regelmatig Deno gebruiken, wat dit een populaire omgeving maakt.
+Het maakt net zoals Node.js gebruik van de V8 javascript engine, maar toch onderscheidt het zich van Node.js op een aantal vlakken.
+Zo is Deno ontwikkeld in Rust in plaats van C en C++ zoals bij Node.js en werd tijdens de ontwikkeling de focus meer gelegd op beveiligbaarheid.
+Specifiek is er standaard runtime-beveiliging waardoor expliciet toegang moet gegegeven worden tot gevoelige APIs.
+Daarnaast wordt gebruikgemaakt van URLs om externe packages te importeren en heeft het ook een ingebouwde test-runner om zowel JavaScript
+als de ondersteunde TypeScript te testen. Uit eerder onderzoek van \textcite{VanKerkvoorde2021} 
+bleek dat Deno beter scoort dan Node op vlak van verwerkingstijd en geheugengebruik.
+
 \subsection{Just}
 Just is sinds 17 November 2023 niet meer actief onderhouden waardoor het niet voldoet aan de Must 
-have requirement dat de omgeving regelmatig updates moet ontvangen \autocite{Johnston2023}.
+have requirement waarbij de omgeving regelmatig updates moet ontvangen \autocite{Johnston2023}.
 Daarnaast werkt deze enkel op Linux waardoor het ook niet platformonafhankelijk is, 
 een requirement om te kunnen vergelijken met Node.js \autocite{Johnston2023}.
 
@@ -138,3 +156,16 @@ Ondanks al deze functionaliteiten is de omgeving inactief en heeft het zijn laat
 Elsa is een minimale JavaScript en TypeScript runtime geschreven in Go \autocite{Garcia2022}. 
 Het is gebouwd bovenop de QuickJS engine en gebruikt een module systeem gelijkaardig aan Deno waarbij de imports via een url worden gedaan \autocite{Garcia2022}.
 Echter heeft deze runtime al 2 jaar geen updates gehad waardoor deze niet actief wordt ontwikkeld.
+
+\subsection{De geschikte omgeving}
+Aan de hand van de aftoetsing van de omgevingen aan de requirements kan een geschikte 
+omgeving gevonden worden die een potentiële plaatsvervanger kan zijn voor Node.js.
+Deze omgeving wordt, samen met Node.js, in de proof-of-concept verwerkt om hierop dan performantie metingen uit te voeren.
+Op basis van deze metingen kan dan een conclusie getrokken worden.
+Zoals te zien in tabel \ref{tab:requirements} zijn er maar 2 omgevingen die voldoen aan alle must haves namelijk Bun en Deno. 
+Deze requirements zijn van cruciaal belang om een omgeving te kunnen vergelijken met Node.js. 
+Daarnaast zijn het ook 2 van de weinige omgevingen die stabiel zijn en regelmatig updates ontvangen. 
+De overige omgevingen voldoen niet aan de minimum requirements waardoor ze al zeker niet zullen worden opgenomen in de proof-of-concept.
+Als we dieper ingaan op de omgevingen Bun en Deno blijkt dat Bun zich meer focust op performantie terwijl Deno meer de focus legt op beveiligbaarheid.
+Ook voldoet Bun aan alle requirements terwijl Deno juist 1 ontbreekt namelijk het beschikken over een geïntegreerde bundler. 
+Aangezien in dit onderzoek de focus ligt bij de performantie van de omgevingen wordt gekozen om Bun op te nemen in de proof-of-concept.

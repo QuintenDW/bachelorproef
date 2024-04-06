@@ -13,12 +13,20 @@ Als laatste worden alle resultaten samengevat op zo het te bekijken of Bun een g
 
 \subsection{Opzet proof-of-concept}
 Voor de performantie te meten wordt er per omgeving 2 proof-of-concepts gemaakt. 
+Deze metingen zullen worden uitgevoerd op een Mac mini met volgende specificaties:
+\begin{itemize}
+  \item De Apple M2 chip.
+  \item 8GB aan unified memory.
+  \item Het macOS Sonoma besturingssysteem
+  \item 256GB aan SSD opslag.
+\end{itemize}
 De eerste proof-of-concept zal bestaan uit een script dat het Quick Sort algoritme bevat. 
 Deze zal dienen om de computationele verwerking van elke omgeving te beoordelen. Hierbij wordt rekening gehouden met volgende metingen:
 \begin{itemize}
     \item De gemiddelde uitvoeringstijd.
     \item Het gemiddelde CPU-gebruik.
-    \item Het gemiddelde geheugengebruik.
+    \item Het maximale geheugengebruik.
+    \item De gemiddelde installatietijd.
 \end{itemize}
 Het Quick Sort algoritme zal een meegegeven array sorteren door een spil element te kiezen binnen de array, 
 en hierna de array in 2 arrays opsplitsen. De eerste array zal elementen bevatten die kleiner zijn dan het spil element 
@@ -81,10 +89,11 @@ Hierbij wordt rekening gehouden met volgende metingen:
 \begin{itemize}
     \item De gemiddelde uitvoeringstijd.
     \item Het gemiddelde CPU-gebruik.
-    \item Het gemiddelde geheugengebruik.
+    \item Het maximale geheugengebruik.
     \item De responstijd.
     \item Het aantal gelijktijdige connecties.
     \item Het aantal verzoeken.
+    \item De gemiddelde installatietijd.
 \end{itemize}
 Bij de proof-of-concepts worden enkel de ingebouwde HTTP servers gebruikt om zo beïnvloeding van externe bibliotheken te vermijden.
 Voor de binnengekomen data naar een database te schrijven wordt een Object Relational Mapper (ORM) gebruikt. 
@@ -359,7 +368,7 @@ module.exports = seed;
 \caption{\label{code:Seed}Code bij het opvullen van de tabellen}
 \end{listing}
 
-Als laatste wordt de server aangemaakt om een POST methode op het /review endpoint aan te nemen.
+Als laatste wordt de server aangemaakt om een POST methode op het review endpoint aan te nemen.
 In ~\ref{code:NodeServer} wordt de code om dit te bereiken in Node.js getoond. Hierbij komt data in de vorm van JSON binnen.
 Deze bevat de recensie in combinatie met het id van het onderwerp en de gebruiker.
 Deze zal dan gebruikt worden om een nieuwe rij aan te maken in de recensie tabel.
@@ -414,6 +423,123 @@ main();
 \end{minted}
 \caption{\label{code:NodeServer}Code om de requests te ontvangen}
 \end{listing}
-\subsection{Uitvoering proof-of-concept}
+\subsection{Uitvoering metingen}
+Voor de metingen wordt gebruikgemaakt van 2 hulpprogramma's: Hyperfine en Bombardier.
+In \ref{code:HyperfineScript} wordt Hyperfine gebruikt om de gemiddelde uitvoeringstijd over verschillende iteraties van het script te berekenen.
+Ook zal Hyperfine gebruikt worden om de gemiddelde installatietijd van de respectievelijke package managers te vergelijken zoals 
+te zien is in \ref{code:HyperfineInstall}. Specifiek wordt de installatietijd bekeken wanneer het cache geheugen data bevat.
+Bij de metingen wordt telkens versie 1.18 van Hyperfine gebruikt.
+\begin{listing}[H]
+  \centering
+  \begin{minted}[bgcolor=bg,
+      fontfamily=tt,
+      linenos=true,
+      numberblanklines=true,
+      numbersep=5pt,  
+      gobble=0,
+      framesep=2mm,
+      tabsize=4,
+      obeytabs=false,
+      breaklines=true,
+      mathescape=false
+      samepage=false,
+      showspaces=false,
+      showtabs =false,
+      texcl=false]{shell-session}
+      > hyperfine 'node index.js 10000' 'bun index.js 10000'
+      \end{minted}
+      \caption{\label{code:HyperfineScript}Gebruik Hyperfine commando bij het script}
+\end{listing}
 
+\begin{listing}[H]
+  \centering
+  \begin{minted}[bgcolor=bg,
+      fontfamily=tt,
+      linenos=true,
+      numberblanklines=true,
+      numbersep=5pt,  
+      gobble=0,
+      framesep=2mm,
+      tabsize=4,
+      obeytabs=false,
+      breaklines=true,
+      mathescape=false
+      samepage=false,
+      showspaces=false,
+      showtabs =false,
+      texcl=false]{shell-session}
+      > hyperfine --prepare 'rm -rf node_modules' --warmup 1 --runs 10 'npm install' 'bun install'
+      \end{minted}
+      \caption{\label{code:HyperfineInstall}Gebruik Hyperfine commando bij het script}
+\end{listing}
+Daarnaast wordt voor de HTTP server gebruik gemaakt van Bombardier. 
+Hierbij kan ingesteld worden hoeveel gelijktijdige connecties er zijn en hoeveel verzoeken per test worden verstuurd.
+In de metingen zal getest worden door 500000 verzoeken te sturen met 10, 100 en 1000 gelijktijdige connecties.
+De commando's hiervoor zijn terug te vinden in \ref{code:Bombardier10}, \ref{code:Bombardier100} en \ref{code:Bombardier1000}.
+Bij de metingen wordt hiervoor gebruikgemaakt van versie 1.2.6 van Bombardier.
+\begin{listing}[H]
+  \centering
+  \begin{minted}[bgcolor=bg,
+      fontfamily=tt,
+      linenos=true,
+      numberblanklines=true,
+      numbersep=5pt,  
+      gobble=0,
+      framesep=2mm,
+      tabsize=4,
+      obeytabs=false,
+      breaklines=true,
+      mathescape=false
+      samepage=false,
+      showspaces=false,
+      showtabs =false,
+      texcl=false]{shell-session}
+      > bombardier -c 10 -n 500000 -m POST -b "{'message': 'test','UserId': 1,'SubjectId': 1}" -l http://localhost:3000/review
+      \end{minted}
+      \caption{\label{code:Bombardier10}Gebruik Bombardier commando met 500000 verzoeken en 10 gelijktijdige connecties}
+\end{listing}
+\begin{listing}[H]
+  \centering
+  \begin{minted}[bgcolor=bg,
+      fontfamily=tt,
+      linenos=true,
+      numberblanklines=true,
+      numbersep=5pt,  
+      gobble=0,
+      framesep=2mm,
+      tabsize=4,
+      obeytabs=false,
+      breaklines=true,
+      mathescape=false
+      samepage=false,
+      showspaces=false,
+      showtabs =false,
+      texcl=false]{shell-session}
+      > bombardier -c 100 -n 500000 -m POST -b "{'message': 'test','UserId': 1,'SubjectId': 1}" -l http://localhost:3000/review
+      \end{minted}
+      \caption{\label{code:Bombardier100}Gebruik Bombardier commando met 500000 verzoeken en 100 gelijktijdige connecties}
+\end{listing}
+\begin{listing}[H]
+  \centering
+  \begin{minted}[bgcolor=bg,
+      fontfamily=tt,
+      linenos=true,
+      numberblanklines=true,
+      numbersep=5pt,  
+      gobble=0,
+      framesep=2mm,
+      tabsize=4,
+      obeytabs=false,
+      breaklines=true,
+      mathescape=false
+      samepage=false,
+      showspaces=false,
+      showtabs =false,
+      texcl=false]{shell-session}
+      > bombardier -c 1000 -n 500000 -m POST -b "{'message': 'test','UserId': 1,'SubjectId': 1}" -l http://localhost:3000/review
+      \end{minted}
+      \caption{\label{code:Bombardier1000}Gebruik Bombardier commando met 500000 verzoeken en 1000 gelijktijdige connecties}
+\end{listing}
+Als laatste wordt het ingebouwde commando time gebruikt om het cpu-gebruik en geheugengebruik te meten bij de proof-of-concepts.
+bombardier -c 10 -n 10 -m POST -b "{'message': 'test','UserId': 1,'SubjectId': 1}" -l http://localhost:3000/review
 \subsection{Resultaten proof-of-concept}

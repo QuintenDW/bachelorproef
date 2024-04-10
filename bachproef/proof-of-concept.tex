@@ -19,6 +19,8 @@ Deze metingen zullen worden uitgevoerd op een Mac mini met volgende specificatie
   \item 8GB aan unified memory.
   \item Het macOS Sonoma besturingssysteem
   \item 256GB aan SSD opslag.
+  \item Versie 21 van Node.js.
+  \item Versie 1.1.3 van Bun.
 \end{itemize}
 De eerste proof-of-concept zal bestaan uit een script dat het Quick Sort algoritme bevat. 
 Deze zal dienen om de computationele verwerking van elke omgeving te beoordelen. Hierbij wordt rekening gehouden met volgende metingen:
@@ -26,7 +28,6 @@ Deze zal dienen om de computationele verwerking van elke omgeving te beoordelen.
     \item De gemiddelde uitvoeringstijd.
     \item Het gemiddelde CPU-gebruik.
     \item Het maximale geheugengebruik.
-    \item De gemiddelde installatietijd.
 \end{itemize}
 Het Quick Sort algoritme zal een meegegeven array sorteren door een spil element te kiezen binnen de array, 
 en hierna de array in 2 arrays opsplitsen. De eerste array zal elementen bevatten die kleiner zijn dan het spil element 
@@ -159,7 +160,7 @@ module.exports = {
   UserInit,
 };
 \end{minted}
-\caption{\label{code:User}Code van gebruiker model}
+\caption{\label{code:User}Code van het gebruiker model}
 \end{listing}
 
 \begin{listing}[H]
@@ -206,7 +207,7 @@ module.exports = {
   SubjectInit,
 };
 \end{minted}
-\caption{\label{code:Subject}Code van onderwerp model}
+\caption{\label{code:Subject}Code van het onderwerp model}
 \end{listing}
 
 \begin{listing}[H]
@@ -251,12 +252,13 @@ module.exports = async (sequelize) => {
   await Review.sync();
 };
 \end{minted}
-\caption{\label{code:Review}Code van recensie model}
+\caption{\label{code:Review}Code van het recensie model}
 \end{listing}
 
 In de code ~\ref{code:Instantie} wordt een connectie aangemaakt met de databank met behulp van Sequelize. 
 De benodigde configuratie wordt met behulp van de config en env-cmd packages opgehaald. Zo is de 
 gebruikersnaam, databasenaam en de technologie van de database te vinden in de configuratie bestanden.
+Voor zowel te kunnen werken met MySQL als Postgres wordt gebruikgemaakt van de packages: mysql2 en pg.
 Het wachtwoord zal dankzij env-cmd opgehaald worden uit het environment om zo de veiligheid te waarborgen.
 Deze configuratie wordt dan gebruikt om de connectie aan te maken en de tabellen te initializeren.
 Nadien worden ook de gebruiker en onderwerp tabel opgevuld met voorbeeld data zoals te zien is in ~\ref{code:Seed}.
@@ -345,7 +347,7 @@ async function seed(sequelize) {
   // Go to original state
   await sequelize.models.User.destroy({ truncate: { cascade: true } });
   await sequelize.models.Subject.destroy({ truncate: { cascade: true } });
-  await await sequelize.models.User.create({
+  await sequelize.models.User.create({
     id: 1,
     firstName: "Quinten",
     lastName: "De Wolf",
@@ -446,7 +448,7 @@ Bij de metingen wordt telkens versie 1.18 van Hyperfine gebruikt.
       showspaces=false,
       showtabs =false,
       texcl=false]{shell-session}
-      > hyperfine 'node index.js 10000' 'bun index.js 10000'
+      > hyperfine 'node index.js 1000' 'bun index.js 1000'
       \end{minted}
       \caption{\label{code:HyperfineScript}Gebruik Hyperfine commando bij het script}
 \end{listing}
@@ -541,5 +543,18 @@ Bij de metingen wordt hiervoor gebruikgemaakt van versie 1.2.6 van Bombardier.
       \caption{\label{code:Bombardier1000}Gebruik Bombardier commando met 500000 verzoeken en 1000 gelijktijdige connecties}
 \end{listing}
 Als laatste wordt het ingebouwde commando time gebruikt om het cpu-gebruik en geheugengebruik te meten bij de proof-of-concepts.
-bombardier -c 10 -n 10 -m POST -b "{'message': 'test','UserId': 1,'SubjectId': 1}" -l http://localhost:3000/review
 \subsection{Resultaten proof-of-concept}
+In deze sectie zullen de resultaten van de performantie testen besproken worden.
+Hierbij worden eerst de resultaten voor de uitvoeringstijd, cpu-gebruik en geheugengebruik bij het Quick Sort algoritme bekeken.
+Daarna worden de resultaten van de server besproken op vlak van uitvoeringstijd, cpu-gebruik, geheugengebruik, responstijd en de installatietijd.
+
+\subsubsection{Resultaten Quick Sort algoritme}
+De resultaten voor de gemiddelde uitvoeringstijd bij het Quick Sort algoritme werden bekomen doormiddel van Hyperfine.
+Hierbij werd gekeken naar de uitvoeringstijd voor het sorteren van een array bestaande uit 1000 elementen met volgend commando \ref{code:HyperfineScript}.
+In figuur \ref{fig:uitvoeringstijdscript} wordt de gemiddelde uitvoeringstijd per omgeving visueel voorgesteld. 
+Daarbij is op te merken dat de gemiddelde uitvoeringstijd van Bun gemiddeld 2.21 keer sneller is dan bij Node.js.
+\begin{figure}[H]
+  \centering
+  \includegraphics{graphics/scriptuitvoeringstijd.png}
+  \caption{\label{fig:uitvoeringstijdscript}Gemiddelde uitvoeringstijd bij het Quick Sort algoritme voor Bun en Node.js}
+\end{figure}

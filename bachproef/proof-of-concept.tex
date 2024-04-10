@@ -88,10 +88,10 @@ Hierbij kan een gebruiker een recensie creëren over een bepaald onderwerp.
 Binnen de proof-of-concepts zal hierbij getest worden met zowel een Postgres databank als een MySQL databank.
 Hierbij wordt rekening gehouden met volgende metingen:
 \begin{itemize}
-    \item De gemiddelde uitvoeringstijd.
+    \item De gemiddelde verzoeken per seconde die het kan verwerken.
     \item Het gemiddelde CPU-gebruik.
     \item Het maximale geheugengebruik.
-    \item De responstijd.
+    \item De gemiddelde responstijd.
     \item Het aantal gelijktijdige connecties.
     \item Het aantal verzoeken.
     \item De gemiddelde installatietijd.
@@ -496,7 +496,7 @@ Bij de metingen wordt hiervoor gebruikgemaakt van versie 1.2.6 van Bombardier.
       showspaces=false,
       showtabs =false,
       texcl=false]{shell-session}
-      > bombardier -c 10 -n 500000 -m POST -b "{'message': 'test','UserId': 1,'SubjectId': 1}" -l http://localhost:3000/review
+      > bombardier -c 10 -n 500000 -m POST -b '{"message": "test","UserId": 1,"SubjectId": 1}' -l http://localhost:3000/review
       \end{minted}
       \caption{\label{code:Bombardier10}Gebruik Bombardier commando met 500000 verzoeken en 10 gelijktijdige connecties}
 \end{listing}
@@ -517,7 +517,7 @@ Bij de metingen wordt hiervoor gebruikgemaakt van versie 1.2.6 van Bombardier.
       showspaces=false,
       showtabs =false,
       texcl=false]{shell-session}
-      > bombardier -c 100 -n 500000 -m POST -b "{'message': 'test','UserId': 1,'SubjectId': 1}" -l http://localhost:3000/review
+      > bombardier -c 100 -n 500000 -m POST -b '{"message": "test","UserId": 1,"SubjectId": 1}' -l http://localhost:3000/review
       \end{minted}
       \caption{\label{code:Bombardier100}Gebruik Bombardier commando met 500000 verzoeken en 100 gelijktijdige connecties}
 \end{listing}
@@ -538,11 +538,12 @@ Bij de metingen wordt hiervoor gebruikgemaakt van versie 1.2.6 van Bombardier.
       showspaces=false,
       showtabs =false,
       texcl=false]{shell-session}
-      > bombardier -c 1000 -n 500000 -m POST -b "{'message': 'test','UserId': 1,'SubjectId': 1}" -l http://localhost:3000/review
+      > bombardier -c 1000 -n 500000 -m POST -b '{"message": "test","UserId": 1,"SubjectId": 1}' -l http://localhost:3000/review
       \end{minted}
       \caption{\label{code:Bombardier1000}Gebruik Bombardier commando met 500000 verzoeken en 1000 gelijktijdige connecties}
 \end{listing}
 Als laatste wordt het ingebouwde commando time gebruikt om het cpu-gebruik en geheugengebruik te meten bij de proof-of-concepts.
+
 \subsection{Resultaten proof-of-concept}
 In deze sectie zullen de resultaten van de performantie testen besproken worden.
 Hierbij worden eerst de resultaten voor de uitvoeringstijd, cpu-gebruik en geheugengebruik bij het Quick Sort algoritme bekeken.

@@ -448,7 +448,7 @@ Bij de metingen wordt telkens versie 1.18 van Hyperfine gebruikt.
       showspaces=false,
       showtabs =false,
       texcl=false]{shell-session}
-      > hyperfine 'node index.js 1000' 'bun index.js 1000'
+> hyperfine 'node index.js 1000' 'bun index.js 1000'
       \end{minted}
       \caption{\label{code:HyperfineScript}Gebruik Hyperfine commando bij het script}
 \end{listing}
@@ -470,7 +470,7 @@ Bij de metingen wordt telkens versie 1.18 van Hyperfine gebruikt.
       showspaces=false,
       showtabs =false,
       texcl=false]{shell-session}
-      > hyperfine --prepare 'rm -rf node_modules' --warmup 1 --runs 10 'npm install' 'bun install'
+> hyperfine --prepare 'rm -rf node_modules' --warmup 1 --runs 10 'npm install' 'bun install'
       \end{minted}
       \caption{\label{code:HyperfineInstall}Gebruik Hyperfine commando bij het script}
 \end{listing}
@@ -496,7 +496,7 @@ Bij de metingen wordt hiervoor gebruikgemaakt van versie 1.2.6 van Bombardier.
       showspaces=false,
       showtabs =false,
       texcl=false]{shell-session}
-      > bombardier -c 10 -n 500000 -m POST -b '{"message": "test","UserId": 1,"SubjectId": 1}' -l http://localhost:3000/review
+> bombardier -c 10 -n 500000 -m POST -b '{"message": "test","UserId": 1,"SubjectId": 1}' -l http://localhost:3000/review
       \end{minted}
       \caption{\label{code:Bombardier10}Gebruik Bombardier commando met 500000 verzoeken en 10 gelijktijdige connecties}
 \end{listing}
@@ -517,7 +517,7 @@ Bij de metingen wordt hiervoor gebruikgemaakt van versie 1.2.6 van Bombardier.
       showspaces=false,
       showtabs =false,
       texcl=false]{shell-session}
-      > bombardier -c 100 -n 500000 -m POST -b '{"message": "test","UserId": 1,"SubjectId": 1}' -l http://localhost:3000/review
+> bombardier -c 100 -n 500000 -m POST -b '{"message": "test","UserId": 1,"SubjectId": 1}' -l http://localhost:3000/review
       \end{minted}
       \caption{\label{code:Bombardier100}Gebruik Bombardier commando met 500000 verzoeken en 100 gelijktijdige connecties}
 \end{listing}
@@ -538,11 +538,150 @@ Bij de metingen wordt hiervoor gebruikgemaakt van versie 1.2.6 van Bombardier.
       showspaces=false,
       showtabs =false,
       texcl=false]{shell-session}
-      > bombardier -c 1000 -n 500000 -m POST -b '{"message": "test","UserId": 1,"SubjectId": 1}' -l http://localhost:3000/review
+> bombardier -c 1000 -n 500000 -m POST -b '{"message": "test","UserId": 1,"SubjectId": 1}' -l http://localhost:3000/review
       \end{minted}
       \caption{\label{code:Bombardier1000}Gebruik Bombardier commando met 500000 verzoeken en 1000 gelijktijdige connecties}
 \end{listing}
 Als laatste wordt het ingebouwde commando time gebruikt om het cpu-gebruik en geheugengebruik te meten bij de proof-of-concepts.
+
+Bij de uitvoering wordt gewerkt met een vorm van containervirtualisatie genaamd Docker.
+Hierbij zit elke aplicatie in zijn eigen containervirtualisatie waarbij aan de hand van een dockerfile deze telkens wordt opgezet.
+In \ref{code:dockerscript} is de dockerfile voor het Quick Sort algoritme te zien. 
+Hierbij wordt vertrokken van een omgeving die Node.js al bevat waar nadien Hyperfine en Bun worden geïnstalleerd.
+Hierna wordt dan met behulp van Hyperfine de uitvoeringstijd van Bun en Node.js berekend.
+Voor de HTTP server is er nog een bijkomende
+docker-compose bestand \ref{code:dockerscript} waar aan de hand van het commando docker-compose up --build
+zowel de databank als de server kan worden opgestart. Een voorbeeld hiervan voor een mysql database is te zien in \ref{code:dockercompose}.
+Hiernaast wordt dan ook een dockerfile gebruikt om de server te starten. De dockerfile voor de Node.js server is te vinden in \ref{code:dockernode}.
+\begin{listing}[H]
+  \centering
+  \begin{minted}[bgcolor=bg,
+      fontfamily=tt,
+      linenos=true,
+      numberblanklines=true,
+      numbersep=5pt,  
+      gobble=0,
+      framesep=2mm,
+      tabsize=4,
+      obeytabs=false,
+      breaklines=true,
+      mathescape=false
+      samepage=false,
+      showspaces=false,
+      showtabs =false,
+      texcl=false]{shell-session}
+# Use a base image with Node.js pre-installed
+FROM node:21
+
+# Install hyperfine using apt
+RUN apt-get update && \
+    apt-get install -y curl && \
+    apt-get install -y hyperfine
+
+RUN curl -fsSL https://bun.sh/install | bash && \
+  ln -s $HOME/.bun/bin/bun /usr/local/bin/bun
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy your Node.js application files into the container
+COPY . .
+RUN ~/.bun/bin/bun install
+# Define the command to be executed when the container starts
+CMD ["hyperfine","node index.js 1000", "bun index.js 1000"]
+      \end{minted}
+      \caption{\label{code:dockerscript}Dockerfile voor het Quick Sort algoritme}
+\end{listing}
+
+\begin{listing}[H]
+  \centering
+  \begin{minted}[bgcolor=bg,
+      fontfamily=tt,
+      linenos=true,
+      numberblanklines=true,
+      numbersep=5pt,  
+      gobble=0,
+      framesep=2mm,
+      tabsize=4,
+      obeytabs=false,
+      breaklines=true,
+      mathescape=false
+      samepage=false,
+      showspaces=false,
+      showtabs =false,
+      texcl=false]{shell-session}
+version: '3'
+
+services:
+mysql:
+  image: mysql:latest
+  environment:
+    MYSQL_ROOT_PASSWORD: Test12345
+    MYSQL_DATABASE: review
+  ports:
+    - "3306:3306"
+  healthcheck:
+    test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+    interval: 5s
+    timeout: 3s
+    retries: 5
+
+server:
+  build: .
+  depends_on:
+    mysql:
+      condition: service_healthy
+  ports:
+    - "3000:3000"
+  environment:
+    MYSQL_HOST: mysql
+    MYSQL_PORT: 3306
+    MYSQL_USER: root
+    MYSQL_PASSWORD: Test12345
+    MYSQL_DATABASE: review
+      \end{minted}
+      \caption{\label{code:dockercompose}Docker compose bestand voor het opstarten van de mysql database en server}
+\end{listing}
+
+\begin{listing}[H]
+  \centering
+  \begin{minted}[bgcolor=bg,
+      fontfamily=tt,
+      linenos=true,
+      numberblanklines=true,
+      numbersep=5pt,  
+      gobble=0,
+      framesep=2mm,
+      tabsize=4,
+      obeytabs=false,
+      breaklines=true,
+      mathescape=false
+      samepage=false,
+      showspaces=false,
+      showtabs =false,
+      texcl=false]{shell-session}
+# Use the official Node.js image
+FROM node:21
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Copy the package.json and package-lock.json files to the container
+COPY package*.json ./
+
+# Install dependencies
+RUN npm install
+
+# Copy the rest of the application code to the container
+COPY . .
+
+# Expose the port your app runs on
+EXPOSE 3000
+
+# Set the command to run your app
+CMD ["npm", "run", "dev"]
+      \end{minted}
+      \caption{\label{code:dockernode}Dockerfile voor de node server}
+\end{listing}
 
 \subsection{Resultaten proof-of-concept}
 In deze sectie zullen de resultaten van de performantie testen besproken worden.

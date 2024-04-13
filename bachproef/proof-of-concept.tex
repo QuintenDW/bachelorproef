@@ -9,7 +9,7 @@ In dit hoofdstuk wordt de proof-of-concept besproken
 waarbij een beoordeling wordt gevormd van de omgevingen op basis van de performantie metingen.
 Allereerst wordt de opzet van de proof-of-concepts voor beide omgevingen besproken.
 Hierna worden de performantie metingen uitgevoerd voor beide omgevingen waarna de resultaten worden besproken.
-Als laatste worden alle resultaten samengevat op zo het te bekijken of Bun een geschikte plaatsvervanger van Node.js kan zijn.
+Als laatste worden alle resultaten samengevat om zo te bekijken of Bun een geschikte plaatsvervanger van Node.js kan zijn.
 
 \subsection{Opzet proof-of-concept}
 Voor de performantie te meten wordt er per omgeving 2 proof-of-concepts gemaakt. 
@@ -29,8 +29,8 @@ Deze zal dienen om de computationele verwerking van elke omgeving te beoordelen.
     \item Het gemiddelde CPU-gebruik.
     \item Het maximale geheugengebruik.
 \end{itemize}
-Het Quick Sort algoritme zal een meegegeven array sorteren door een spil element te kiezen binnen de array, 
-en hierna de array in 2 arrays opsplitsen. De eerste array zal elementen bevatten die kleiner zijn dan het spil element 
+Het Quick Sort algoritme zal een meegegeven array sorteren door een spil element te kiezen binnen de array
+waarna de array in 2 arrays wordt opgesplitst. De eerste array zal elementen bevatten die kleiner zijn dan het spil element 
 en de andere array zal elementen bevatten die groter zijn. 
 De 2 arrays worden vervolgens telkens recursief gesorteerd met dezelfde methode om zo een gesorteerde array te bekomen.
 In het codevoorbeeld ~\ref{code:quicksort} kan de code voor het Quick Sort algoritme gevonden worden.
@@ -82,13 +82,13 @@ quickSort(myArray);
         \caption{\label{code:quicksort}Code voorbeeld quicksort}
 \end{listing}
 
-Naast de computationele verwerking te meten, wordt ook performantie bij I/O-taken gemeten.
+Naast de computationele verwerking te meten, wordt ook de performantie bij I/O-taken gemeten.
 Dit wordt gedaan door een proof-of-concept op te stellen die een applicatie back-end voorstelt in de respectievelijke omgeving.
 Hierbij kan een gebruiker een recensie creëren over een bepaald onderwerp. 
 Binnen de proof-of-concepts zal hierbij getest worden met zowel een Postgres databank als een MySQL databank.
 Hierbij wordt rekening gehouden met volgende metingen:
 \begin{itemize}
-    \item De gemiddelde verzoeken per seconde die het kan verwerken.
+    \item Het gemiddeld aantal verzoeken per seconde die het kan verwerken.
     \item Het gemiddelde CPU-gebruik.
     \item Het maximale geheugengebruik.
     \item De gemiddelde responstijd.
@@ -96,7 +96,7 @@ Hierbij wordt rekening gehouden met volgende metingen:
     \item Het aantal verzoeken.
     \item De gemiddelde installatietijd.
 \end{itemize}
-Bij de proof-of-concepts worden enkel de ingebouwde HTTP servers gebruikt om zo beïnvloeding van externe bibliotheken te vermijden.
+Bij de proof-of-concepts worden enkel de ingebouwde HTTP servers gebruikt om zo beïnvloeding van externe bibliotheken te minimaliseren.
 Voor de binnengekomen data naar een database te schrijven wordt een Object Relational Mapper (ORM) gebruikt. 
 Hierbij wordt persistentie bereikt door de objecten binnen de applicatie te koppelen met tabellen in de database \autocite{Lorenz2017}.
 De ORM zal deze koppeling afhandelen en zo een abstractie creëren die de technische details van de mappingimplementatie verbergt \autocite{Lorenz2017}.
@@ -112,7 +112,7 @@ Doormiddel van de sync methode wordt dit model gesynchroniseerd met de database.
 Het model van het onderwerp is gelijkaardig aan de gebruiker zoals te zien is in ~\ref{code:Subject}. Het recensie model heeft bijkomend 
 ook nog de 1-op-1 relatie met respectievelijk de gebruiker en het onderwerp.
 Om deze relatie tot stand te brengen wordt de belongsTo methode gebruikt in ~\ref{code:Review}. 
-Deze zal in de tabel een vreemde sleutel toevoegen naar respectievelijk de gebruiker tabel en het onderwerp tabel. 
+Deze zal in de tabel een vreemde sleutel toevoegen naar zowel de gebruiker tabel als de onderwerp tabel. 
 \begin{listing}[H]
   \centering
   \begin{minted}[bgcolor=bg,
@@ -255,11 +255,11 @@ module.exports = async (sequelize) => {
 \caption{\label{code:Review}Code van het recensie model}
 \end{listing}
 
-In de code ~\ref{code:Instantie} wordt een connectie aangemaakt met de databank met behulp van Sequelize. 
-De benodigde configuratie wordt met behulp van de config en env-cmd packages opgehaald. Zo is de 
+In de code ~\ref{code:Instantie} wordt een connectie aangemaakt met de databank door het gebruik van Sequelize. 
+De benodigde configuratie wordt met behulp van de config package opgehaald. Zo is de 
 gebruikersnaam, databasenaam en de technologie van de database te vinden in de configuratie bestanden.
 Voor zowel te kunnen werken met MySQL als Postgres wordt gebruikgemaakt van de packages: mysql2 en pg.
-Het wachtwoord zal dankzij env-cmd opgehaald worden uit het environment om zo de veiligheid te waarborgen.
+Het wachtwoord zal dankzij de config package opgehaald worden uit het environment om zo de veiligheid te waarborgen.
 Deze configuratie wordt dan gebruikt om de connectie aan te maken en de tabellen te initializeren.
 Nadien worden ook de gebruiker en onderwerp tabel opgevuld met voorbeeld data zoals te zien is in ~\ref{code:Seed}.
 
@@ -374,6 +374,7 @@ Als laatste wordt de server aangemaakt om een POST methode op het review endpoin
 In ~\ref{code:NodeServer} wordt de code om dit te bereiken in Node.js getoond. Hierbij komt data in de vorm van JSON binnen.
 Deze bevat de recensie in combinatie met het id van het onderwerp en de gebruiker.
 Deze zal dan gebruikt worden om een nieuwe rij aan te maken in de recensie tabel.
+In ~\ref{code:BunServer} kan dezelfde functionele code worden gevonden voor Bun.
 
 \begin{listing}[H]
   \centering
@@ -401,13 +402,11 @@ async function main() {
       if (req.method === "POST" && req.url === "/review") {
         let body = "";
         req.on("data", (data) => {
-          body += data.toString(); // Convert buffer to string
+          body += data.toString();
         });
         req.on("end", async () => {
           try {
             const data = JSON.parse(body);
-            // Validate data using @hapi/joi or any other validation library
-            // For simplicity, let's assume the data is valid
             await sequelizeInstance.models.Review.create(data);
             res.writeHead(201, { "Content-Type": "application/json" });
             res.end();
@@ -423,7 +422,46 @@ async function main() {
 }
 main();
 \end{minted}
-\caption{\label{code:NodeServer}Code om de requests te ontvangen}
+\caption{\label{code:NodeServer}Code om de requests te ontvangen binnen Node.js}
+\end{listing}
+\begin{listing}[H]
+  \centering
+  \begin{minted}[bgcolor=bg,
+      fontfamily=tt,
+      linenos=true,
+      numberblanklines=true,
+      numbersep=5pt,
+      gobble=0,
+      framesep=2mm,
+      tabsize=4,
+      obeytabs=false,
+      breaklines=true,
+      mathescape=false
+      samepage=false,
+      showspaces=false,
+      showtabs =false,
+      texcl=false]{js}
+const { initializeSequelize } = require("./sequelize.js");
+const sequelizeInstance = await initializeSequelize();
+Bun.serve({
+    port:3000,
+    async fetch(request) {
+        try {
+            const url = new URL(request.url);
+            if (request.method === "POST" && url.pathname === "/review") {
+                const data = await Bun.readableStreamToJSON(request.body);
+                await sequelizeInstance.models.Review.create(data);
+                return new Response('',{headers: { "Content-Type": "application/json"}, status: 201});
+            }
+        } catch (error) {
+            console.error("Error:", error);
+            return new Response(JSON.stringify({ message: 'Invalid data'}), 
+            {headers: { "Content-Type": "application/json"}, status: 400})
+        }
+    }
+})
+\end{minted}
+\caption{\label{code:BunServer}Code om de requests te ontvangen binnen server}
 \end{listing}
 \subsection{Uitvoering metingen}
 Voor de metingen wordt gebruikgemaakt van 2 hulpprogramma's: Hyperfine en Bombardier.
@@ -474,7 +512,7 @@ Bij de metingen wordt telkens versie 1.18 van Hyperfine gebruikt.
       \end{minted}
       \caption{\label{code:HyperfineInstall}Gebruik Hyperfine commando bij het script}
 \end{listing}
-Daarnaast wordt voor de HTTP server gebruik gemaakt van Bombardier. 
+Daarnaast wordt voor de HTTP server gebruikgemaakt van Bombardier. 
 Hierbij kan ingesteld worden hoeveel gelijktijdige connecties er zijn en hoeveel verzoeken per test worden verstuurd.
 In de metingen zal getest worden door 500000 verzoeken te sturen met 10, 100 en 1000 gelijktijdige connecties.
 De commando's hiervoor zijn terug te vinden in \ref{code:Bombardier10}, \ref{code:Bombardier100} en \ref{code:Bombardier1000}.
@@ -542,17 +580,16 @@ Bij de metingen wordt hiervoor gebruikgemaakt van versie 1.2.6 van Bombardier.
       \end{minted}
       \caption{\label{code:Bombardier1000}Gebruik Bombardier commando met 500000 verzoeken en 1000 gelijktijdige connecties}
 \end{listing}
-Als laatste wordt het ingebouwde commando time gebruikt om het cpu-gebruik en geheugengebruik te meten bij de proof-of-concepts.
-
 Bij de uitvoering wordt gewerkt met een vorm van containervirtualisatie genaamd Docker.
-Hierbij zit elke aplicatie in zijn eigen containervirtualisatie waarbij aan de hand van een dockerfile deze telkens wordt opgezet.
+Hierbij zit elke aplicatie in zijn eigen container waarbij aan de hand van een dockerfile deze telkens wordt opgezet.
 In \ref{code:dockerscript} is de dockerfile voor het Quick Sort algoritme te zien. 
 Hierbij wordt vertrokken van een omgeving die Node.js al bevat waar nadien Hyperfine en Bun worden geïnstalleerd.
 Hierna wordt dan met behulp van Hyperfine de uitvoeringstijd van Bun en Node.js berekend.
-Voor de HTTP server is er nog een bijkomende
+Voor de HTTP server is er nog een bijkomend
 docker-compose bestand \ref{code:dockerscript} waar aan de hand van het commando docker-compose up --build
 zowel de databank als de server kan worden opgestart. Een voorbeeld hiervan voor een mysql database is te zien in \ref{code:dockercompose}.
-Hiernaast wordt dan ook een dockerfile gebruikt om de server te starten. De dockerfile voor de Node.js server is te vinden in \ref{code:dockernode}.
+Hiernaast wordt dan ook een dockerfile gebruikt om de server te starten. De dockerfile voor de Node.js en Bun server is te vinden in
+ respectievelijk \ref{code:dockernode} en \ref{code:dockerbun}.
 \begin{listing}[H]
   \centering
   \begin{minted}[bgcolor=bg,
@@ -569,7 +606,7 @@ Hiernaast wordt dan ook een dockerfile gebruikt om de server te starten. De dock
       samepage=false,
       showspaces=false,
       showtabs =false,
-      texcl=false]{shell-session}
+      texcl=false]{bash}
 # Use a base image with Node.js pre-installed
 FROM node:21
 
@@ -608,7 +645,7 @@ CMD ["hyperfine","node index.js 1000", "bun index.js 1000"]
       samepage=false,
       showspaces=false,
       showtabs =false,
-      texcl=false]{shell-session}
+      texcl=false]{yaml}
 version: '3'
 
 services:
@@ -658,7 +695,7 @@ server:
       samepage=false,
       showspaces=false,
       showtabs =false,
-      texcl=false]{shell-session}
+      texcl=false]{bash}
 # Use the official Node.js image
 FROM node:21
 
@@ -683,12 +720,52 @@ CMD ["npm", "run", "dev"]
       \caption{\label{code:dockernode}Dockerfile voor de node server}
 \end{listing}
 
+\begin{listing}[H]
+  \centering
+  \begin{minted}[bgcolor=bg,
+      fontfamily=tt,
+      linenos=true,
+      numberblanklines=true,
+      numbersep=5pt,  
+      gobble=0,
+      framesep=2mm,
+      tabsize=4,
+      obeytabs=false,
+      breaklines=true,
+      mathescape=false
+      samepage=false,
+      showspaces=false,
+      showtabs =false,
+      texcl=false]{bash}
+# Use the official bun image
+FROM oven/bun:1.1.3 as base
+
+# Set the working directory in the container
+WORKDIR /usr/src/app
+
+# Copy the package.json,bun.lockb files to the container
+COPY package.json bun.lockb ./
+# Install dependencies
+RUN bun install
+
+# Copy the rest of the application code to the container
+COPY . .
+
+# Expose the port your app runs on
+EXPOSE 3000
+
+# Set the command to run your app
+CMD ["bun", "run", "index.js"]
+      \end{minted}
+      \caption{\label{code:dockerbun}Dockerfile voor de bun server}
+\end{listing}
+
 \subsection{Resultaten proof-of-concept}
 In deze sectie zullen de resultaten van de performantie testen besproken worden.
 Hierbij worden eerst de resultaten voor de uitvoeringstijd, cpu-gebruik en geheugengebruik bij het Quick Sort algoritme bekeken.
 Daarna worden de resultaten van de server besproken op vlak van uitvoeringstijd, cpu-gebruik, geheugengebruik, responstijd en de installatietijd.
 
-\subsubsection{Resultaten Quick Sort algoritme}
+\subsubsection{Resultaten  Quick Sort algoritme}
 De resultaten voor de gemiddelde uitvoeringstijd bij het Quick Sort algoritme werden bekomen doormiddel van Hyperfine.
 Hierbij werd gekeken naar de uitvoeringstijd voor het sorteren van een array bestaande uit 1000 elementen met volgend commando \ref{code:HyperfineScript}.
 In figuur \ref{fig:uitvoeringstijdscript} wordt de gemiddelde uitvoeringstijd per omgeving visueel voorgesteld. 
@@ -696,5 +773,5 @@ Daarbij is op te merken dat de gemiddelde uitvoeringstijd van Bun gemiddeld 2.21
 \begin{figure}[H]
   \centering
   \includegraphics{graphics/scriptuitvoeringstijd.png}
-  \caption{\label{fig:uitvoeringstijdscript}Gemiddelde uitvoeringstijd bij het Quick Sort algoritme voor Bun en Node.js}
+  \caption{\label{fig:uitvoeringstijdscript}Gemiddelde uitvoeringstijd van het Quick Sort algoritme voor Bun en Node.js}
 \end{figure}

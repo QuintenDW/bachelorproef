@@ -447,7 +447,7 @@ Bun.serve({
         try {
             const url = new URL(request.url);
             if (request.method === "POST" && url.pathname === "/review") {
-                const data = await Bun.readableStreamToJSON(request.body);
+                const data = await request.json();
                 await sequelizeInstance.models.Review.create(data);
                 return new Response('',{headers: { "Content-Type": "application/json"}, status: 201});
             }
@@ -506,7 +506,7 @@ Bij de metingen wordt telkens versie 1.18 van Hyperfine gebruikt.
       showspaces=false,
       showtabs =false,
       texcl=false]{shell-session}
-> hyperfine --prepare 'rm -rf node_modules' --warmup 1 --runs 10 'npm install' 'bun install'
+> hyperfine --prepare 'rm -rf node_modules' --warmup 1 --runs 100 'npm install' 'bun install'
       \end{minted}
       \caption{\label{code:HyperfineInstall}Gebruik Hyperfine commando bij het script}
 \end{listing}
@@ -579,15 +579,19 @@ Bij de metingen wordt hiervoor gebruikgemaakt van versie 1.2.6 van Bombardier.
       \caption{\label{code:Bombardier1000}Gebruik Bombardier commando met 500000 verzoeken en 1000 gelijktijdige connecties}
 \end{listing}
 Bij de uitvoering wordt gewerkt met een vorm van containervirtualisatie genaamd Docker.
-Hierbij zit elke aplicatie in zijn eigen container waarbij aan de hand van een dockerfile deze telkens wordt opgezet.
-In \ref{code:dockerscript} is de dockerfile voor het Quick Sort algoritme te zien. 
+Hierbij zit elke aplicatie in zijn eigen container waarbij aan de hand van een Dockerfile deze telkens wordt opgezet.
+In \ref{code:dockerscript} is de Dockerfile voor het Quick Sort algoritme te zien. 
 Hierbij wordt vertrokken van een omgeving die Node.js al bevat waar nadien Hyperfine en Bun worden geïnstalleerd.
 Hierna wordt dan met behulp van Hyperfine de uitvoeringstijd van Bun en Node.js berekend.
+Dit bestand moet eerst gebouwd worden met het docker build commando waarvan een voorbeeld te vinden is in \ref{code:dockerbuild}.
+Daarna moet de image worden uitgevoerd met het docker run commando zoals het voorbeeld in \ref{code:dockerrun}.
 Voor de HTTP server is er nog een bijkomend
-docker-compose bestand \ref{code:dockerscript} waar aan de hand van het commando docker-compose up --build
+Docker Compose bestand \ref{code:dockerscript} waar aan de hand van het commando Docker-compose up --build
 zowel de databank als de server kan worden opgestart. Een voorbeeld hiervan voor een mysql database is te zien in \ref{code:dockercompose}.
-Hiernaast wordt dan ook een dockerfile gebruikt om de server te starten. De dockerfile voor de Node.js en Bun server is te vinden in
- respectievelijk \ref{code:dockernode} en \ref{code:dockerbun}.
+Hiernaast wordt dan ook een Dockerfile gebruikt om de server te starten. De Dockerfile voor de Node.js en Bun server is te vinden in
+respectievelijk \ref{code:dockernode} en \ref{code:dockerbun}. 
+Daarnaast wordt bij de server ook de installatietijd van de package managers gemeten met de Dockerfile \ref{code:dockerinstall}.
+Hiervoor wordt ook Hyperfine gebruikt waarbij de cache al wordt opgevuld door de warmup in het commando.
 \begin{listing}[H]
   \centering
   \begin{minted}[bgcolor=bg,
@@ -605,28 +609,69 @@ Hiernaast wordt dan ook een dockerfile gebruikt om de server te starten. De dock
       showspaces=false,
       showtabs =false,
       texcl=false]{bash}
-# Use a base image with Node.js pre-installed
+# Base image met Node.js geïnstalleerd
 FROM node:21
 
-# Install hyperfine using apt
+# Installeer Hyperfine met apt
 RUN apt-get update && \
     apt-get install -y curl && \
     apt-get install -y hyperfine
 
 RUN curl -fsSL https://bun.sh/install | bash && \
   ln -s $HOME/.bun/bin/bun /usr/local/bin/bun
-# Set the working directory inside the container
+# Zet de werk map in de container
 WORKDIR /app
 
-# Copy your Node.js application files into the container
+# Kopieer de applicatie code naar de container
 COPY . .
 RUN ~/.bun/bin/bun install
-# Define the command to be executed when the container starts
+# Commando dat wordt uitgevoerd wanneer container start
 CMD ["hyperfine","node index.js 1000", "bun index.js 1000"]
       \end{minted}
       \caption{\label{code:dockerscript}Dockerfile voor het Quick Sort algoritme}
 \end{listing}
-
+\begin{listing}[H]
+  \centering
+  \begin{minted}[bgcolor=bg,
+      fontfamily=tt,
+      linenos=true,
+      numberblanklines=true,
+      numbersep=5pt,  
+      gobble=0,
+      framesep=2mm,
+      tabsize=4,
+      obeytabs=false,
+      breaklines=true,
+      mathescape=false
+      samepage=false,
+      showspaces=false,
+      showtabs =false,
+      texcl=false]{shell-session}
+> docker build -f "Dockerfile" -t testimage .
+      \end{minted}
+      \caption{\label{code:dockerbuild}Voorbeeld bouwen van een docker image met naam testimage}
+\end{listing}
+\begin{listing}[H]
+  \centering
+  \begin{minted}[bgcolor=bg,
+      fontfamily=tt,
+      linenos=true,
+      numberblanklines=true,
+      numbersep=5pt,  
+      gobble=0,
+      framesep=2mm,
+      tabsize=4,
+      obeytabs=false,
+      breaklines=true,
+      mathescape=false
+      samepage=false,
+      showspaces=false,
+      showtabs =false,
+      texcl=false]{shell-session}
+> docker run -it testimage .
+      \end{minted}
+      \caption{\label{code:dockerrun}Voorbeeld uitvoeren van een docker image met naam testimage}
+\end{listing}
 \begin{listing}[H]
   \centering
   \begin{minted}[bgcolor=bg,
@@ -674,7 +719,7 @@ server:
     MYSQL_PASSWORD: Test12345
     MYSQL_DATABASE: review
       \end{minted}
-      \caption{\label{code:dockercompose}Docker compose bestand voor het opstarten van de mysql database en server}
+      \caption{\label{code:dockercompose}Docker Compose bestand voor het opstarten van de mysql database en server}
 \end{listing}
 
 \begin{listing}[H]
@@ -694,30 +739,31 @@ server:
       showspaces=false,
       showtabs =false,
       texcl=false]{bash}
-# Use the official Node.js image
+# Base image met Node.js geïnstalleerd
 FROM node:21
 
-# Set the working directory in the container
+# Zet de werk map in de container
 WORKDIR /app
 
-# Copy the package.json and package-lock.json files to the container
+# Kopieer de package.json and package-lock.json bestanden naar de container
 COPY package*.json ./
 
-# Install dependencies
+# Installeer dependencies
 RUN npm install
 
-# Copy the rest of the application code to the container
+# Kopieer de rest van de applicatie code naar de container
 COPY . .
 
-# Expose the port your app runs on
+# Zet de poort open
 EXPOSE 3000
 
-# Set the command to run your app
+# Commando dat wordt uitgevoerd wanneer container start
 CMD ["npm", "run", "dev"]
       \end{minted}
       \caption{\label{code:dockernode}Dockerfile voor de node server}
 \end{listing}
 
+
 \begin{listing}[H]
   \centering
   \begin{minted}[bgcolor=bg,
@@ -735,27 +781,66 @@ CMD ["npm", "run", "dev"]
       showspaces=false,
       showtabs =false,
       texcl=false]{bash}
-# Use the official bun image
+# Base image met bun geïnstalleerd
 FROM oven/bun:1.1.3 as base
 
-# Set the working directory in the container
+# Zet de werk map in de container
 WORKDIR /usr/src/app
 
-# Copy the package.json,bun.lockb files to the container
+# Kopieer de package.json and package-lock.json bestanden naar de container
 COPY package.json bun.lockb ./
-# Install dependencies
+# Installeer dependencies
 RUN bun install
 
-# Copy the rest of the application code to the container
+# Kopieer de rest van de applicatie code naar de container
 COPY . .
 
-# Expose the port your app runs on
+# Zet de poort open
 EXPOSE 3000
 
-# Set the command to run your app
+# Commando dat wordt uitgevoerd wanneer container start
 CMD ["bun", "run", "index.js"]
       \end{minted}
       \caption{\label{code:dockerbun}Dockerfile voor de bun server}
+\end{listing}
+
+\begin{listing}[H]
+  \centering
+  \begin{minted}[bgcolor=bg,
+      fontfamily=tt,
+      linenos=true,
+      numberblanklines=true,
+      numbersep=5pt,  
+      gobble=0,
+      framesep=2mm,
+      tabsize=4,
+      obeytabs=false,
+      breaklines=true,
+      mathescape=false
+      samepage=false,
+      showspaces=false,
+      showtabs =false,
+      texcl=false]{bash}
+# Base image met Node.js geïnstalleerd
+FROM node:21
+
+# Installeer Hyperfine met apt
+RUN apt-get update && \
+    apt-get install -y curl && \
+    apt-get install -y hyperfine
+
+RUN curl -fsSL https://bun.sh/install | bash && \
+  ln -s $HOME/.bun/bin/bun /usr/local/bin/bun
+# Zet de werk map in de container
+WORKDIR /app
+
+# Kopieer de applicatiebestanden naar de container
+COPY . .
+RUN ~/.bun/bin/bun install
+# Commando dat wordt uitgevoerd wanneer container start
+CMD ["hyperfine","--prepare", "rm -rf node_modules", "--warmup","1","--runs","100","bun install","npm install"]
+      \end{minted}
+      \caption{\label{code:dockerinstall}Dockerfile voor de installatietijd te meten bij de server}
 \end{listing}
 
 \subsection{Resultaten proof-of-concept}
@@ -772,4 +857,16 @@ Daarbij is op te merken dat de gemiddelde uitvoeringstijd van Bun gemiddeld 2.21
   \centering
   \includegraphics{graphics/scriptuitvoeringstijd.png}
   \caption{\label{fig:uitvoeringstijdscript}Gemiddelde uitvoeringstijd van het Quick Sort algoritme voor Bun en Node.js}
+\end{figure}
+
+\subsection{Resultaten Recensie applicatie}
+De resultaten voor de gemiddelde installatietijd werden bekomen doormiddel van Hyperfine.
+Hierbij werd eerst een warmup uitvoering gedaan om de cache al op te vullen.
+In figuur \ref{fig:installatietijdapp} zijn de resultaten visueel voorgesteld per omgeving.
+Hierbij is op te merken dat Bun met een gemiddelde installatietijd van 24,9 milliseconden 24,5 keer sneller 
+is dan Node.js met een gemiddelde installatietijd van 610,1 milleseconden.
+\begin{figure}[H]
+  \centering
+  \includegraphics{graphics/install.png}
+  \caption{\label{fig:installatietijdapp}Gemiddelde installatietijd van de packages in Bun en Node.js}
 \end{figure}

@@ -861,13 +861,13 @@ calculate_peak_memory() {
     echo "$peak_memory"
 }
 
-# Start het monitoren
+# Start de monitoring
 docker stats --no-stream <container_naam> --format "table {{.Container}}\t{{.CPUPerc}}\t{{.MemUsage}}" > container_stats.txt &
 
 # Start bombardier
 bombardier -c 10 -n 500000 -m POST -b '{"bericht": "test","GebruikerId": 1,"OnderwerpId": 1}' -l http://localhost:3000/recensie
 
-# Stop het monitoren
+# Stop de monitoring
 killall docker
 
 # Bereken gemiddeld CPU-gebruik
@@ -884,12 +884,12 @@ else
     average_cpu=0
 fi
 
-# Process the captured data to calculate peak memory usage
+# Bepaal maximaal geheugen gebruik
 memory_usages=($(awk 'NR>1 {print $3}' container_stats.txt))
 peak_memory=$(calculate_peak_memory "${memory_usages[@]}")
 
 # Toon resultaten
-echo "Gemiddelde CPU gebruik: $average_cpu%"
+echo "Gemiddelde CPU-gebruik: $average_cpu%"
 echo "Maximaal geheugen gebruik: $peak_memory"
 
       \end{minted}

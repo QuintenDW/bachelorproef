@@ -101,9 +101,9 @@ Voor de binnengekomen data naar een database te schrijven wordt een Object Relat
 Binnen de applicatie zal voor beide omgevingen gebruikt gemaakt worden van het Sequelize ORM. Deze ondersteunt zowel Postgres als MySQL.
 Hierbij worden eerst 3 modellen gemaakt die de volgende tabellen voorstellen in de databank:
 \begin{itemize}
-  \item Het User model dat een gebruiker voorstelt.
-  \item Het Subject model dat een onderwerp voorstelt.
-  \item Het Review model dat de recensie van een bepaalde gebruiker over een bepaald onderwerp voorstelt.
+  \item Het gebruiker model dat een gebruiker voorstelt.
+  \item Het onderwerp model dat een onderwerp voorstelt.
+  \item Het recensie model dat de recensie van een bepaalde gebruiker over een bepaald onderwerp voorstelt.
 \end{itemize}
 De code voor het model van de gebruiker is te vinden in ~\ref{code:User}. Deze bevat 3 kolommen namelijk: de primaire sleutel (id), voornaam en familienaam.
 Doormiddel van de sync methode wordt dit model gesynchroniseerd met de database. 
@@ -128,34 +128,34 @@ Deze zal in de tabel een vreemde sleutel toevoegen naar zowel de gebruiker tabel
       showspaces=false,
       showtabs =false,
       texcl=false]{js}
-const { Model, DataTypes } = require("sequelize");
+const { Model, DataTypes  } = require("sequelize");
 
-class User extends Model {}
+class Gebruiker extends Model {}
 
-async function UserInit(sequelize) {
-  User.init(
+async function GebruikerInit(sequelize) {
+  Gebruiker.init(
     {
       id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true,
       },
-      firstName: {
+      voorNaam: {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      lastName: {
+      achterNaam: {
         type: DataTypes.STRING,
       },
     },
-    { sequelize, modelName: "User" }
+    { sequelize, modelName: "Gebruiker" }
   );
-  await User.sync();
+  await Gebruiker.sync();
 }
 
 module.exports = {
-  User,
-  UserInit,
+  Gebruiker,
+  GebruikerInit,
 };
 \end{minted}
 \caption{\label{code:User}Code van het gebruiker model}
@@ -180,29 +180,29 @@ module.exports = {
       texcl=false]{js}
 const { Model, DataTypes } = require("sequelize");
 
-class Subject extends Model {}
+class Onderwerp extends Model {}
 
-async function SubjectInit(sequelize) {
-  Subject.init(
+async function OnderwerpInit(sequelize) {
+  Onderwerp.init(
     {
       id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true,
       },
-      name: {
+      naam: {
         type: DataTypes.STRING,
         allowNull: false,
       },
     },
-    { sequelize, modelName: "Subject" }
+    { sequelize, modelName: "Onderwerp" }
   );
-  await Subject.sync();
+  await Onderwerp.sync();
 }
 
 module.exports = {
-  Subject,
-  SubjectInit,
+  Onderwerp,
+  OnderwerpInit,
 };
 \end{minted}
 \caption{\label{code:Subject}Code van het onderwerp model}
@@ -226,28 +226,28 @@ module.exports = {
       showtabs =false,
       texcl=false]{js}
 const { Model, DataTypes } = require("sequelize");
-const { User } = require("./user.js");
-const { Subject } = require("./subject.js");
-class Review extends Model {}
+const { Gebruiker } = require("./gebruiker.js");
+const { Onderwerp } = require("./onderwerp.js");
+class Recensie extends Model {}
 
 module.exports = async (sequelize) => {
-  Review.init(
+  Recensie.init(
     {
       id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true,
       },
-      message: {
+      bericht: {
         type: DataTypes.STRING,
         allowNull: false,
       },
     },
-    { sequelize, modelName: "Review" }
+    { sequelize, modelName: "Recensie" }
   );
-  Review.belongsTo(User, { onDelete: "CASCADE" });
-  Review.belongsTo(Subject, { onDelete: "CASCADE" });
-  await Review.sync();
+  Recensie.belongsTo(Gebruiker, { onDelete: "CASCADE" });
+  Recensie.belongsTo(Onderwerp, { onDelete: "CASCADE" });
+  await Recensie.sync();
 };
 \end{minted}
 \caption{\label{code:Review}Code van het recensie model}
@@ -280,20 +280,21 @@ Nadien worden ook de gebruiker en onderwerp tabel opgevuld met voorbeeld data zo
       texcl=false]{js}
 const { Sequelize } = require("sequelize");
 const configuration = require("config");
-const doReviewMigration = require("./review");
+const RecensieMigratie = require("./recensie");
 const seed = require("./seeder");
-const { UserInit } = require("./user");
-const { SubjectInit } = require("./subject");
+const { GebruikerInit } = require("./gebruiker");
+const { OnderwerpInit } = require("./onderwerp");
 //config
 const username = configuration.get("development.username");
 const database = configuration.get("development.database");
 const dialect = configuration.get("development.dialect");
 const password = configuration.get("password");
 
+// Instantie aanmaken
 let sequelize;
 async function initializeSequelize() {
   sequelize = new Sequelize(database, username, password, {
-    host: "localhost",
+    host: "mysql",
     dialect: dialect,
   });
   try {
@@ -302,9 +303,9 @@ async function initializeSequelize() {
   } catch (error) {
     console.error("Unable to connect to the database:", error);
   }
-  await UserInit(sequelize);
-  await SubjectInit(sequelize);
-  await doReviewMigration(sequelize);
+  await GebruikerInit(sequelize);
+  await OnderwerpInit(sequelize);
+  await RecensieMigratie(sequelize);
   await seed(sequelize);
   return sequelize;
 }
@@ -315,7 +316,6 @@ function getSequelize() {
   }
   return sequelize;
 }
-
 module.exports = {
   initializeSequelize,
   getSequelize,
@@ -342,25 +342,25 @@ module.exports = {
       showtabs =false,
       texcl=false]{js}
 async function seed(sequelize) {
-  // Go to original state
-  await sequelize.models.User.destroy({ truncate: { cascade: true } });
-  await sequelize.models.Subject.destroy({ truncate: { cascade: true } });
-  await sequelize.models.User.create({
+  // Originele staat
+  await sequelize.models.Gebruiker.destroy({ truncate: { cascade: true } });
+  await sequelize.models.Onderwerp.destroy({ truncate: { cascade: true } });
+  await sequelize.models.Gebruiker.create({
     id: 1,
-    firstName: "Quinten",
-    lastName: "De Wolf",
+    voorNaam: "Quinten",
+    achterNaam: "De Wolf",
   });
-  await sequelize.models.Subject.create({
+  await sequelize.models.Onderwerp.create({
     id: 1,
-    name: "Cars",
+    naam: "Cars",
   });
-  await sequelize.models.Subject.create({
+  await sequelize.models.Onderwerp.create({
     id: 2,
-    name: "Planes",
+    naam: "Planes",
   });
-  await sequelize.models.Subject.create({
+  await sequelize.models.Onderwerp.create({
     id: 3,
-    name: "Racing",
+    naam: "Racing",
   });
 }
 module.exports = seed;
@@ -397,7 +397,7 @@ async function main() {
   const sequelizeInstance = await initializeSequelize();
   http
     .createServer(async (req, res) => {
-      if (req.method === "POST" && req.url === "/review") {
+      if (req.method === "POST" && req.url === "/recensie") {
         let body = "";
         req.on("data", (data) => {
           body += data.toString();
@@ -405,7 +405,7 @@ async function main() {
         req.on("end", async () => {
           try {
             const data = JSON.parse(body);
-            await sequelizeInstance.models.Review.create(data);
+            await sequelizeInstance.models.Recensie.create(data);
             res.writeHead(201, { "Content-Type": "application/json" });
             res.end();
           } catch (error) {
@@ -446,9 +446,9 @@ Bun.serve({
     async fetch(request) {
         try {
             const url = new URL(request.url);
-            if (request.method === "POST" && url.pathname === "/review") {
+            if (request.method === "POST" && url.pathname === "/recensie") {
                 const data = await request.json();
-                await sequelizeInstance.models.Review.create(data);
+                await sequelizeInstance.models.Recensie.create(data);
                 return new Response('',{headers: { "Content-Type": "application/json"}, status: 201});
             }
         } catch (error) {
@@ -532,7 +532,7 @@ Bij de metingen wordt hiervoor gebruikgemaakt van versie 1.2.6 van Bombardier.
       showspaces=false,
       showtabs =false,
       texcl=false]{shell-session}
-> bombardier -c 10 -n 500000 -m POST -b '{"message": "test","UserId": 1,"SubjectId": 1}' -l http://localhost:3000/review
+> bombardier -c 10 -n 500000 -m POST -b '{"bericht": "test","GebruikerId": 1,"OnderwerpId": 1}' -l http://localhost:3000/recensie
       \end{minted}
       \caption{\label{code:Bombardier10}Gebruik Bombardier commando met 500000 verzoeken en 10 gelijktijdige connecties}
 \end{listing}
@@ -553,7 +553,7 @@ Bij de metingen wordt hiervoor gebruikgemaakt van versie 1.2.6 van Bombardier.
       showspaces=false,
       showtabs =false,
       texcl=false]{shell-session}
-> bombardier -c 100 -n 500000 -m POST -b '{"message": "test","UserId": 1,"SubjectId": 1}' -l http://localhost:3000/review
+> bombardier -c 100 -n 500000 -m POST -b '{"bericht": "test","GebruikerId": 1,"OnderwerpId": 1}' -l http://localhost:3000/recensie
       \end{minted}
       \caption{\label{code:Bombardier100}Gebruik Bombardier commando met 500000 verzoeken en 100 gelijktijdige connecties}
 \end{listing}
@@ -574,7 +574,7 @@ Bij de metingen wordt hiervoor gebruikgemaakt van versie 1.2.6 van Bombardier.
       showspaces=false,
       showtabs =false,
       texcl=false]{shell-session}
-> bombardier -c 1000 -n 500000 -m POST -b '{"message": "test","UserId": 1,"SubjectId": 1}' -l http://localhost:3000/review
+> bombardier -c 1000 -n 500000 -m POST -b '{"bericht": "test","GebruikerId": 1,"OnderwerpId": 1}' -l http://localhost:3000/recensie
       \end{minted}
       \caption{\label{code:Bombardier1000}Gebruik Bombardier commando met 500000 verzoeken en 1000 gelijktijdige connecties}
 \end{listing}
@@ -586,10 +586,13 @@ Hierna wordt dan met behulp van Hyperfine de uitvoeringstijd van Bun en Node.js 
 Dit bestand moet eerst gebouwd worden met het docker build commando waarvan een voorbeeld te vinden is in \ref{code:dockerbuild}.
 Daarna moet de image worden uitgevoerd met het docker run commando zoals het voorbeeld in \ref{code:dockerrun}.
 Voor de HTTP server is er nog een bijkomend
-Docker Compose bestand \ref{code:dockerscript} waar aan de hand van het commando Docker-compose up --build
+Docker Compose bestand \ref{code:dockerscript} waar aan de hand van het commando in \ref{code:dockercompose}
 zowel de databank als de server kan worden opgestart. Een voorbeeld hiervan voor een mysql database is te zien in \ref{code:dockercompose}.
 Hiernaast wordt dan ook een Dockerfile gebruikt om de server te starten. De Dockerfile voor de Node.js en Bun server is te vinden in
 respectievelijk \ref{code:dockernode} en \ref{code:dockerbun}. 
+Om het gemiddelde CPU-gebruik en het maximale geheugengebruik te bepalen wordt het bombardier commando samen met het docker stats commando uitgevoerd in een zsh script.
+Hierbij wordt voordat het bombardier commando wordt uitgevoerd de monitoring gestart van het geheugen en het cpu-gebruik. Nadien wordt het gemiddelde cpu-gebruik en het maximale geheugen gebruik bepaald.
+Een voorbeeld van dit script voor bombardier met 10 connecties is te vinden in \ref{code:zshscript}.
 Daarnaast wordt bij de server ook de installatietijd van de package managers gemeten met de Dockerfile \ref{code:dockerinstall}.
 Hiervoor wordt ook Hyperfine gebruikt waarbij de cache al wordt opgevuld door de warmup in het commando.
 \begin{listing}[H]
@@ -671,6 +674,28 @@ CMD ["hyperfine","node index.js 1000", "bun index.js 1000"]
 > docker run -it testimage .
       \end{minted}
       \caption{\label{code:dockerrun}Voorbeeld uitvoeren van een docker image met naam testimage}
+\end{listing}
+
+\begin{listing}[H]
+  \centering
+  \begin{minted}[bgcolor=bg,
+      fontfamily=tt,
+      linenos=true,
+      numberblanklines=true,
+      numbersep=5pt,  
+      gobble=0,
+      framesep=2mm,
+      tabsize=4,
+      obeytabs=false,
+      breaklines=true,
+      mathescape=false
+      samepage=false,
+      showspaces=false,
+      showtabs =false,
+      texcl=false]{shell-session}
+> docker-compose up --build
+      \end{minted}
+      \caption{\label{code:dockercompose}Uitvoeren van een docker compose}
 \end{listing}
 \begin{listing}[H]
   \centering
@@ -802,6 +827,73 @@ EXPOSE 3000
 CMD ["bun", "run", "index.js"]
       \end{minted}
       \caption{\label{code:dockerbun}Dockerfile voor de bun server}
+\end{listing}
+
+\begin{listing}[H]
+  \centering
+  \begin{minted}[bgcolor=bg,
+      fontfamily=tt,
+      linenos=true,
+      numberblanklines=true,
+      numbersep=5pt,  
+      gobble=0,
+      framesep=2mm,
+      tabsize=4,
+      obeytabs=false,
+      breaklines=true,
+      mathescape=false
+      samepage=false,
+      showspaces=false,
+      showtabs =false,
+      texcl=false]{bash}
+#!/bin/zsh
+
+# Bereken maximaal geheugengebruik
+calculate_peak_memory() {
+    memory_usages=("$@")
+    peak_memory=0
+    for memory_usage in "${memory_usages[@]}"; do
+        memory=${memory_usage//[A-Za-z]/}
+        if (( memory > peak_memory )); then
+            peak_memory=$memory
+        fi
+    done
+    echo "$peak_memory"
+}
+
+# Start het monitoren
+docker stats --no-stream <container_naam> --format "table {{.Container}}\t{{.CPUPerc}}\t{{.MemUsage}}" > container_stats.txt &
+
+# Start bombardier
+bombardier -c 10 -n 500000 -m POST -b '{"bericht": "test","GebruikerId": 1,"OnderwerpId": 1}' -l http://localhost:3000/recensie
+
+# Stop het monitoren
+killall docker
+
+# Bereken gemiddeld CPU-gebruik
+# Verwijder het percentage telkens om een correcte som te bereiken
+cpu_usages=($(awk 'NR>1 {print $2}' container_stats.txt))
+cpu_sum=0
+cpu_count=${#cpu_usages[@]}
+if (( cpu_count > 0 )); then
+    for cpu_usage in "${cpu_usages[@]}"; do
+        cpu_sum=$(( cpu_sum + ${cpu_usage//\%} ))
+    done
+    average_cpu=$(( cpu_sum / cpu_count ))
+else
+    average_cpu=0
+fi
+
+# Process the captured data to calculate peak memory usage
+memory_usages=($(awk 'NR>1 {print $3}' container_stats.txt))
+peak_memory=$(calculate_peak_memory "${memory_usages[@]}")
+
+# Toon resultaten
+echo "Gemiddelde CPU gebruik: $average_cpu%"
+echo "Maximaal geheugen gebruik: $peak_memory"
+
+      \end{minted}
+      \caption{\label{code:zshscript}Dockerfile voor het Quick Sort algoritme}
 \end{listing}
 
 \begin{listing}[H]

@@ -545,3 +545,22 @@ performantie. Andere factoren, die hier niet getest zijn, zoals beveiliging, sta
 Ook waren de geteste programma's redelijk simpel waardoor de resultaten mogelijks niet accuraat zijn voor complexere omgevingen. 
 Verder onderzoek zou volgens de onderzoeker ook baat hebben om rekening te houden met verschillende omstandigheden, zoals CPU-gebonden
 en I/O-gebonden processen, en andere performantie factoren.
+
+\section{Docker}
+Voor omgevingen op te zetten wordt vaak een vorm van automatisatie gebruikt. 
+Hierdoor wordt repliceerbaarheid van de omgeving bereikt. Een manier om dit te doen is met behulp van de tool Docker.
+Deze tool laat containerisatie van een applicatie toe samen met de bijhorende configuratie \textcite{Ibrahim2021}.
+Hierbij wordt een applicatie gedraaid in een container waarbij het besturingssysteem van de machine zelf wordt gebruikt \textcite{Boettiger2015}.
+Als basis wordt een Docker image gebruikt. Dit is een binaire image waarin alle software al geïnstalleerd, geconfigureerd en getest is \textcite{Boettiger2015}.
+Zo bestaan er voor zowel Node.js, Deno als Bun Docker images die kunnen gebruikt worden om de respectievelijke omgeving te installeren in de container.
+Via een Dockerfile kan dan verder gebouwd worden op deze images om zo andere zaken toe te voegen en een nieuwe zelfgemaakte image te bekomen \textcite{Boettiger2015}.
+Een visuele voorstelling van dit proces is te vinden in figuur ~\ref{fig:dockerproces}.
+Veel applicaties bestaan uit meerdere zaken zoals een database, server etc. 
+Met behulp van Docker compose kunnen deze complexe applicaties worden samengesteld. 
+Hierbij worden de verschillende componenten beschreven in een Docker Compose bestand waarbij specifiek hun
+respectievelijke image en configuratie omschreven wordt \textcite{Ibrahim2021}.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.9\textwidth]{graphics/docker_proces.png}
+    \caption{\label{fig:dockerproces}Visuele voorstelling van het Docker proces ~\autocite{Ibrahim2021}}
+\end{figure}

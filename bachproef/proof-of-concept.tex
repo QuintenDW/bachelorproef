@@ -97,9 +97,7 @@ Hierbij wordt rekening gehouden met volgende metingen:
     \item De gemiddelde installatietijd.
 \end{itemize}
 Bij de proof-of-concepts worden enkel de ingebouwde HTTP servers gebruikt om zo beïnvloeding van externe bibliotheken te minimaliseren.
-Voor de binnengekomen data naar een database te schrijven wordt een Object Relational Mapper (ORM) gebruikt. 
-Hierbij wordt persistentie bereikt door de objecten binnen de applicatie te koppelen met tabellen in de database \autocite{Lorenz2017}.
-De ORM zal deze koppeling afhandelen en zo een abstractie creëren die de technische details van de mappingimplementatie verbergt \autocite{Lorenz2017}.
+Voor de binnengekomen data naar een database te schrijven wordt een Object Relational Mapper (ORM) gebruikt.
 Binnen de applicatie zal voor beide omgevingen gebruikt gemaakt worden van het Sequelize ORM. Deze ondersteunt zowel Postgres als MySQL.
 Hierbij worden eerst 3 modellen gemaakt die de volgende tabellen voorstellen in de databank:
 \begin{itemize}

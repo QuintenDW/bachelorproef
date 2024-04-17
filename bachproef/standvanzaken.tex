@@ -546,7 +546,8 @@ Ook waren de geteste programma's redelijk simpel waardoor de resultaten mogelijk
 Verder onderzoek zou volgens de onderzoeker ook baat hebben om rekening te houden met verschillende omstandigheden, zoals CPU-gebonden
 en I/O-gebonden processen, en andere performantie factoren.
 
-\section{Docker}
+\section{Andere gebruikte technologieën}
+\subsection{Docker}
 Voor omgevingen op te zetten wordt vaak een vorm van automatisatie gebruikt. 
 Hierdoor wordt repliceerbaarheid van de omgeving bereikt. Een manier om dit te doen is met behulp van de tool Docker.
 Deze tool laat containerisatie van een applicatie toe samen met de bijhorende configuratie \textcite{Ibrahim2021}.
@@ -564,3 +565,10 @@ respectievelijke image en configuratie omschreven wordt \textcite{Ibrahim2021}.
     \includegraphics[width=.9\textwidth]{graphics/docker_proces.png}
     \caption{\label{fig:dockerproces}Visuele voorstelling van het Docker proces ~\autocite{Ibrahim2021}}
 \end{figure}
+
+\subsection{ORM}
+Binnen een applicatie wordt persistentie bereikt door gebruik te maken van een achterliggende database. 
+Er zijn veel manieren om deze persistentie af te handelen in een applicatie.
+ Een bekende en makkelijke manier is door het gebruiken van een Object Relational Mapper (ORM).
+Hierbij wordt persistentie bereikt door de objecten binnen de applicatie te koppelen aan tabellen in de database \autocite{Lorenz2017}.
+De ORM zal deze koppeling afhandelen en zo een abstractie creëren die de technische details van de mappingimplementatie verbergt \autocite{Lorenz2017}.

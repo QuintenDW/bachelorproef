@@ -84,7 +84,7 @@ quickSort(myArray);
 
 Naast de computationele verwerking te meten, wordt ook de performantie bij I/O-taken gemeten.
 Dit wordt gedaan door een proof-of-concept op te stellen die een applicatie back-end voorstelt in de respectievelijke omgeving.
-Hierbij kan een gebruiker een recensie creëren over een bepaald onderwerp. 
+Hierbij kan een gebruiker een lijst van alle onderwerpen ophalen en een recensie creëren over een bepaald onderwerp. 
 Binnen de proof-of-concepts zal hierbij getest worden met zowel een Postgres databank als een MySQL databank.
 Hierbij wordt rekening gehouden met volgende metingen:
 \begin{itemize}
@@ -368,10 +368,11 @@ module.exports = seed;
 \caption{\label{code:Seed}Code bij het opvullen van de tabellen}
 \end{listing}
 
-Als laatste wordt de server aangemaakt om een POST methode op het review endpoint aan te nemen.
-In ~\ref{code:NodeServer} wordt de code om dit te bereiken in Node.js getoond. Hierbij komt data in de vorm van JSON binnen.
+Als laatste wordt de server aangemaakt om een POST methode op het recensie endpoint en een GET methode op het onderwerpen endpoint aan te nemen.
+In ~\ref{code:NodeServer} wordt de code om dit te bereiken in Node.js getoond. Hierbij komt data in de vorm van JSON binnen voor de POST methode.
 Deze bevat de recensie in combinatie met het id van het onderwerp en de gebruiker.
 Deze zal dan gebruikt worden om een nieuwe rij aan te maken in de recensie tabel.
+Daarnaast is er ook een GET endpoint die de lijst van alle onderwerpen zal ophalen en teruggeven.
 In ~\ref{code:BunServer} kan dezelfde functionele code worden gevonden voor Bun.
 
 \begin{listing}[H]
@@ -400,7 +401,7 @@ async function main() {
       if (req.method === "POST" && req.url === "/recensie") {
         let body = "";
         req.on("data", (data) => {
-          body += data.toString();
+          body += data.toString(); 
         });
         req.on("end", async () => {
           try {
@@ -414,13 +415,22 @@ async function main() {
             res.end(JSON.stringify({ message: "Invalid data" }));
           }
         });
+      } else if (req.method === "GET" && req.url === "/onderwerpen") {
+        try {
+          const data = await sequelizeInstance.models.Onderwerp.findAll();
+          res.writeHead(200, { "Content-Type": "application/json" });
+          res.end(JSON.stringify(data));
+        } catch {
+          res.writeHead(500, { "Content-Type": "tet/plain" });
+          res.end('Internal Server error')
+        }
       }
     })
     .listen(3000);
 }
 main();
 \end{minted}
-\caption{\label{code:NodeServer}Code om de requests te ontvangen binnen Node.js}
+\caption{\label{code:NodeServer}Code om de verzoeken te ontvangen binnen Node.js}
 \end{listing}
 \begin{listing}[H]
   \centering
@@ -450,6 +460,9 @@ Bun.serve({
                 const data = await request.json();
                 await sequelizeInstance.models.Recensie.create(data);
                 return new Response('',{headers: { "Content-Type": "application/json"}, status: 201});
+            } else if (request.method === "GET" && url.pathname === "/onderwerpen") {
+                const data = await sequelizeInstance.models.Onderwerp.findAll();
+                return Response.json(data);
             }
         } catch (error) {
             console.error("Error:", error);
@@ -459,7 +472,7 @@ Bun.serve({
     }
 })
 \end{minted}
-\caption{\label{code:BunServer}Code om de requests te ontvangen binnen server}
+\caption{\label{code:BunServer}Code om de verzoeken te ontvangen binnen server}
 \end{listing}
 \subsection{Uitvoering metingen}
 Voor de metingen wordt gebruikgemaakt van 2 hulpprogramma's: Hyperfine en Bombardier.
@@ -514,6 +527,7 @@ Daarnaast wordt voor de HTTP server gebruikgemaakt van Bombardier.
 Hierbij kan ingesteld worden hoeveel gelijktijdige connecties er zijn en hoeveel verzoeken per test worden verstuurd.
 In de metingen zal getest worden door 500000 verzoeken te sturen met 10, 100 en 1000 gelijktijdige connecties.
 De commando's hiervoor zijn terug te vinden in \ref{code:Bombardier10}, \ref{code:Bombardier100} en \ref{code:Bombardier1000}.
+Hierbij wordt telkens een POST verzoek gestuurd, in \ref{code:Bombardier10GET} wordt een voorbeeld getoond om GET verzoeken te sturen.
 Bij de metingen wordt hiervoor gebruikgemaakt van versie 1.2.6 van Bombardier.
 \begin{listing}[H]
   \centering
@@ -534,7 +548,7 @@ Bij de metingen wordt hiervoor gebruikgemaakt van versie 1.2.6 van Bombardier.
       texcl=false]{shell-session}
 > bombardier -c 10 -n 500000 -m POST -b '{"bericht": "test","GebruikerId": 1,"OnderwerpId": 1}' -l http://localhost:3000/recensie
       \end{minted}
-      \caption{\label{code:Bombardier10}Gebruik Bombardier commando met 500000 verzoeken en 10 gelijktijdige connecties}
+      \caption{\label{code:Bombardier10}Gebruik Bombardier commando met 500000 verzoeken en 10 gelijktijdige connecties voor een POST verzoek}
 \end{listing}
 \begin{listing}[H]
   \centering
@@ -555,7 +569,7 @@ Bij de metingen wordt hiervoor gebruikgemaakt van versie 1.2.6 van Bombardier.
       texcl=false]{shell-session}
 > bombardier -c 100 -n 500000 -m POST -b '{"bericht": "test","GebruikerId": 1,"OnderwerpId": 1}' -l http://localhost:3000/recensie
       \end{minted}
-      \caption{\label{code:Bombardier100}Gebruik Bombardier commando met 500000 verzoeken en 100 gelijktijdige connecties}
+      \caption{\label{code:Bombardier100}Gebruik Bombardier commando met 500000 verzoeken en 100 gelijktijdige connecties voor een POST verzoek}
 \end{listing}
 \begin{listing}[H]
   \centering
@@ -576,7 +590,28 @@ Bij de metingen wordt hiervoor gebruikgemaakt van versie 1.2.6 van Bombardier.
       texcl=false]{shell-session}
 > bombardier -c 1000 -n 500000 -m POST -b '{"bericht": "test","GebruikerId": 1,"OnderwerpId": 1}' -l http://localhost:3000/recensie
       \end{minted}
-      \caption{\label{code:Bombardier1000}Gebruik Bombardier commando met 500000 verzoeken en 1000 gelijktijdige connecties}
+      \caption{\label{code:Bombardier1000}Gebruik Bombardier commando met 500000 verzoeken en 1000 gelijktijdige connecties voor een POST verzoek}
+\end{listing}
+\begin{listing}[H]
+  \centering
+  \begin{minted}[bgcolor=bg,
+      fontfamily=tt,
+      linenos=true,
+      numberblanklines=true,
+      numbersep=5pt,  
+      gobble=0,
+      framesep=2mm,
+      tabsize=4,
+      obeytabs=false,
+      breaklines=true,
+      mathescape=false
+      samepage=false,
+      showspaces=false,
+      showtabs =false,
+      texcl=false]{shell-session}
+> bombardier -c 10 -n 500000 -l http://localhost:3000/onderwerpen
+      \end{minted}
+      \caption{\label{code:Bombardier10GET}Gebruik Bombardier commando met 500000 verzoeken en 10 gelijktijdige connecties voor een GET verzoek}
 \end{listing}
 Bij de uitvoering wordt gewerkt met een vorm van containervirtualisatie genaamd Docker.
 Hierbij zit elke aplicatie in zijn eigen container waarbij aan de hand van een Dockerfile deze telkens wordt opgezet.
@@ -592,7 +627,9 @@ Hiernaast wordt dan ook een Dockerfile gebruikt om de server te starten. De Dock
 respectievelijk \ref{code:dockernode} en \ref{code:dockerbun}. 
 Om het gemiddelde CPU-gebruik en het maximale geheugengebruik te bepalen wordt het bombardier commando samen met het docker stats commando uitgevoerd in een zsh script.
 Hierbij wordt voordat het bombardier commando wordt uitgevoerd de monitoring gestart van het geheugen en het cpu-gebruik. Nadien wordt het gemiddelde cpu-gebruik en het maximale geheugen gebruik bepaald.
-Een voorbeeld van dit script voor bombardier met 10 connecties is te vinden in \ref{code:zshscript}.
+Een voorbeeld van dit script  is te vinden in \ref{code:zshscript}. 
+In dit voorbeeld wordt zowel de bombardier om de POST methode als de GET methode weergegeven. Afhankelijk van wat gemeten wordt, moet tussen 1 van deze 2 methoden gekozen worden.
+Het aantal connecties kan als argument meegegeven worden bij de uitvoering van het script.
 Daarnaast wordt bij de server ook de installatietijd van de package managers gemeten met de Dockerfile \ref{code:dockerinstall}.
 Hiervoor wordt ook Hyperfine gebruikt waarbij de cache al wordt opgevuld door de warmup in het commando.
 \begin{listing}[H]
@@ -864,8 +901,11 @@ calculate_peak_memory() {
 # Start de monitoring
 docker stats --no-stream <container_naam> --format "table {{.Container}}\t{{.CPUPerc}}\t{{.MemUsage}}" > container_stats.txt &
 
-# Start bombardier
-bombardier -c 10 -n 500000 -m POST -b '{"bericht": "test","GebruikerId": 1,"OnderwerpId": 1}' -l http://localhost:3000/recensie
+# Start bombardier POST
+bombardier -c "$1" -n 500000 -m POST -b '{"bericht": "test","GebruikerId": 1,"OnderwerpId": 1}' -l http://localhost:3000/recensie
+# Of
+# Start bombardier GET
+bombardier -c "$1" -n 500000 -l http://localhost:3000/onderwerpen
 
 # Stop de monitoring
 killall docker

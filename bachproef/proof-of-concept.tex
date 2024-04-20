@@ -885,21 +885,8 @@ CMD ["bun", "run", "index.js"]
       texcl=false]{bash}
 #!/bin/zsh
 
-# Bereken maximaal geheugengebruik
-calculate_peak_memory() {
-    memory_usages=("$@")
-    peak_memory=0
-    for memory_usage in "${memory_usages[@]}"; do
-        memory=${memory_usage//[A-Za-z]/}
-        if (( memory > peak_memory )); then
-            peak_memory=$memory
-        fi
-    done
-    echo "$peak_memory"
-}
-
 # Start de monitoring
-docker stats --no-stream <container_naam> --format "table {{.Container}}\t{{.CPUPerc}}\t{{.MemUsage}}" > container_stats.txt &
+docker stats <container_naam> --format "table {{.Container}}\t{{.CPUPerc}}\t{{.MemUsage}}" > container_stats.txt &
 
 # Start bombardier POST
 bombardier -c "$1" -n 500000 -m POST -b '{"bericht": "test","GebruikerId": 1,"OnderwerpId": 1}' -l http://localhost:3000/recensie
@@ -907,30 +894,39 @@ bombardier -c "$1" -n 500000 -m POST -b '{"bericht": "test","GebruikerId": 1,"On
 # Start bombardier GET
 bombardier -c "$1" -n 500000 -l http://localhost:3000/onderwerpen
 
-# Stop de monitoring
-killall docker
+# Stop de docker stats
 
-# Bereken gemiddeld CPU-gebruik
-# Verwijder het percentage telkens om een correcte som te bereiken
-cpu_usages=($(awk 'NR>1 {print $2}' container_stats.txt))
-cpu_sum=0
-cpu_count=${#cpu_usages[@]}
-if (( cpu_count > 0 )); then
-    for cpu_usage in "${cpu_usages[@]}"; do
-        cpu_sum=$(( cpu_sum + ${cpu_usage//\%} ))
-    done
-    average_cpu=$(( cpu_sum / cpu_count ))
+target_command="/Applications/Docker.app/Contents/Resources
+/bin/com.docker.cli stats"
+docker_cli_pid=$(ps aux | grep "$target_command" | grep -v grep | awk '{print $2}')
+
+if [[ -n $docker_cli_pid ]]; then
+    # Kill the Docker CLI process
+    echo "Killing Docker CLI process with PID: $docker_cli_pid"
+    kill -9 $docker_cli_pid
 else
-    average_cpu=0
+    echo "Docker CLI process not found."
 fi
 
-# Bepaal maximaal geheugen gebruik
-memory_usages=($(awk 'NR>1 {print $3}' container_stats.txt))
-peak_memory=$(calculate_peak_memory "${memory_usages[@]}")
+
+# Bereken gemiddeld CPU-gebruik en hoogste memory
+while IFS= read -r line; do
+    if [[ $line =~ ([0-9]+\.[0-9]+)%(.*[0-9]+\.[0-9]+)MiB ]]; then
+        cpu_percent="${match[1]}"
+        mem_usage="${match[2]}"
+        cpu_percent_sum=$((cpu_percent_sum + cpu_percent))
+        if (( mem_usage > highest_mem_usage )); then
+            highest_mem_usage="$mem_usage"
+        fi
+        ((total_lines++))
+    fi
+done < container_stats.txt
+
+average_cpu_percent=$((cpu_percent_sum / total_lines))
 
 # Toon resultaten
-echo "Gemiddelde CPU-gebruik: $average_cpu%"
-echo "Maximaal geheugen gebruik: $peak_memory"
+echo "Gemiddelde CPU-gebruik: $average_cpu_percent%"
+echo "Maximaal geheugen gebruik: $highest_mem_usage"
 
       \end{minted}
       \caption{\label{code:zshscript}Dockerfile voor het Quick Sort algoritme}

@@ -91,7 +91,7 @@ Hierbij wordt rekening gehouden met volgende metingen:
     \item Het gemiddeld aantal verzoeken per seconde die het kan verwerken.
     \item Het gemiddelde CPU-gebruik.
     \item Het maximale geheugengebruik.
-    \item De gemiddelde responstijd.
+    \item De gemiddelde vertraging in de overdracht, ook wel latentie genoemd.
     \item Het aantal gelijktijdige connecties.
     \item Het aantal verzoeken.
     \item De gemiddelde installatietijd.
@@ -901,7 +901,6 @@ target_command="/Applications/Docker.app/Contents/Resources
 docker_cli_pid=$(ps aux | grep "$target_command" | grep -v grep | awk '{print $2}')
 
 if [[ -n $docker_cli_pid ]]; then
-    # Kill the Docker CLI process
     echo "Killing Docker CLI process with PID: $docker_cli_pid"
     kill -9 $docker_cli_pid
 else
@@ -974,7 +973,7 @@ CMD ["hyperfine","--prepare", "rm -rf node_modules", "--warmup","1","--runs","10
 \subsection{Resultaten proof-of-concept}
 In deze sectie zullen de resultaten van de performantie testen besproken worden.
 Hierbij worden eerst de resultaten voor de uitvoeringstijd, cpu-gebruik en geheugengebruik bij het Quick Sort algoritme bekeken.
-Daarna worden de resultaten van de server besproken op vlak van uitvoeringstijd, cpu-gebruik, geheugengebruik, responstijd en de installatietijd.
+Daarna worden de resultaten van de server besproken op vlak van uitvoeringstijd, cpu-gebruik, geheugengebruik, latentie en de installatietijd.
 
 \subsubsection{Resultaten  Quick Sort algoritme}
 De resultaten voor de gemiddelde uitvoeringstijd bij het Quick Sort algoritme werden bekomen doormiddel van Hyperfine.
@@ -998,3 +997,69 @@ is dan Node.js met een gemiddelde installatietijd van 610,1 milleseconden.
   \includegraphics{graphics/install.png}
   \caption{\label{fig:installatietijdapp}Gemiddelde installatietijd van de packages in Bun en Node.js}
 \end{figure}
+
+Voor de andere resultaten werd gebruikgemaakt van Bombardier waarbij telkens met 10, 100 en 1000 connecties 
+500000 verzoeken werden gestuurd naar de server.
+In tabel \ref{tab:getbombardier} kunnen de resultaten gezien worden van de metingen waarbij de onderwerpen werden opgehaald aan de hand van een GET verzoek.
+Er wordt gestreefd naar een zo hoog mogelijk aantal verzoeken per seconde met een zo laag mogelijke latentie, geheugengebruik en cpu-gebruik.
+Zoals te zien scoort Bun op het vlak van aantal verzoeken per seconde en latentie beter dan Node.js ongeacht van het aantal connecties. 
+Echter heeft Bun bij het aantal verzoeken per seconde wel telkens een grotere standaardafwijking en er dus meer uitschieters aanwezig zijn.
+Langs de andere kant verbruikt Bun telkens meer resources. Zo heeft Bun bij elke connectie een hoger CPU-gebruik en zijn de pieken van het geheugen consistent hoger dan bij Node.js.
+In figuren \ref{fig:getaantalverzoekenmysql}, \ref{fig:getaantallatentienmysql}, \ref{fig:getgeheugennmysq} en \ref{fig:getcpymysql} kunnen de visuele voorstellingen 
+voor respectievelijk het aantal verzoeken per seconde, het aantal latentie, het maximale geheugengebruik en het gemiddeld CPU-gebruik worden gevonden.
+\begin{table}[]
+  \begin{tabular}{|c|cccccc|}
+  \hline
+  \multicolumn{1}{|l|}{}                                                                     & \multicolumn{1}{l}{} & Bun     & \multicolumn{1}{l|}{}     & \multicolumn{1}{l}{} & \multicolumn{1}{l}{Node.js} & \multicolumn{1}{l|}{} \\ \hline
+  Aantal connecties                                                                          & 10                   & 100     & \multicolumn{1}{c|}{1000} & 10                   & 100                         & 1000                  \\ \hline
+  \begin{tabular}[c]{@{}c@{}}Gemiddeld aantal \\ verzoeken per seconde\end{tabular}          & 8531.89              & 7441.10 & 7905.77                   & 7643.59              & 7138.43                     & 6443.86               \\ \cline{1-1}
+  \begin{tabular}[c]{@{}c@{}}Standaardafwijking aantal \\ verzoeken per seconde\end{tabular} & 2712.38              & 2308.74 & 2475.46                   & 2387.87              & 1682.46                     & 1798.40               \\ \cline{1-1}
+  \begin{tabular}[c]{@{}c@{}}Latentie \\ (milliseconden)\end{tabular}                        & 1.17                 & 13.05   & 144.70                    & 1.31                 & 14.01                       & 155.10                \\ \cline{1-1}
+  \begin{tabular}[c]{@{}c@{}}Standaardafwijking\\ latentie\\ (milliseconden)\end{tabular}    & 0.66809              & 2.62    & 22.61                     & 0.89                 & 2.57                        & 42.51                 \\ \cline{1-1}
+  \begin{tabular}[c]{@{}c@{}}Maximale \\ geheugengebruik \\ (MB)\end{tabular}                & 152.3                & 223.2   & 242.6                     & 80.75                & 88.25                       & 130.3                 \\ \cline{1-1}
+  \begin{tabular}[c]{@{}c@{}}Gemiddeld\\ CPU-gebruik\\ (\%)\end{tabular}                     & 110.90               & 137.26  & 137.52                    & 98.2                 & 102.33                      & 120.39                \\ \hline
+  \end{tabular}
+  \caption{\label{tab:getbombardier}Resultaten metingen waarbij onderwerpen worden opgehaald met een GET request.}
+  \end{table}
+
+  \begin{figure}[H]
+    \centering
+    \includegraphics{graphics/GetMySqlVerzoeken.png}
+    \caption{\label{fig:getaantalverzoekenmysql}Visuele voorstelling gemiddeld aantal verzoeken per seconde bij het ophalen van de onderwerpen.}
+  \end{figure}
+  \begin{figure}[H]
+    \centering
+    \includegraphics{graphics/GetMySqlLatentie.png}
+    \caption{\label{fig:getaantallatentienmysql}Visuele voorstelling gemiddelde latentie bij het ophalen van de onderwerpen.}
+  \end{figure}
+  \begin{figure}[H]
+    \centering
+    \includegraphics{graphics/GetMySqlRAM.png}
+    \caption{\label{fig:getgeheugennmysql}Visuele voorstelling maximale geheugen gebruik bij het ophalen van de onderwerpen.}
+  \end{figure}
+  \begin{figure}[H]
+    \centering
+    \includegraphics{graphics/GetMySqlCpu.png}
+    \caption{\label{fig:getcpymysql}Visuele voorstelling gemiddeld CPU-gebruik bij het ophalen van de onderwerpen.}
+  \end{figure}
+
+In In tabel \ref{tab:postbombardier} kunnen de resultaten gezien worden van de metingen waarbij 
+een gebruiker een recensie schrijft over een bepaald onderwerp door gebruik van een POST verzoek.
+Hierbij is op te merken dat Bun op alle vlakken slechter scoort dan Node.js. Zo heeft bijvoorbeeld bij 10 connecties Bun
+een lager gemiddeld aantal verzoeken (M = 3298.09; SD = 814.04) dan Node.js (M = 3794.32; SD = 855.81) en een hogere latentie (M = 3.03; SD = 1.42) 
+ondanks het feit dat het gemiddeld CPU-gebruik en maximale geheugengebruik hoger ligt.
+  \begin{table}[]
+    \begin{tabular}{|c|cccccc|}
+    \hline
+    \multicolumn{1}{|l|}{}                                                                     & \multicolumn{1}{l}{} & Bun     & \multicolumn{1}{l|}{}     & \multicolumn{1}{l}{} & \multicolumn{1}{l}{Node.js} & \multicolumn{1}{l|}{} \\ \hline
+    Aantal connecties                                                                          & 10                   & 100     & \multicolumn{1}{c|}{1000} & 10                   & 100                         & 1000                  \\ \hline
+    \begin{tabular}[c]{@{}c@{}}Gemiddeld aantal \\ verzoeken per seconde\end{tabular}          & 3298.09              & 2681.90 & 2691.37                   & 3794.32              & 3701.00                     & 3473.10               \\ \cline{1-1}
+    \begin{tabular}[c]{@{}c@{}}Standaardafwijking aantal \\ verzoeken per seconde\end{tabular} & 814.04               & 1123.90 & ;922.81                   & 855.81               & 819.77                      & 795.27                \\ \cline{1-1}
+    \begin{tabular}[c]{@{}c@{}}Latentie \\ (milliseconden)\end{tabular}                        & 3.03                 & 37.27   & 370.51                    & 2.63                 & 27.01                       & 287.24                \\ \cline{1-1}
+    \begin{tabular}[c]{@{}c@{}}Standaardafwijking\\ latentie\\ (milliseconden)\end{tabular}    & 1.42                 & 18.18   & 155.75                    & 1.27                 & 4.29                        & 28.95                 \\ \cline{1-1}
+    \begin{tabular}[c]{@{}c@{}}Maximale \\ geheugengebruik \\ (MB)\end{tabular}                & 199.6                & 197.3   & 198.2                     & 105.8                & 109.9                       & 139.8                 \\ \cline{1-1}
+    \begin{tabular}[c]{@{}c@{}}Gemiddeld\\ CPU-gebruik\\ (\%)\end{tabular}                     & 87.87                & 82.27   & 82.74                     & 68.11                & 71.46                       & 78.49                 \\ \hline
+    \end{tabular}
+    \caption{\label{tab:postbombardier}Resultaten metingen waarbij door een bepaalde gebruiker 
+    een recensie over een onderwerp werd gemaakt met een POST request.}
+    \end{table}

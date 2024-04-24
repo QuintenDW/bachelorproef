@@ -1048,6 +1048,8 @@ een gebruiker een recensie schrijft over een bepaald onderwerp door gebruik van 
 Hierbij is op te merken dat Bun op alle vlakken slechter scoort dan Node.js. Zo heeft bijvoorbeeld bij 10 connecties Bun
 een lager gemiddeld aantal verzoeken (M = 3298.09; SD = 814.04) dan Node.js (M = 3794.32; SD = 855.81) en een hogere latentie (M = 3.03; SD = 1.42) 
 ondanks het feit dat het gemiddeld CPU-gebruik en maximale geheugengebruik hoger ligt.
+In figuren \ref{fig:postaantalverzoekenmysql}, \ref{fig:postaantallatentienmysql}, \ref{fig:postgeheugennmysq} en \ref{fig:postcpymysql} kunnen de visuele voorstellingen 
+voor respectievelijk het aantal verzoeken per seconde, het aantal latentie, het maximale geheugengebruik en het gemiddeld CPU-gebruik worden gevonden.
   \begin{table}[]
     \begin{tabular}{|c|cccccc|}
     \hline
@@ -1063,3 +1065,33 @@ ondanks het feit dat het gemiddeld CPU-gebruik en maximale geheugengebruik hoger
     \caption{\label{tab:postbombardier}Resultaten metingen waarbij door een bepaalde gebruiker 
     een recensie over een onderwerp werd gemaakt met een POST request.}
     \end{table}
+
+    \begin{figure}[H]
+      \centering
+      \includegraphics{graphics/PostMySqlVerzoeken.png}
+      \caption{\label{fig:postaantalverzoekenmysql}Visuele voorstelling gemiddeld aantal verzoeken per seconde bij het maken van een recensie.}
+    \end{figure}
+    \begin{figure}[H]
+      \centering
+      \includegraphics{graphics/PostMySqlLatentie.png}
+      \caption{\label{fig:postaantallatentienmysql}Visuele voorstelling gemiddelde latentie bij het maken van een recensie.}
+    \end{figure}
+    \begin{figure}[H]
+      \centering
+      \includegraphics{graphics/PostMySqlRAM.png}
+      \caption{\label{fig:postgeheugennmysql}Visuele voorstelling maximale geheugen gebruik bij het maken van een recensie.}
+    \end{figure}
+    \begin{figure}[H]
+      \centering
+      \includegraphics{graphics/PostMySqlCpu.png}
+      \caption{\label{fig:postcpymysql}Visuele voorstelling gemiddeld CPU-gebruik bij het maken van een recensie.}
+    \end{figure}
+
+\subsection{Discussie}
+Aan de hand van de Quick Sort algoritme resultaten kan het standpunt dat Bun computationeel sneller is ondersteund worden.
+Zo was de gemiddelde uitvoeringstijd van Bun gemiddeld 2.21 keer sneller dan Node.js. Deze snellere uitvoeringstijd komt door de
+het gebruik van de JavaScriptScore engine in Bun waarbij geoptimaliseerde machine code wordt geproduceerd in 
+samenwerking met 3 JIT compilers en een Low-Level interpreter.
+Deze snelheid is niet enkel zichtbaar bij het algoritme, maar ook bij de installatietijd van de packages.
+Zo is Bun me teen gemiddelde installatietijd van 24,9 milliseconden 24,5 keer sneller is dan Node.js met een 
+gemiddelde installatietijd van 610,1 milleseconden. Dit kan een groot verschil betekenen op vlak van efficiëntie in projecten met een groot aantal packages.

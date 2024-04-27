@@ -26,8 +26,6 @@ De eerste proof-of-concept zal bestaan uit een script dat het Quick Sort algorit
 Deze zal dienen om de computationele verwerking van elke omgeving te beoordelen. Hierbij wordt rekening gehouden met volgende metingen:
 \begin{itemize}
     \item De gemiddelde uitvoeringstijd.
-    \item Het gemiddelde CPU-gebruik.
-    \item Het maximale geheugengebruik.
 \end{itemize}
 Het Quick Sort algoritme zal een meegegeven array sorteren door een spil element te kiezen binnen de array
 waarna de array in 2 arrays wordt opgesplitst. De eerste array zal elementen bevatten die kleiner zijn dan het spil element 
@@ -285,16 +283,16 @@ const seed = require("./seeder");
 const { GebruikerInit } = require("./gebruiker");
 const { OnderwerpInit } = require("./onderwerp");
 //config
-const username = configuration.get("development.username");
-const database = configuration.get("development.database");
-const dialect = configuration.get("development.dialect");
+const username = configuration.get("username");
+const database = configuration.get("database");
+const dialect = configuration.get("dialect");
 const password = configuration.get("password");
 
 // Instantie aanmaken
 let sequelize;
 async function initializeSequelize() {
   sequelize = new Sequelize(database, username, password, {
-    host: "mysql",
+    host: dialect,
     dialect: dialect,
   });
   try {
@@ -622,7 +620,8 @@ Dit bestand moet eerst gebouwd worden met het docker build commando waarvan een 
 Daarna moet de image worden uitgevoerd met het docker run commando zoals het voorbeeld in \ref{code:dockerrun}.
 Voor de HTTP server is er nog een bijkomend
 Docker Compose bestand \ref{code:dockerscript} waar aan de hand van het commando in \ref{code:dockercompose}
-zowel de databank als de server kan worden opgestart. Een voorbeeld hiervan voor een mysql database is te zien in \ref{code:dockercompose}.
+zowel de databank als de server kan worden opgestart. Een voorbeeld hiervan voor zowel een MysSQL database als een PostgreSQL database is 
+respectievelijk te zien in \ref{code:dockercompose} en \ref{code:dockercomposepostgres}.
 Hiernaast wordt dan ook een Dockerfile gebruikt om de server te starten. De Dockerfile voor de Node.js en Bun server is te vinden in
 respectievelijk \ref{code:dockernode} en \ref{code:dockerbun}. 
 Om het gemiddelde CPU-gebruik en het maximale geheugengebruik te bepalen wordt het bombardier commando samen met het docker stats commando uitgevoerd in een zsh script.
@@ -656,11 +655,12 @@ FROM node:21
 RUN apt-get update && \
     apt-get install -y curl && \
     apt-get install -y hyperfine
-
-RUN curl -fsSL https://bun.sh/install | bash && \
-  ln -s $HOME/.bun/bin/bun /usr/local/bin/bun
 # Zet de werk map in de container
 WORKDIR /app
+
+# Download bun
+RUN curl -fsSL https://bun.sh/install | bash && \
+  ln -s $HOME/.bun/bin/bun /usr/local/bin/bun
 
 # Kopieer de applicatie code naar de container
 COPY . .
@@ -730,7 +730,7 @@ CMD ["hyperfine","node index.js 1000", "bun index.js 1000"]
       showspaces=false,
       showtabs =false,
       texcl=false]{shell-session}
-> docker-compose up --build
+> docker-compose -f docker-compose.yml up --build
       \end{minted}
       \caption{\label{code:dockercompose}Uitvoeren van een docker compose}
 \end{listing}
@@ -754,36 +754,85 @@ CMD ["hyperfine","node index.js 1000", "bun index.js 1000"]
 version: '3'
 
 services:
-mysql:
-  image: mysql:latest
-  environment:
-    MYSQL_ROOT_PASSWORD: Test12345
-    MYSQL_DATABASE: review
-  ports:
-    - "3306:3306"
-  healthcheck:
-    test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-    interval: 5s
-    timeout: 3s
-    retries: 5
+  mysql:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: Test12345
+      MYSQL_DATABASE: review
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
 
-server:
-  build: .
-  depends_on:
-    mysql:
-      condition: service_healthy
-  ports:
-    - "3000:3000"
-  environment:
-    MYSQL_HOST: mysql
-    MYSQL_PORT: 3306
-    MYSQL_USER: root
-    MYSQL_PASSWORD: Test12345
-    MYSQL_DATABASE: review
+  bun:
+    build: .
+    depends_on:
+      mysql:
+        condition: service_healthy
+    ports:
+      - "3000:3000"
+    environment:
+      DB_PORT: 3306
+      DB_USER: root
+      DB_PASSWORD: Test12345
+      DB_DATABASE: review
+      DB_DIALECT: mysql
       \end{minted}
-      \caption{\label{code:dockercompose}Docker Compose bestand voor het opstarten van de mysql database en server}
+      \caption{\label{code:dockercompose}Docker Compose bestand voor het opstarten van de MySQL database en server}
 \end{listing}
+\begin{listing}[H]
+  \centering
+  \begin{minted}[bgcolor=bg,
+      fontfamily=tt,
+      linenos=true,
+      numberblanklines=true,
+      numbersep=5pt,  
+      gobble=0,
+      framesep=2mm,
+      tabsize=4,
+      obeytabs=false,
+      breaklines=true,
+      mathescape=false
+      samepage=false,
+      showspaces=false,
+      showtabs =false,
+      texcl=false]{yaml}
+version: '3'
 
+services:
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_PASSWORD: Test12345
+      POSTGRES_DB: review
+      PGDATA: /data/postgres
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  bun:
+    build: .
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "3000:3000"
+    environment:
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASSWORD: Test12345
+      DB_DATABASE: review
+      DB_DIALECT: postgres
+      \end{minted}
+      \caption{\label{code:dockercomposepostgres}Docker Compose bestand voor het opstarten van de PostgreSQL database en server}
+\end{listing}
 \begin{listing}[H]
   \centering
   \begin{minted}[bgcolor=bg,

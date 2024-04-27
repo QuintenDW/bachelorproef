@@ -1233,5 +1233,26 @@ Zo was de gemiddelde uitvoeringstijd van Bun gemiddeld 2.21 keer sneller dan Nod
 het gebruik van de JavaScriptScore engine in Bun waarbij geoptimaliseerde machine code wordt geproduceerd in 
 samenwerking met 3 JIT compilers en een Low-Level interpreter.
 Deze snelheid is niet enkel zichtbaar bij het algoritme, maar ook bij de installatietijd van de packages.
-Zo is Bun me teen gemiddelde installatietijd van 24,9 milliseconden 24,5 keer sneller is dan Node.js met een 
-gemiddelde installatietijd van 610,1 milleseconden. Dit kan een groot verschil betekenen op vlak van efficiëntie in projecten met een groot aantal packages.
+Zo is Bun met een gemiddelde installatietijd van 24,9 milliseconden 24,5 keer sneller is dan Node.js met een 
+gemiddelde installatietijd van 610,1 milleseconden. Dit kan een groot verschil betekenen op vlak van efficiëntie in projecten 
+met een groot aantal packages.
+Met behulp van de recensie applicatie kan er ook gekeken worden naar de performantie bij I/O-taken.
+In de metingen werd hiervoor een GET en POST endpoint opengezet waarbij telkens met een MySQL database en een PostgreSQL database de metingen werden uitgevoerd.
+Bij het ophalen van data scoort Bun bij zowel de MySQL database als de PostgreSQL database telkens beter dan Node.js op vlak van het gemiddeld aantal verzoeken per seconde en de latentie.
+Het verschil in aantal verzoeken per seconde toont aan dat Bun een grotere capaciteit voor verzoeken heeft bij het ophalen van data.
+De latentie toont aan dat Bun sneller de opgehaalde data kan teruggeven. Echter komen deze voordelen met een prijs. 
+Zo heeft Bun telkens een groter gebruik van middelen tegenover Node.js wat aantoont dat Node.js efficiënter is op vlak van geheugen management en CPU-management.
+Bij het invoegen van data was er een verschil afhankelijk van de gebruikte databank. Zo heeft Bun bij de MySQL databank een gelijkaardige performantie
+als Node.js bij zowel het gemiddeld aantal verzoeken als de latentie. 
+Echter zet dit zich niet voort in het middelengebruik waarbij Bun telkens weer meer middelen gebruikt als Node.js.
+Bij de PostgreSQL database is dit ook het geval maar resulteert dit wel in een betere performantie voor Bun. 
+Zo heeft het een hoger gemiddeld aantal verzoeken per seconde en een lagere latentie.
+Het verschil tussen de databases kan liggen aan het feit dat Bun een redelijk nieuw framework is 
+en de driver voor MySQL not niet hiervoor geoptimaliseerd is.
+Op basis van deze bevindingen kunnen verschillende conclusies worden getrokken. 
+Zo kunnen applicaties met complexe algoritmes en calculaties beter kiezen voor Bun. 
+Deze kan doormiddel van zijn geoptimaliseerde machine code de calculaties sneller uitvoeren dan Node.js.
+Bij I/O-taken moet er echter een afweging gemaakt worden. Zo is Bun in samenwerking met een PostgreSQL database sneller voor het ophalen en invoegen van data.
+Echter komt dit ten koste van een hoger middelengebruik op vlak van geheugen en CPU. 
+Indien de server hardware over voldoende middelen beschikt kan Bun gebruikt worden voor een performantere werking van de applicatie.
+

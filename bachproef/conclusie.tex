@@ -55,7 +55,18 @@ ten koste van een hoger middelengebruik.
 Als laatste werd ook de installatietijd onderzocht bij de package managers. Hierbij had Bun een 
 gemiddelde installatietijd van 24,9 milliseconden wat 24,5 keer sneller was dan Node.js welke een gemiddelde installatietijd van 610,1 milliseconde had.
 Dit toont een significant verschil tussen de respectievelijke package managers waarbij Bun performanter presteert.
-Uit deze metingen blijkt Bun een optimale keuze voor applicaties met complexe algoritmes en calculaties door zijn geoptimaliseerde machine code.
-Echter moet bij I/O-taken telkens een afweging worden gemaakt tussen de snellere verwerking van Bun en het hogere middelengebruik dat dit teweeg brengt.
 
+Het onderzoek geeft een leidraad bij de keuze van een JavaScript runtime-omgeving.
+Zo blijkt uit de metingen Bun een optimale keuze te zijn voor applicaties met complexe algoritmes en calculaties door zijn geoptimaliseerde machine code.
+Echter moet bij applicaties waarbij I/O-taken worden uitgevoerd telkens een afweging worden gemaakt tussen de snellere verwerking van Bun en het hogere middelengebruik dat dit teweeg brengt.
+
+
+Voor de metingen werden uitgevoerd, was er de verwachting dat Bun beter ging presteren op basis van eerder uitgevoerd onderzoek vanuit de literatuurstudie en de selectie.
+Op vlak logische berekeningen en package managers zit dit in lijn met de bekomen resultaten, echter spreken de resultaten bij de server de verwachte conclusie enigszin tegen.
+Zo presteert Bun samen met een PostgreSQL wel beter op vlak het verwerken van verzoeken maar scoort het slechter op vlak van middelengebruik wat ook onderdeel uitmaakt van de performantie van een omgeving.
+Bij MySQL presteert Bun bij het invoegen van data zelf gelijkaardig aan Node.js, terwijl het wel een hoger middelengebruik heeft.
+Dit verschil met verwachtingen kan te maken hebben met het feit dat bij eerder onderzoek enkel werd getest op kleine schaal zonder ORM of databases.
+
+Toekomstig onderzoek kan verder gaan op de bekomen resultaten door in plaats van relationele databases, zoals MySQL en PostgreSQL, ook NoSQL databases te testen.
+Daarnaast zou ook de test runner en bundler van Bun kunnen vergeleken worden met andere alternatieven.
 

@@ -80,7 +80,7 @@ quickSort(myArray);
 Naast de computationele verwerking te meten, wordt ook de performantie bij I/O-taken gemeten.
 Dit wordt gedaan door een proof-of-concept op te stellen die een applicatie back-end voorstelt in de respectievelijke omgeving.
 Hierbij kan een gebruiker een lijst van alle onderwerpen ophalen en een recensie creëren over een bepaald onderwerp. 
-Binnen de proof-of-concepts zal hierbij getest worden met zowel een Postgres databank als een MySQL databank.
+Binnen de proof-of-concepts zal hierbij getest worden met zowel een PostgreSQL databank als een MySQL databank.
 Hierbij wordt rekening gehouden met volgende metingen:
 \begin{itemize}
     \item Het gemiddeld aantal verzoeken per seconde die het kan verwerken.
@@ -1018,14 +1018,15 @@ CMD ["hyperfine","--prepare", "rm -rf node_modules", "--warmup","1","--runs","10
 
 \subsection{Resultaten proof-of-concept}
 In deze sectie zullen de resultaten van de performantie testen besproken worden.
-Hierbij worden eerst de resultaten voor de uitvoeringstijd, cpu-gebruik en geheugengebruik bij het Quick Sort algoritme bekeken.
-Daarna worden de resultaten van de server besproken op vlak van uitvoeringstijd, cpu-gebruik, geheugengebruik, latentie en de installatietijd.
+Hierbij worden eerst de resultaten voor de uitvoeringstijd bij het Quick Sort algoritme bekeken.
+Daarna worden de resultaten van de server besproken op vlak van uitvoeringstijd, cpu-gebruik, geheugengebruik, latentie en de installatietijd 
+bij zowel het gebruik van een MySQL database als een PostgreSQL database.
 
 \subsubsection{Resultaten  Quick Sort algoritme}
 De resultaten voor de gemiddelde uitvoeringstijd bij het Quick Sort algoritme werden bekomen doormiddel van Hyperfine.
 Hierbij werd gekeken naar de uitvoeringstijd voor het sorteren van een array bestaande uit 1000 elementen met volgend commando \ref{code:HyperfineScript}.
 In figuur \ref{fig:uitvoeringstijdscript} wordt de gemiddelde uitvoeringstijd per omgeving visueel voorgesteld. 
-Daarbij is op te merken dat de gemiddelde uitvoeringstijd van Bun gemiddeld 2.21 keer sneller is dan bij Node.js.
+Daarbij is op te merken dat de gemiddelde uitvoeringstijd van Bun 2.21 keer sneller is dan bij Node.js.
 \begin{figure}[H]
   \centering
   \includegraphics{graphics/scriptuitvoeringstijd.png}
@@ -1033,7 +1034,7 @@ Daarbij is op te merken dat de gemiddelde uitvoeringstijd van Bun gemiddeld 2.21
 \end{figure}
 
 \subsection{Resultaten Recensie applicatie}
-De resultaten voor de gemiddelde installatietijd werden bekomen doormiddel van Hyperfine.
+De resultaten voor de gemiddelde installatietijd bij de package managers werden bekomen doormiddel van Hyperfine.
 Hierbij werd eerst een warmup uitvoering gedaan om de cache al op te vullen.
 In figuur \ref{fig:installatietijdapp} zijn de resultaten visueel voorgesteld per omgeving.
 Hierbij is op te merken dat Bun met een gemiddelde installatietijd van 24,9 milliseconden 24,5 keer sneller 
@@ -1254,5 +1255,5 @@ Zo kunnen applicaties met complexe algoritmes en calculaties beter kiezen voor B
 Deze kan doormiddel van zijn geoptimaliseerde machine code de calculaties sneller uitvoeren dan Node.js.
 Bij I/O-taken moet er echter een afweging gemaakt worden. Zo is Bun in samenwerking met een PostgreSQL database sneller voor het ophalen en invoegen van data.
 Echter komt dit ten koste van een hoger middelengebruik op vlak van geheugen en CPU. 
-Indien de server hardware over voldoende middelen beschikt kan Bun gebruikt worden voor een performantere werking van de applicatie.
+Indien de server hardware over voldoende middelen beschikt kan Bun gebruikt worden voor een snellere verwerking van de applicatie.
 

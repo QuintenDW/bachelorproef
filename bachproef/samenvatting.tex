@@ -45,4 +45,30 @@
 
 \chapter*{\IfLanguageName{dutch}{Samenvatting}{Abstract}}
 
-\lipsum[1-4]
+Performantie is doorheen de tijd alsmaar belangrijker geworden. 
+Een performante applicatie zorgt hierbij voor een betere gebruikerservaring.
+In de voorbije jaren zijn er voortdurend nieuwe JavaScript runtime-omgevingen ontwikkeld met telkens nieuwe verbeteringen om
+ zo de noden van de alsmaar complexere applicaties te vervullen. 
+Echter worden weinig van deze nieuwe ontwikkelingen effectief in de praktijk gebruikt.
+Zo wordt het oudere Node.js meestal nog gekozen als JavaScript runtime-omgeving bij de ontwikkeling van applicaties.
+In dit onderzoek wordt geprobeerd een inzicht te verschaffen over de performantie van Node.js en één van deze nieuwe omgevingen
+om zo een correcte keuze te kunnen maken bij de ontwikkeling van performante applicaties.
+De onderzoeksvraag hierbij is of één van deze nieuwe frameworks  
+een correcte plaatsvervanger kan zijn voor Node.js bij de ontwikkeling van applicaties binnen bedrijven 
+waar performantie centraal staat. Het onderzoek kan dan gebruikt worden als basis 
+voor het maken van een doordachte back-end keuze.
+Om een antwoord te bekomen werd eerst informatie over het onderzoeksdomein verzameld om zo een duidelijk beeld ervan te schetsen.
+Hierbij werden in de literatuurstudie Javascript runtime-omgevingen zoals Node.js, Deno en Bun besproken.
+Nadien wordt aan de hand van een requirements-analyse één omgeving geselecteerd die het meest geschikt is als potentiële plaatsvervanger voor Node.js.
+Hierbij voldeed Bun aan alle requirements en werd er gekozen deze omgeving te vergelijken met Node.js in de proof-of-concepts.
+Hierbij werd aan de hand van het Quick Sort algoritme de performantie bij logische berekeningen gemeten.
+Daarnaast werd ook een applicatie opgesteld met de mogelijkheid om data op te halen en in te voegen. 
+Hierbij werd de performantie van beide omgevingen bij afhandeling van netwerk verzoeken gemeten.
+Tot slot werd de applicatie ook gebruikt om de installatietijd van de respectievelijke package managers te meten.
+Hierbij heeft Bun een snellere installatietijd dan Node.js.
+Bij het meten van het Quick Sort algoritme heeft Bun ook een snellere uitvoeringstijd wat het standpunt ondersteunt dat Bun beter presteert bij het uitvoeren van logische berekeningen.
+Tot slot heeft Bun een lagere latentie en een betere verwerking van het aantal verzoeken per seconde bij het ophalen en invoegen van data ten koste van het CPU-gebruik en geheugengebruikt.
+Dit leidt tot de conclusie dat  Bun een optimale keuze kan zijn voor applicaties met complexe algoritmes en calculaties maar 
+bij applicaties waarbij I/O-taken worden uitgevoerd telkens een afweging moet gemaakt tussen de snellere verwerking van Bun en het hogere middelengebruik dat dit teweeg brengt.
+
+

@@ -36,21 +36,21 @@ Nadat er een duidelijker beeld is over het onderzoeksdomein wordt in de tweede f
 één omgeving geselecteerd die het meest geschikt is als potentiële plaatsvervanger voor Node.js binnen de context van performante applicaties.
 De requirements worden hier onderverdeeld via de MoSCoW-techniek in de categorieën “must-have”, “should-have”, “could-have” en “won't-have”. 
 De alternatieven worden afgetoetst aan de requirements om zo tot één geschikte omgeving te komen die wordt vergeleken met Node.js.
-In de derde fase worden zelfgemaakte proof-of-concepts opgesteld en getest (zie hoofdstuk \ref{label}) voor beide omgevingen. 
-Hierbij wordt een applicatie ontwikkeld waarbij een gebruiker
+In de derde fase worden zelfgemaakte proof-of-concepts opgesteld en getest (zie hoofdstuk \ref{ch:proof-of-concept}) voor beide omgevingen. 
+Hierbij wordt een applicatie ontwikkeld waarbij een gebruiker onderwerpen kan ophalen en 
 een recensie kan creëren over een bepaald onderwerp,
 alsook een script dat een algoritme bevat. Hierdoor kunnen zowel metingen gedaan worden op computationele taken als I/O-taken (Input/Output).
 De metingen worden uitgevoerd door 2 benchmark tools, Hyperfine en Bombardier, om volgende zaken te meten:
 \begin{itemize}
-    \item De responstijd op HTTP-verzoeken
-    \item De uitvoeringstijd bij de applicatie.
-    \item De verwerkingstijd bij het uitvoeren van de berekeningen van het algoritme.
-    \item Het geheugengebruik bij beiden.
+    \item De latentie van de applicatie HTTP-verzoeken.
+    \item Het aantal verzoeken per seconde bij de applicatie.
+    \item De uitvoeringstijd van de berekeningen van het Quick Sort algoritme.
+    \item Het geheugengebruik bij de applicatie.
     \item De installatietijd voor de respectievelijke package managers.
-    \item Het CPU-gebruik bij beiden.
+    \item Het CPU-gebruik bij de applicatie.
 \end{itemize}
 Daarnaast zal ook gekeken worden naar de extra functionaliteiten en hoe deze de complexiteit beïnvloeden.
 Aan de hand van deze resultaten komen we tot de laatste fase namelijk de conclusie. 
 Hierbij worden de data geanalyseerd om zo een antwoord te formuleren op de onderzoeksvragen.
-Hieruit wordt afgeleid of het gekozen framework een geschikte plaatsvervange kan zijn voor Node.js binnen 
-de ontwikkeling van webapplicaties waar performantie centraal staat.
+Hieruit wordt afgeleid of het gekozen framework een geschikte plaatsvervanger kan zijn voor Node.js binnen 
+de ontwikkeling van applicaties waar performantie centraal staat.

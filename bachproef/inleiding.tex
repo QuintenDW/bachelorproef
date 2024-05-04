@@ -5,20 +5,6 @@
 \chapter{\IfLanguageName{dutch}{Inleiding}{Introduction}}%
 \label{ch:inleiding}
 
-De inleiding moet de lezer net genoeg informatie verschaffen om het onderwerp te begrijpen en in te zien waarom de onderzoeksvraag de moeite waard is om te onderzoeken. 
-In de inleiding ga je literatuurverwijzingen beperken, zodat de tekst vlot leesbaar blijft. 
-Je kan de inleiding verder onderverdelen in secties als dit de tekst verduidelijkt.
-Zaken die aan bod kunnen komen in de inleiding~\autocite{Pollefliet2011}:
-
-\begin{itemize}
-  \item context, achtergrond
-  \item afbakenen van het onderwerp
-  \item verantwoording van het onderwerp, methodologie
-  \item probleemstelling
-  \item onderzoeksdoelstelling
-  \item onderzoeksvraag
-  \item \ldots
-\end{itemize}
 
 Door de jaren heen zijn applicaties alsmaar complexer geworden. Hierbij worden vaak achterliggend netwerk verzoeken afgehandeld door een 
 een back-end applicatie. Deze applicatie wordt uitgevoerd door een runtime omgeving die zich buiten de browser bevindt.
@@ -33,16 +19,11 @@ Deze 2 omgevingen zijn relatief jonger dan Node.js.
 \section{\IfLanguageName{dutch}{Probleemstelling}{Problem Statement}}%
 \label{sec:probleemstelling}
 
-Uit je probleemstelling moet duidelijk zijn dat je onderzoek een meerwaarde heeft voor een concrete doelgroep. 
-De doelgroep moet goed gedefinieerd en afgelijnd zijn. Doelgroepen als ``bedrijven,'' ``KMO's'', systeembeheerders, enz.~zijn nog te vaag. 
-Als je een lijstje kan maken van de personen/organisaties die een meerwaarde zullen vinden in deze bachelorproef (dit is eigenlijk je steekproefkader), 
-dan is dat een indicatie dat de doelgroep goed gedefinieerd is. Dit kan een enkel bedrijf zijn of zelfs één persoon (je co-promotor/opdrachtgever).
-
 Performantie is doorheen de tijd alsmaar belangrijker geworden. 
 Een performante webapplicatie zorgt hierbij voor een betere gebruikerservaring. 
 Momenteel wordt Node.js nog altijd als standaard gebruikt bij elk project. Echter zijn er nog tal van andere javascript runtime-omgevingen
 , zoals Bun, die in staat zijn om specifieke noden te vervullen waar Node.js niet aan kan voldoen. In deze bachelorproef wordt geprobeerd 
-een inzicht te verschaffen over de performantie van Node.js en Bun alsook hun complexiteit 
+een inzicht te verschaffen over de performantie van Node.js en Bun
 om zo een correcte keuze te kunnen maken bij de ontwikkeling van webapplicaties.
 Dit onderzoek is relevant voor bedrijven waar performantie centraal staat binnen hun ontwikkeling van javascript back-end applicaties en kan gebruikt worden als basis 
 voor het maken van een doordachte back-end keuze. Dit onderzoek 
@@ -51,30 +32,19 @@ biedt ook inzicht in de capaciteiten van Bun voor andere betrokkenen binnen het 
 \section{\IfLanguageName{dutch}{Onderzoeksvraag}{Research question}}%
 \label{sec:onderzoeksvraag}
 
-Wees zo concreet mogelijk bij het formuleren van je onderzoeksvraag. 
-Een onderzoeksvraag is trouwens iets waar nog niemand op dit moment een antwoord heeft
- (voor zover je kan nagaan). Het opzoeken van bestaande informatie (bv. ``welke tools bestaan er voor deze toepassing?'') is dus geen onderzoeksvraag. 
-Je kan de onderzoeksvraag verder specifiëren in deelvragen. 
-Bv.~als je onderzoek gaat over performantiemetingen, dan 
-
 In dit onderzoek wordt bestudeerd of Bun 
-een correcte plaatsvervanger kan zijn voor Node.js bij de ontwikkeling van webapplicaties binnen bedrijven 
-waar performantie centraal staat.
+een correcte plaatsvervanger kan zijn voor Node.js bij de ontwikkeling van performante webapplicaties binnen bedrijven 
+waar een javascript runtime wordt gebruikt.
 Hierbij spelen verschillende aspecten een rol die aan de hand van volgende deelvragen worden onderzocht:
 \begin{itemize}
   \item Is Bun performanter dan Node.js bij het uitvoeren van logische berekeningen?
   \item Is Bun performanter dan Node.js bij het afhandelen van netwerk verzoeken?
   \item Wat is het verschil tussen hun respectievelijke package managers?
-  \item Hoe complex is Bun tegenover Node.js
 \end{itemize}
-
 
 \section{\IfLanguageName{dutch}{Onderzoeksdoelstelling}{Research objective}}%
 \label{sec:onderzoeksdoelstelling}
 
-Wat is het beoogde resultaat van je bachelorproef? 
-Wat zijn de criteria voor succes? Beschrijf die zo concreet mogelijk.
-Gaat het bv.\ om een proof-of-concept, een prototype, een verslag met aanbevelingen, een vergelijkende studie, enz.
 
 Het doel van de bachelorproef is te bepalen of Bun een betere keuze is dan Node.js bij het
 ontwikkelen van performante back-end applicaties. Dit wordt bepaald door middel van een vergelijkende studie.
@@ -99,8 +69,7 @@ op de onderzoeksvragen.
 
 In hoofdstuk~\ref{ch:selectie} wordt de lijst van omgevingen afgetoetst aan de opgegegeven requirements om uiteindelijk een geschikte omgeving te selecteren.
 
-
-% TODO: Vul hier aan voor je eigen hoofstukken, één of twee zinnen per hoofdstuk
+In hoofdstuk~\ref{ch:proof-of-concept} wordt de opzet en metingen van de proof-of-concept toegelicht. Op het einde worden de bekomen resultaten besproken.
 
 In hoofdstuk~\ref{ch:conclusie}, tenslotte, 
 wordt de conclusie gegeven en een antwoord geformuleerd op de onderzoeksvragen. 

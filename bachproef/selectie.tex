@@ -8,15 +8,15 @@
 In dit hoofdstuk wordt aan de hand van een requirements-analyse een selectie gemaakt voor de JavaScript runtime omgeving 
 die het meest geschikt zou zijn als potentiële plaatsvervanger van Node.js binnen de context van performante applicaties.
 Er wordt gestart met een oplijsting van de requirements op basis van de MoSCoW-techniek in de categorieën “must-have”, “should-have” en “nice-to-have”. 
-Daarna worden de alternatieven in de lijst afgetoetst aan deze requirements om zo tot tot één geschikte omgeving te komen die wordt vergeleken met Node.js.
+Daarna worden de alternatieven in de lijst afgetoetst aan deze requirements om zo tot één geschikte omgeving te komen die wordt vergeleken met Node.js.
 
 \section*{Requirements}
 In de volgende sectie wordt eerst uitgelegd wat MoSCoW betekent, 
 waarna deze methode wordt toegepast om de verschillende requirements te bepalen.
 \subsection{MoSCoW}
-Voor de oplijsting van de requirements wordt gebruik gemaakt van de MoSCoW methode. 
+Voor de oplijsting van de requirements wordt gebruikgemaakt van de MoSCoW methode. 
 In het boek van \textcite{Vliet2007} wordt uitgelegd wat deze methode precies inhoud. 
-Zo dient MoSCoW om requirements te prioritiseren. Het bestaat uit 4 lagen:
+Zo dient MoSCoW om requirements te prioriteren. Het bestaat uit 4 lagen:
 \begin{itemize}
     \item Must haves zijn requirements die zeker nodig zijn.
     \item Should haves zijn requirements die belangrijk zijn, maar niet absoluut nodig zijn voor een werkend systeem.
@@ -35,28 +35,28 @@ In volgende lijst zijn de requirements die zeker nodig zijn bij een JavaScript r
     \item Er moet een verscheidenheid aan bibliotheken en packages beschikbaar zijn voor de omgeving.
     \item De omgeving moet stabiel zijn en regelmatig updates ontvangen.
 \end{itemize}
-Aangezien dit onderzoek gebruikt kan worden als leidraad bij de keuze van een JavaScript runtime omgeving, 
-moet de omgeving platformonafhankelijk zijn, wat betekent dat het op verschillende besturingssytemen kan draaien.
+Aangezien dit onderzoek gebruikt kan worden als leidraad bij de keuze van een JavaScript runtime-omgeving, 
+moet deze platformonafhankelijk zijn, wat inhoudt dat het op verschillende besturingssystemen kan worden gebruikt.
 Het moet daarnaast ook door een aanzienlijk aantal ontwikkelaars worden gebruikt.
 Dit wordt bepaald aan de hand van het jaarlijks onderzoek van \textcite{Greif2022} 
-waarbij een minimumgrens van 1\% van de beantwoorden wordt genomen.
+waarbij een minimumdrempel van 1\% van de respondenten wordt genomen.
 Hierbij moet de omgeving ook stabiel en onderhouden zijn.
-Daarnaast moet de omgeving ook een modulesyteem met een verscheidenheid aan bibliotheken bevatten 
+Daarnaast moet de omgeving een modulesyteem met een verscheidenheid aan bibliotheken bevatten 
 zodat deze kan uitgebreid worden in functionaliteit. 
 Als laatste moet de omgeving goede prestaties bieden bij zowel computationele berekeningen als I/O-taken
 aangezien dit onderzoek zich focust op de performantie van de omgevingen.
 
 \subsection{Should have requirements}
-In volgende lijst zijn de requirements die belangrijk zijn bij een JavaScript runtime omgeving opgesomd:
+In volgende lijst zijn de requirements die belangrijk zijn bij een JavaScript runtime-omgeving opgesomd:
 \begin{itemize}
     \item Er moet documentatie aanwezig zijn over de runtime-omgeving.
     \item De omgeving moet asynchrone I/O-operaties ondersteunen.
 \end{itemize}
 Voor de implementatie van de omgevingen is het belangrijk dat er voldoende documentatie aanwezig is.
-Ook moeten deze asynchrone I/O-operaties ondersteunen zodat deze even performant of performanter kunnen werken als Node.js
+Ook moeten deze asynchrone I/O-operaties ondersteunen zodat deze even performant of performanter kunnen werken als Node.js.
 
 \subsection{Could have requirements}
-In volgende lijst zijn de requirements die “nice-to-have” zijn:
+In volgende lijst staan de requirements die “nice-to-have” zijn:
 \begin{itemize}
     \item De omgeving heeft geïntegreerde ondersteuning voor TypeScript.
     \item De omgeving heeft een geïntegreerde test-runner.
@@ -72,15 +72,15 @@ In volgende lijst zijn de Won't have requirements:
     \item De omgeving is closed-source.
 \end{itemize}
 De omgeving mag niet beschikken over deze requirements. 
-Zo is het verplicht dat de omgeving een JavaScript runtime-omgeving is en dat deze benchmark testen toe laat om de performantie te meten.
+Zo is het verplicht dat de omgeving een JavaScript runtime-omgeving is en dat deze benchmark testen mogelijk maakt om de prestaties te meten.
 Daarnaast moet deze ook open-source zijn zodat er transparantie en onafhankelijkheid is.
 
 \section{Selectie}
-Nu dat de requirements bepaald zijn, worden de JavaScript runtime-omgevingen hier tegenover afgetoetst.
-Deze lijst van JavaScript runtime-omgevingen is gebasseerd op de samengestelde lijst van \textcite{Errilaz2023} 
-die te vinden zijn in tabel \ref{tab:omgevingen}.
+Nu dat de requirements bepaald zijn, worden de verschillende JavaScript runtime-omgevingen hier tegenover afgetoetst.
+Deze lijst van runtime-omgevingen is gebaseerd op de samengestelde lijst van \textcite{Errilaz2023} 
+zoals weergegeven in tabel \ref{tab:omgevingen}.
 In tabel \ref{tab:requirements} worden deze omgevingen afgetoetst aan de requirements. 
-Deze zal als basis dienen om uit de lijst de runtime-omgeving te kiezen voor de vergelijking met Node.js.
+Deze zal als basis dienen voor de selectie van een runtime-omgeving voor de vergelijking met Node.js.
 \begin{table}[H]
     \begin{tabular}{|c|}
     \hline
@@ -117,26 +117,27 @@ Deze zal als basis dienen om uit de lijst de runtime-omgeving te kiezen voor de 
     \end{table}
 
 \subsection{Bun}
-Zoals beschreven in hoofdstuk \ref{ch:stand-van-zaken} is Bun een omgeving waar de focus ligt op performantie.
+Zoals beschreven in hoofdstuk \ref{ch:stand-van-zaken} is Bun een omgeving waarbij de focus ligt op performantie.
 Het probeert dit te behalen door de JavaScriptCore engine te gebruiken die volgens ~\textcite{McDonnel2023} ervoor zorgt dat Bun 4 keer sneller opstart dan Node.js.
-Daarnaast heeft Bun ook een package manager die volgens ~\textcite{McDonnel2023} tot 25 keer sneller packages zou kunnen installeren tegenover Node.js.
-Bovendien heeft Bun veel zaken ingebouwd zoals: een bundler, test-runner en TypeScript ondersteuning.
+Daarnaast heeft Bun ook een package manager die volgens ~\textcite{McDonnel2023} tot 25 keer sneller packages zou kunnen installeren dan Node.js.
+Bovendien heeft Bun ook veel zaken ingebouwd zoals: een bundler, test-runner en TypeScript ondersteuning.
 Volgens onderzoek van \textcite{Greif2022} is Bun redelijk populair en werd het door 4.3\% van de 29888 bevraagden regelmatig gebruikt.
 Uit eerder onderzoek van ~\textcite{Feroj2023} bleek ook dat Bun beter presteert dan Node.js op vlak van responstijd, uitvoeringstijd en geheugengebruik.
 
 \subsection{Deno}
 Zoals beschreven in hoofdstuk \ref{ch:stand-van-zaken} werd Deno geïntroduceerd in 2021 door ~\textcite{Dahl2021} om zo nieuw leven in het ecosysteem in te blazen.
-In het onderzoek \textcite{Greif2022} wordt aangetoond dat 11.2\% van de 29888 bevraagden regelmatig Deno gebruiken, wat dit een populaire omgeving maakt.
-Het maakt net zoals Node.js gebruik van de V8 javascript engine, maar toch onderscheidt het zich van Node.js op een aantal vlakken.
-Zo is Deno ontwikkeld in Rust in plaats van C en C++ zoals bij Node.js en werd tijdens de ontwikkeling de focus meer gelegd op beveiligbaarheid.
-Specifiek is er standaard runtime-beveiliging waardoor expliciet toegang moet gegegeven worden tot gevoelige APIs.
-Daarnaast wordt gebruikgemaakt van URLs om externe packages te importeren en heeft het ook een ingebouwde test-runner om zowel JavaScript
+In het onderzoek van \textcite{Greif2022} wordt aangetoond dat 11.2\% van de 29888 bevraagden regelmatig Deno gebruiken, wat dit een populaire omgeving maakt.
+Hoewel Deno, net als Node.js, gebruikmaakt van de V8 JavaScript-engine, onderscheidt het zich op verschillende manieren van Node.js. 
+Deno is bijvoorbeeld ontwikkeld in Rust, terwijl Node.js voornamelijk is geschreven in C en C++. 
+Tijdens de ontwikkeling van Deno lag de nadruk ook meer op veiligheid.
+Specifiek is er standaard runtime-beveiliging waardoor expliciet toegang moet gegeven worden tot gevoelige APIs.
+Daarnaast wordt gebruikgemaakt van URL's om externe packages te importeren en heeft het ook een ingebouwde test-runner om zowel JavaScript
 als de ondersteunde TypeScript te testen. Uit eerder onderzoek van \textcite{VanKerkvoorde2021} 
 bleek dat Deno beter scoort dan Node op vlak van verwerkingstijd en geheugengebruik.
 
 \subsection{Just}
 Just is sinds 17 November 2023 niet meer actief onderhouden waardoor het niet voldoet aan de Must 
-have requirement waarbij de omgeving regelmatig updates moet ontvangen \autocite{Johnston2023}.
+have requirement dat de omgeving regelmatig updates moet ontvangen \autocite{Johnston2023}.
 Daarnaast werkt deze enkel op Linux waardoor het ook niet platformonafhankelijk is, 
 een requirement om te kunnen vergelijken met Node.js \autocite{Johnston2023}.
 
@@ -148,7 +149,7 @@ Echter is deze niet volledig platformonafhankelijk.
 Zo concludeert \textcite{Corretge2024} dat txiki.js nog niet optimaal werkt op Windows platformen.
 
 \subsection{Napa.js}
-Napa.js is een multi-threaded JavaScript runtime omgeving ontwikkeld door \textcite{Microsoft2018}. 
+Napa.js is een multi-threaded JavaScript runtime-omgeving ontwikkeld door \textcite{Microsoft2018}. 
 Het is gebouwd op de V8 engine en werd oorspronkelijk gemaakt om iteratieve services in Bing te maken.
 De JavaScript executie performantie in napa.js is gelijkaardig aan die in Node.js. 
 Het wordt weergegeven als een NPM module, maar er is ook de mogelijkheid om te werken zonder Node.js.
@@ -156,18 +157,18 @@ Ondanks al deze functionaliteiten is de omgeving inactief en heeft het zijn laat
 
 \subsection{Elsa}
 Elsa is een minimale JavaScript en TypeScript runtime geschreven in Go \autocite{Garcia2022}. 
-Het is gebouwd bovenop de QuickJS engine en gebruikt een module systeem gelijkaardig aan Deno waarbij de imports via een url worden gedaan \autocite{Garcia2022}.
+Het is gebouwd bovenop de QuickJS engine en gebruikt een modulesysteem gelijkaardig aan Deno waarbij de imports via een URL worden gedaan \autocite{Garcia2022}.
 Echter heeft deze runtime al 2 jaar geen updates gehad waardoor deze niet actief wordt ontwikkeld.
 
 \subsection{De geschikte omgeving}
-Aan de hand van de aftoetsing van de omgevingen aan de requirements kan een geschikte 
-omgeving gevonden worden die een potentiële plaatsvervanger kan zijn voor Node.js.
+Door de omgevingen te toetsen aan de requirements kan een geschikte 
+omgeving gevonden worden als mogelijke plaatsvervanger voor Node.js.
 Deze omgeving wordt, samen met Node.js, in de proof-of-concept verwerkt om hierop dan performantie metingen uit te voeren.
 Op basis van deze metingen kan dan een conclusie getrokken worden.
 Zoals te zien in tabel \ref{tab:requirements} zijn er maar 2 omgevingen die voldoen aan alle must haves namelijk Bun en Deno. 
 Deze requirements zijn van cruciaal belang om een omgeving te kunnen vergelijken met Node.js. 
 Daarnaast zijn het ook 2 van de weinige omgevingen die stabiel zijn en regelmatig updates ontvangen. 
 De overige omgevingen voldoen niet aan de minimum requirements waardoor ze al zeker niet zullen worden opgenomen in de proof-of-concept.
-Als we dieper ingaan op de omgevingen Bun en Deno blijkt dat Bun zich meer focust op performantie terwijl Deno meer de focus legt op beveiligbaarheid.
-Ook voldoet Bun aan alle requirements terwijl Deno juist 1 ontbreekt namelijk het beschikken over een geïntegreerde bundler. 
-Aangezien in dit onderzoek de focus ligt bij de performantie van de omgevingen wordt gekozen om Bun op te nemen in de proof-of-concept.
+Als dieper wordt ingegaan op de omgevingen blijkt dat Bun zich meer focust op de performantie terwijl Deno meer de focus legt op de beveiliging.
+Bovendien voldoet Bun aan alle requirements, terwijl Deno er juist één ontbreekt, namelijk het beschikken over een geïntegreerde bundler. 
+Aangezien dit onderzoek zich focust op de performantie van de omgevingen, wordt gekozen om Bun op te nemen in de proof-of-concept.

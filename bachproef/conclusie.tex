@@ -47,13 +47,13 @@ Uit de resultaten van het Quick Sort algoritme bleek dat Bun performanter is bij
 Zo had Bun een gemiddelde uitvoeringstijd die 2,21 keer sneller was dan Node.js.
 Bij het ophalen van data was er ook een groot performantie verschil tussen beiden. Zo had Bun met zowel de MySQL database als de PostgreSQL database 
 een beter gemiddelde op vlak van aantal verzoeken per seconde en latentie. Echter bereikte Bun dit door een hoger gebruik van CPU en geheugen middelen.
-Bij het invoegen van data scoorde Bun met een MySQL gelijkaardig aan Node.js op vlak van gemiddeld aantal verzoeken en latentie.
-Echter gebruikte Bun hierbij wel weer meer middelen. Bij de PostgreSQL database scoorde Bun wel beter op het gemiddelde aantal verzoeken en latentie,
-maar gebruikte het weer een hoger aantal middelen.
-Uit deze resultaten kan geconcludeerd worden dat Bun sneller netwerk verzoeken kan afhandelen, met de exceptie van POST verzoeken in combinatie met een MySQL databank,
+Bij het invoegen van data scoorde Bun beter dan Node.js op vlak van gemiddeld aantal verzoeken en latentie.
+Enkel bij 10 connecties met een MySQL databank was Bun gelijkaardig aan Node.js.
+Echter gebruikte Bun telkens meer middelen dan Node.js.
+Uit deze resultaten kan geconcludeerd worden dat Bun algemeen sneller netwerk verzoeken kan afhandelen
 ten koste van een hoger middelengebruik.
 Als laatste werd ook de installatietijd onderzocht bij de package managers. Hierbij had Bun een 
-gemiddelde installatietijd van 24,9 milliseconden wat 24,5 keer sneller was dan Node.js welke een gemiddelde installatietijd van 610,1 milliseconde had.
+gemiddelde installatietijd van 24,9 milliseconden wat 24,5 keer sneller was dan Node.js welke een gemiddelde installatietijd van 610,1 milliseconden had.
 Dit toont een significant verschil tussen de respectievelijke package managers waarbij Bun performanter presteert.
 
 Het onderzoek geeft een leidraad bij de keuze van een JavaScript runtime-omgeving.
@@ -63,8 +63,8 @@ Echter moet bij applicaties waarbij I/O-taken worden uitgevoerd telkens een afwe
 
 Voor de metingen werden uitgevoerd, was er de verwachting dat Bun beter ging presteren op basis van eerder uitgevoerd onderzoek vanuit de literatuurstudie en de selectie.
 Op vlak logische berekeningen en package managers zit dit in lijn met de bekomen resultaten, echter spreken de resultaten bij de server de verwachte conclusie enigszin tegen.
-Zo presteert Bun samen met een PostgreSQL wel beter op vlak het verwerken van verzoeken maar scoort het slechter op vlak van middelengebruik wat ook onderdeel uitmaakt van de performantie van een omgeving.
-Bij MySQL presteert Bun bij het invoegen van data zelf gelijkaardig aan Node.js, terwijl het wel een hoger middelengebruik heeft.
+Zo presteert Bun wel beter op vlak het verwerken van verzoeken maar scoort het slechter op vlak van middelengebruik wat ook onderdeel uitmaakt van de performantie van een omgeving.
+Bij 10 connecties in combinatie met een MySQL databank presteert Bun bij het invoegen van data zelf gelijkaardig aan Node.js, terwijl het wel een hoger middelengebruik heeft.
 Dit verschil met verwachtingen kan te maken hebben met het feit dat bij eerder onderzoek enkel werd getest op kleine schaal zonder ORM of databases.
 
 Toekomstig onderzoek kan verder gaan op de bekomen resultaten door in plaats van relationele databases, zoals MySQL en PostgreSQL, ook NoSQL databases te testen.

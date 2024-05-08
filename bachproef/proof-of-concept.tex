@@ -1,7 +1,6 @@
 %%=============================================================================
 %% Selectie
 %%=============================================================================
-
 \chapter{\IfLanguageName{dutch}{Proof-of-concept}{Proof-of-concept}}%
 \label{ch:proof-of-concept}
 
@@ -100,12 +99,18 @@ Hierbij worden eerst 3 modellen gemaakt die de volgende tabellen voorstellen in 
   \item Het onderwerp model dat een onderwerp voorstelt.
   \item Het recensie model dat de recensie van een bepaalde gebruiker over een bepaald onderwerp voorstelt.
 \end{itemize}
-De code voor het model van de gebruiker is te vinden in ~\ref{code:User}. Deze bevat 3 kolommen namelijk: de primaire sleutel (id), voornaam en familienaam.
+De code voor het model van de gebruiker is te vinden in ~\ref{code:User}. Deze bevat 3 kolommen namelijk: de primaire sleutel (id), voornaam en achternaam.
 Doormiddel van de sync methode wordt dit model gesynchroniseerd met de database. 
 Het model van het onderwerp is gelijkaardig aan de gebruiker zoals te zien is in ~\ref{code:Subject}. Het recensie model heeft bijkomend 
 ook nog de 1-op-1 relatie met respectievelijk de gebruiker en het onderwerp.
 Om deze relatie tot stand te brengen wordt de belongsTo methode gebruikt in ~\ref{code:Review}. 
-Deze zal in de tabel een vreemde sleutel toevoegen naar zowel de gebruiker tabel als de onderwerp tabel. 
+Deze zal in de tabel een vreemde sleutel toevoegen naar zowel de gebruiker tabel als de onderwerp tabel.
+Een visuele voorstelling hiervan is te bekijken in figuur \ref{fig:erd}.
+\begin{figure}[H]
+  \centering
+  \includegraphics{graphics/erd.png}
+  \caption{\label{fig:erd}ERD diagram van de recensie applicatie}
+\end{figure}
 \begin{listing}[H]
   \centering
   \begin{minted}[bgcolor=bg,
@@ -135,11 +140,11 @@ async function GebruikerInit(sequelize) {
         autoIncrement: true,
         primaryKey: true,
       },
-      voorNaam: {
+      voornaam: {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      achterNaam: {
+      achternaam: {
         type: DataTypes.STRING,
       },
     },
@@ -291,6 +296,9 @@ async function initializeSequelize() {
   sequelize = new Sequelize(database, username, password, {
     host: dialect,
     dialect: dialect,
+    pool: {
+      max: 100,
+    }
   });
   try {
     await sequelize.authenticate();
@@ -342,8 +350,8 @@ async function seed(sequelize) {
   await sequelize.models.Onderwerp.destroy({ truncate: { cascade: true } });
   await sequelize.models.Gebruiker.create({
     id: 1,
-    voorNaam: "Quinten",
-    achterNaam: "De Wolf",
+    voornaam: "Quinten",
+    achternaam: "De Wolf",
   });
   await sequelize.models.Onderwerp.create({
     id: 1,
@@ -492,7 +500,7 @@ Bij de metingen wordt telkens versie 1.18 van Hyperfine gebruikt.
       showspaces=false,
       showtabs =false,
       texcl=false]{shell-session}
-> hyperfine 'node index.js 1000' 'bun index.js 1000'
+> hyperfine --warmup 1 'node index.js 1000' 'bun index.js 1000'
       \end{minted}
       \caption{\label{code:HyperfineScript}Gebruik Hyperfine commando bij het script}
 \end{listing}
@@ -520,7 +528,7 @@ Bij de metingen wordt telkens versie 1.18 van Hyperfine gebruikt.
 \end{listing}
 Daarnaast wordt voor de HTTP server gebruikgemaakt van Bombardier. 
 Hierbij kan ingesteld worden hoeveel gelijktijdige connecties er zijn en hoeveel verzoeken per test worden verstuurd.
-In de metingen zal getest worden door 500000 verzoeken te sturen met 10, 100 en 1000 gelijktijdige connecties.
+In de metingen zal getest worden door 500000 verzoeken te sturen met 10, 50 en 100 gelijktijdige connecties.
 De commando's hiervoor zijn terug te vinden in \ref{code:Bombardier10}, \ref{code:Bombardier100} en \ref{code:Bombardier1000}.
 Hierbij wordt telkens een POST verzoek gestuurd, in \ref{code:Bombardier10GET} wordt een voorbeeld getoond om GET verzoeken te sturen.
 Bij de metingen wordt hiervoor gebruikgemaakt van versie 1.2.6 van Bombardier.
@@ -562,9 +570,9 @@ Bij de metingen wordt hiervoor gebruikgemaakt van versie 1.2.6 van Bombardier.
       showspaces=false,
       showtabs =false,
       texcl=false]{shell-session}
-> bombardier -c 100 -n 500000 -m POST -b '{"bericht": "test","GebruikerId": 1,"OnderwerpId": 1}' -l http://localhost:3000/recensie
+> bombardier -c 50 -n 500000 -m POST -b '{"bericht": "test","GebruikerId": 1,"OnderwerpId": 1}' -l http://localhost:3000/recensie
       \end{minted}
-      \caption{\label{code:Bombardier100}Gebruik Bombardier commando met 500000 verzoeken en 100 gelijktijdige connecties voor een POST verzoek}
+      \caption{\label{code:Bombardier100}Gebruik Bombardier commando met 500000 verzoeken en 50 gelijktijdige connecties voor een POST verzoek}
 \end{listing}
 \begin{listing}[H]
   \centering
@@ -583,9 +591,9 @@ Bij de metingen wordt hiervoor gebruikgemaakt van versie 1.2.6 van Bombardier.
       showspaces=false,
       showtabs =false,
       texcl=false]{shell-session}
-> bombardier -c 1000 -n 500000 -m POST -b '{"bericht": "test","GebruikerId": 1,"OnderwerpId": 1}' -l http://localhost:3000/recensie
+> bombardier -c 100 -n 500000 -m POST -b '{"bericht": "test","GebruikerId": 1,"OnderwerpId": 1}' -l http://localhost:3000/recensie
       \end{minted}
-      \caption{\label{code:Bombardier1000}Gebruik Bombardier commando met 500000 verzoeken en 1000 gelijktijdige connecties voor een POST verzoek}
+      \caption{\label{code:Bombardier1000}Gebruik Bombardier commando met 500000 verzoeken en 100 gelijktijdige connecties voor een POST verzoek}
 \end{listing}
 \begin{listing}[H]
   \centering
@@ -665,7 +673,7 @@ RUN curl -fsSL https://bun.sh/install | bash && \
 COPY . .
 RUN ~/.bun/bin/bun install
 # Commando dat wordt uitgevoerd wanneer container start
-CMD ["hyperfine","node index.js 1000", "bun index.js 1000"]
+CMD ["hyperfine","--warmup", "1", "node index.js 1000", "bun index.js 1000"]
       \end{minted}
       \caption{\label{code:dockerscript}Dockerfile voor het Quick Sort algoritme}
 \end{listing}
@@ -1003,11 +1011,11 @@ FROM node:21
 RUN apt-get update && \
     apt-get install -y curl && \
     apt-get install -y hyperfine
+# Zet de werk map in de container
+WORKDIR /app
 
 RUN curl -fsSL https://bun.sh/install | bash && \
   ln -s $HOME/.bun/bin/bun /usr/local/bin/bun
-# Zet de werk map in de container
-WORKDIR /app
 
 # Kopieer de applicatiebestanden naar de container
 COPY . .
@@ -1050,11 +1058,15 @@ Daarna worden de resultaten van de server besproken op vlak van uitvoeringstijd,
 bij zowel het gebruik van een MySQL database als een PostgreSQL database.
 
 \subsubsection{Resultaten  Quick Sort algoritme}
-De resultaten voor de gemiddelde uitvoeringstijd bij het Quick Sort algoritme werden bekomen doormiddel van Hyperfine.
-Hierbij werd gekeken naar de uitvoeringstijd voor het sorteren van een array bestaande uit 1000 elementen met volgend commando \ref{code:HyperfineScript}.
-In figuur \ref{fig:uitvoeringstijdscript} wordt de gemiddelde uitvoeringstijd per omgeving visueel voorgesteld. 
+De resultaten voor de gemiddelde uitvoeringstijd bij het Quick Sort algoritme werden bekomen met behulp van Hyperfine.
+Hierbij werd gekeken naar de uitvoeringstijd voor het sorteren van een array bestaande uit 1000 elementen met volgend commando \ref{code:HyperfineScript}..
+Bun heeft hierbij een gemiddelde uitvoeringstijd van 6.4 milliseconden met een standaardafwijking van 0.8 milliseconden. 
+Dit tegenover de gemiddelde uitvoeringstijd van 14.1 milleseconden bij Node.js met een standaardafwijking van 1.3 milliseconden.
+In figuur \ref{fig:uitvoeringstijdscript} wordt de gemiddelde uitvoeringstijd per omgeving visueel voorgesteld
 Daarbij is op te merken dat de gemiddelde uitvoeringstijd van Bun 2.21 keer sneller is dan bij Node.js.
-In figuur \ref{fig:RAMscript} wordt het maximale geheugengebruik voor zowel Bun als Node.js weergegeven. Hierbij heeft Bun met 30.69 MB een lager geheugengebruik dan Node.js met 36.4 MB.
+In figuur \ref{fig:RAMscript} wordt het maximale geheugengebruik voor zowel Bun als Node.js weergegeven. 
+Hierbij werd het time commando telkens 5 keer uitgevoerd.
+Als resultaat heeft Bun met 30.69 MB een lager geheugengebruik dan Node.js met 36.4 MB.
 \begin{figure}[H]
   \centering
   \includegraphics{graphics/scriptuitvoeringstijd.png}
@@ -1068,18 +1080,19 @@ In figuur \ref{fig:RAMscript} wordt het maximale geheugengebruik voor zowel Bun 
 \end{figure}
 
 \subsection{Resultaten Recensie applicatie}
-De resultaten voor de gemiddelde installatietijd bij de package managers werden bekomen doormiddel van Hyperfine.
+De resultaten voor de gemiddelde installatietijd bij de p
+ackage managers werden bekomen met behulp van Hyperfine.
 Hierbij werd eerst een warmup uitvoering gedaan om de cache al op te vullen.
 In figuur \ref{fig:installatietijdapp} zijn de resultaten visueel voorgesteld per omgeving.
-Hierbij is op te merken dat Bun met een gemiddelde installatietijd van 24,9 milliseconden 24,5 keer sneller 
-is dan Node.js met een gemiddelde installatietijd van 610,1 milleseconden.
+Hierbij is op te merken dat Bun met een gemiddelde installatietijd van 24,9 milliseconden en een standaardafwijking van 2,4 milliseconden 24,5 keer sneller 
+is dan Node.js met een gemiddelde installatietijd van 610,1 milleseconden en een standaardafwijking van 100,1 milliseconden.
 \begin{figure}[H]
   \centering
   \includegraphics{graphics/install.png}
   \caption{\label{fig:installatietijdapp}Gemiddelde installatietijd van de packages in Bun en Node.js}
 \end{figure}
 
-Voor de andere resultaten werd gebruikgemaakt van Bombardier waarbij telkens met 10, 100 en 1000 connecties 
+Voor de andere resultaten werd gebruikgemaakt van Bombardier waarbij telkens met 10, 50 en 100 connecties 
 500000 verzoeken werden gestuurd naar de server.
 
 \subsubsection{Resultaten voor de applicatie met een MySQL database}
@@ -1094,82 +1107,83 @@ voor respectievelijk het aantal verzoeken per seconde, het aantal latentie, het 
 \begin{table}[]
   \begin{tabular}{|c|cccccc|}
   \hline
-  \multicolumn{1}{|l|}{}                                                                     & \multicolumn{1}{l}{} & Bun     & \multicolumn{1}{l|}{}     & \multicolumn{1}{l}{} & \multicolumn{1}{l}{Node.js} & \multicolumn{1}{l|}{} \\ \hline
-  Aantal connecties                                                                          & 10                   & 100     & \multicolumn{1}{c|}{1000} & 10                   & 100                         & 1000                  \\ \hline
-  \begin{tabular}[c]{@{}c@{}}Gemiddeld aantal \\ verzoeken per seconde\end{tabular}          & 8531.89              & 7441.10 & 7905.77                   & 7643.59              & 7138.43                     & 6443.86               \\ \cline{1-1}
-  \begin{tabular}[c]{@{}c@{}}Standaardafwijking aantal \\ verzoeken per seconde\end{tabular} & 2712.38              & 2308.74 & 2475.46                   & 2387.87              & 1682.46                     & 1798.40               \\ \cline{1-1}
-  \begin{tabular}[c]{@{}c@{}}Latentie \\ (milliseconden)\end{tabular}                        & 1.17                 & 13.05   & 144.70                    & 1.31                 & 14.01                       & 155.10                \\ \cline{1-1}
-  \begin{tabular}[c]{@{}c@{}}Standaardafwijking\\ latentie\\ (milliseconden)\end{tabular}    & 0.66809              & 2.62    & 22.61                     & 0.89                 & 2.57                        & 42.51                 \\ \cline{1-1}
-  \begin{tabular}[c]{@{}c@{}}Maximale \\ geheugengebruik \\ (MB)\end{tabular}                & 152.3                & 223.2   & 242.6                     & 80.75                & 88.25                       & 130.3                 \\ \cline{1-1}
-  \begin{tabular}[c]{@{}c@{}}Gemiddeld\\ CPU-gebruik\\ (\%)\end{tabular}                     & 110.90               & 137.26  & 137.52                    & 98.2                 & 102.33                      & 120.39                \\ \hline
+  \multicolumn{1}{|l|}{}                                                                     & \multicolumn{1}{l}{} & Bun      & \multicolumn{1}{l|}{}    & \multicolumn{1}{l}{} & \multicolumn{1}{l}{Node.js} & \multicolumn{1}{l|}{} \\ \hline
+  Aantal connecties                                                                          & 10                   & 50       & \multicolumn{1}{c|}{100} & 10                   & 50                          & 100                   \\ \hline
+  \begin{tabular}[c]{@{}c@{}}Gemiddeld aantal \\ verzoeken per seconde\end{tabular}          & 9069.30              & 10489.67 & 9298.56                  & 7314.91              & 8985.16                     & 8500.49               \\ \cline{1-1}
+  \begin{tabular}[c]{@{}c@{}}Standaardafwijking aantal \\ verzoeken per seconde\end{tabular} & 2974.14              & 3398.39  & 3063.49                  & 2930.06              & 2813.57                     & 2759.61               \\ \cline{1-1}
+  \begin{tabular}[c]{@{}c@{}}Latentie \\ (milliseconden)\end{tabular}                        & 1.10                 & 4.76     & 10.76                    & 1.31                 & 5.56                        & 11.77                 \\ \cline{1-1}
+  \begin{tabular}[c]{@{}c@{}}Standaardafwijking\\ latentie\\ (milliseconden)\end{tabular}    & 0.72090              & 1.94     & 3.17                     & 1.15                 & 1.63                        & 2.78                  \\ \cline{1-1}
+  \begin{tabular}[c]{@{}c@{}}Maximale \\ geheugengebruik \\ (MB)\end{tabular}                & 110.7                & 175.7    & 261.7                    & 104.4                & 114.8                       & 133.3                 \\ \cline{1-1}
+  \begin{tabular}[c]{@{}c@{}}Gemiddeld\\ CPU-gebruik\\ (\%)\end{tabular}                     & 110.4                & 112.25   & 116.09                   & 95.24                & 101.64                      & 102.7                 \\ \hline
   \end{tabular}
   \caption{\label{tab:getbombardier}Resultaten metingen waarbij onderwerpen worden opgehaald met een GET request uit de MySQL database.}
   \end{table}
 
   \begin{figure}[H]
     \centering
-    \includegraphics{graphics/GetMySqlVerzoeken.png}
+    \includegraphics[width=0.7\columnwidth]{graphics/GetMySqlVerzoeken.png}
     \caption{\label{fig:getaantalverzoekenmysql}Visuele voorstelling gemiddeld aantal verzoeken per seconde bij het ophalen van de onderwerpen.}
   \end{figure}
   \begin{figure}[H]
     \centering
-    \includegraphics{graphics/GetMySqlLatentie.png}
+    \includegraphics[width=0.7\columnwidth]{graphics/GetMySqlLatentie.png}
     \caption{\label{fig:getaantallatentienmysql}Visuele voorstelling gemiddelde latentie bij het ophalen van de onderwerpen.}
   \end{figure}
   \begin{figure}[H]
     \centering
-    \includegraphics{graphics/GetMySqlRAM.png}
+    \includegraphics[width=0.7\columnwidth]{graphics/GetMySqlRAM.png}
     \caption{\label{fig:getgeheugenmysql}Visuele voorstelling maximale geheugen gebruik bij het ophalen van de onderwerpen.}
   \end{figure}
   \begin{figure}[H]
     \centering
-    \includegraphics{graphics/GetMySqlCpu.png}
+    \includegraphics[width=0.7\columnwidth]{graphics/GetMySqlCpu.png}
     \caption{\label{fig:getcpumysql}Visuele voorstelling gemiddeld CPU-gebruik bij het ophalen van de onderwerpen.}
   \end{figure}
 
 In tabel \ref{tab:postbombardier} kunnen de resultaten gezien worden van de metingen waarbij 
 een gebruiker een recensie schrijft over een bepaald onderwerp door gebruik van een POST verzoek.
-Hierbij is op te merken dat Bun op zowel het vlak van gemiddeld aantal verzoeken als latentie gelijkaardig scoort aan Node.js. Zo heeft bijvoorbeeld bij 10 connecties Bun
-een gemiddeld aantal verzoeken van 3819.15 terwijl Node.js hierbij een gemiddelde heeft van 3846.18. 
-Ook bij de latentie is dit het geval waarbij Bun een latentie heeft van 2.61 milliseconden en Node.js een latentie van 2.6 milliseconden.
-Deze trend zet zich voort voor zowel 10,100 als 1000 connecties.
-Echter zit er wel een groot verschil bij het geheugengebruik en gemiddeld cpu-gebruik. Zo gebruikt Bun opvallend meer middelen als Node.js.
-Bij 10 connecties heeft Bun al een geheugengebruik van 142.1MB terwijl Node.js hier onder de 100MB blijft met een geheugengebruik van 96.89.
-Hetzelfde is te zien bij het gemiddeld CPU-gebruik, waarbij Bun 88.40\% heeft terwijl Node.js maar 69.49\% gemiddeld CPU-gebruik heeft.
+Hierbij is op te merken dat Bun op zowel het vlak van gemiddeld aantal verzoeken als latentie gelijkaardig scoort aan Node.js bij 10 connecties. Zo heeft Bun
+een gemiddeld aantal verzoeken van 4483 terwijl Node.js hierbij een gemiddelde heeft van 4504.87 heeft. 
+Ook bij de latentie is dit het geval waarbij Bun een latentie heeft van 2.27 milliseconden en Node.js een latentie van 2.22 milliseconden.
+Deze trend zet zich echter niet voort bij de 50 en 100 connecties waarbij Bun steeds beter presteert op vlak van latentie en aantal verzoeken per seconde.
+Echter zit er wel consistentie bij het geheugengebruik tussen het aantal connecties.
+Bij 10 connecties heeft Bun al een geheugengebruik van 161.2MB terwijl Node.js hier maar een verbruik heeft van 138.2MB.
+Voor de 50 en 100 connecties zit Bun telkens hoger dan Node.js.
+Hetzelfde is te zien bij het gemiddeld CPU-gebruik voor de 50 en 100 connecties, waarbij Bun respectievelijk 109.43\% en 118.56\% heeft terwijl Node.js maar een gemiddelde van 98.4\% en 107.73\% CPU-gebruik heeft.
 In figuren \ref{fig:postaantalverzoekenmysql}, \ref{fig:postaantallatentienmysql}, \ref{fig:postgeheugenmysql} en \ref{fig:postcpumysql} kunnen de visuele voorstellingen 
 voor respectievelijk het aantal verzoeken per seconde, het aantal latentie, het maximale geheugengebruik en het gemiddeld CPU-gebruik worden gevonden.
-    \begin{table}[]
-      \begin{tabular}{|c|cccccc|}
-      \hline
-      \multicolumn{1}{|l|}{}                                                                    & \multicolumn{1}{l}{} & Bun     & \multicolumn{1}{l|}{}     & \multicolumn{1}{l}{} & \multicolumn{1}{l}{Node.js} & \multicolumn{1}{l|}{} \\ \hline
-      Aantal connecties                                                                          & 10                   & 100     & \multicolumn{1}{c|}{1000} & 10                   & 100                         & 1000                  \\ \hline
-      \begin{tabular}[c]{@{}c@{}}Gemiddeld aantal \\ verzoeken per seconde\end{tabular}          & 3819.45              & 3635.03 & 3392.05                   & 3846.18              & 3633.61                     & 3414.71               \\ \cline{1-1}
-      \begin{tabular}[c]{@{}c@{}}Standaardafwijking aantal \\ verzoeken per seconde\end{tabular} & 862.64               & 848.28  & 816.84                    & 831.95               & 853.46                      & 851.05                \\ \cline{1-1}
-      \begin{tabular}[c]{@{}c@{}}Latentie \\ (milliseconden)\end{tabular}                        & 2.61                 & 27.50   & 294.58                    & 2.6                  & 27.52                       & 292.67                \\ \cline{1-1}
-      \begin{tabular}[c]{@{}c@{}}Standaardafwijking\\ latentie\\ (milliseconden)\end{tabular}    & 1.2                  & 5.43    & 28.49                     & 1.15                 & 6.31                        & 39.16                 \\ \cline{1-1}
-      \begin{tabular}[c]{@{}c@{}}Maximale \\ geheugengebruik \\ (MB)\end{tabular}                & 142.1                & 157.5   & 162.9                     & 96.89                & 96.05                       & 141.6                 \\ \cline{1-1}
-      \begin{tabular}[c]{@{}c@{}}Gemiddeld\\ CPU-gebruik\\ (\%)\end{tabular}                     & 88.40                & 96.88   & 102.62                    & 69.49                & 66.88                       & 75.38                 \\ \hline
-      \end{tabular}
-      \caption{\label{tab:postbombardier}Resultaten metingen waarbij door een bepaalde gebruiker een recensie over een onderwerp werd gemaakt in de MySQL database met een POST request.}
-      \end{table}
+\begin{table}[]
+  \begin{tabular}{|c|cccccc|}
+  \hline
+  \multicolumn{1}{|l|}{}                                                                     & \multicolumn{1}{l}{} & Bun     & \multicolumn{1}{l|}{}    & \multicolumn{1}{l}{} & \multicolumn{1}{l}{Node.js} & \multicolumn{1}{l|}{} \\ \hline
+  Aantal connecties                                                                          & 10                   & 50      & \multicolumn{1}{c|}{100} & 10                   & 50                          & 100                   \\ \hline
+  \begin{tabular}[c]{@{}c@{}}Gemiddeld aantal \\ verzoeken per seconde\end{tabular}          & 4483                 & 5856.48 & 5902.12                  & 4504.87              & 5498.57                     & 5282.67               \\ \cline{1-1}
+  \begin{tabular}[c]{@{}c@{}}Standaardafwijking aantal \\ verzoeken per seconde\end{tabular} & 904.95               & 2006.84 & 2204.15                  & 981.92               & 2032.85                     & 2226.43               \\ \cline{1-1}
+  \begin{tabular}[c]{@{}c@{}}Latentie \\ (milliseconden)\end{tabular}                        & 2.27                 & 8.54    & 16.95                    & 2.22                 & 9.10                        & 18.94                 \\ \cline{1-1}
+  \begin{tabular}[c]{@{}c@{}}Standaardafwijking\\ latentie\\ (milliseconden)\end{tabular}    & 1.17                 & 2.75    & 4.63                     & 1.10                 & 3.46                        & 16.81                 \\ \cline{1-1}
+  \begin{tabular}[c]{@{}c@{}}Maximale \\ geheugengebruik \\ (MB)\end{tabular}                & 161.2                & 196.4   & 238.8                    & 138.2                & 115.85                      & 174.6                 \\ \cline{1-1}
+  \begin{tabular}[c]{@{}c@{}}Gemiddeld\\ CPU-gebruik\\ (\%)\end{tabular}                     & 63.30                & 109.43  & 118.56                   & 66.26                & 98.4                        & 107.73                \\ \hline
+  \end{tabular}
+  \caption{\label{tab:postbombardier}Resultaten metingen waarbij door een bepaalde gebruiker een recensie over een onderwerp werd gemaakt in de MySQL database met een POST request.}
+  \end{table}
     \begin{figure}[H]
       \centering
-      \includegraphics{graphics/PostMySqlVerzoeken.png}
+      \includegraphics[width=0.7\columnwidth]{graphics/PostMySqlVerzoeken.png}
       \caption{\label{fig:postaantalverzoekenmysql}Visuele voorstelling gemiddeld aantal verzoeken per seconde bij het maken van een recensie.}
     \end{figure}
     \begin{figure}[H]
       \centering
-      \includegraphics{graphics/PostMySqlLatentie.png}
+      \includegraphics[width=0.7\columnwidth]{graphics/PostMySqlLatentie.png}
       \caption{\label{fig:postaantallatentienmysql}Visuele voorstelling gemiddelde latentie bij het maken van een recensie.}
     \end{figure}
     \begin{figure}[H]
       \centering
-      \includegraphics{graphics/PostMySqlRAM.png}
+      \includegraphics[width=0.7\columnwidth]{graphics/PostMySqlRAM.png}
       \caption{\label{fig:postgeheugenmysql}Visuele voorstelling maximale geheugen gebruik bij het maken van een recensie.}
     \end{figure}
     \begin{figure}[H]
       \centering
-      \includegraphics{graphics/PostMySqlCpu.png}
+      \includegraphics[width=0.7\columnwidth]{graphics/PostMySqlCpu.png}
       \caption{\label{fig:postcpumysql}Visuele voorstelling gemiddeld CPU-gebruik bij het maken van een recensie.}
     \end{figure}
 \subsection{Resultaten voor de applicatie met een PostgreSQL database}
@@ -1183,88 +1197,88 @@ voor respectievelijk het aantal verzoeken per seconde, het aantal latentie, het 
 \begin{table}[]
   \begin{tabular}{|c|cccccc|}
   \hline
-  \multicolumn{1}{|l|}{}                                                                    & \multicolumn{1}{l}{} & Bun     & \multicolumn{1}{l|}{}     & \multicolumn{1}{l}{} & \multicolumn{1}{l}{Node.js} & \multicolumn{1}{l|}{} \\ \hline
-  Aantal connecties                                                                          & 10                   & 100     & \multicolumn{1}{c|}{1000} & 10                   & 100                         & 1000                  \\ \hline
-  \begin{tabular}[c]{@{}c@{}}Gemiddeld aantal \\ verzoeken per seconde\end{tabular}          & 9532.83              & 8411.02 & 7957.07                   & 7806.74              & 7645.64                     & 6804                  \\ \cline{1-1}
-  \begin{tabular}[c]{@{}c@{}}Standaardafwijking aantal \\ verzoeken per seconde\end{tabular} & 3047.08              & 2632.57 & 2781.16                   & 2881.15              & 1893.91                     & 2922.3                \\ \cline{1-1}
-  \begin{tabular}[c]{@{}c@{}}Latentie \\ (milliseconden)\end{tabular}                        & 1.05                 & 11.89   & 125.63                    & 1.28                 & 13.08                       & 146.94                \\ \cline{1-1}
-  \begin{tabular}[c]{@{}c@{}}Standaardafwijking\\ latentie\\ (milliseconden)\end{tabular}    & 0.66886              & 2.72    & 21.85                     & 1.18                 & 2.4                         & 31.43                 \\ \cline{1-1}
-  \begin{tabular}[c]{@{}c@{}}Maximale \\ geheugengebruik \\ (MB)\end{tabular}                & 171.9                & 252.6   & 245.9                     & 123.1                & 94.83                       & 125                   \\ \cline{1-1}
-  \begin{tabular}[c]{@{}c@{}}Gemiddeld\\ CPU-gebruik\\ (\%)\end{tabular}                     & 108.35               & 116.66  & 122.49                    & 95.96                & 103.10                      & 119.70                \\ \hline
+  \multicolumn{1}{|l|}{}                                                                     & \multicolumn{1}{l}{} & Bun      & \multicolumn{1}{l|}{}    & \multicolumn{1}{l}{} & \multicolumn{1}{l}{Node.js} & \multicolumn{1}{l|}{} \\ \hline
+  Aantal connecties                                                                          & 10                   & 50       & \multicolumn{1}{c|}{100} & 10                   & 50                          & 100                   \\ \hline
+  \begin{tabular}[c]{@{}c@{}}Gemiddeld aantal \\ verzoeken per seconde\end{tabular}          & 9532.83              & 10681.12 & 10040                    & 8957.89              & 9925.63                     & 9605.79               \\ \cline{1-1}
+  \begin{tabular}[c]{@{}c@{}}Standaardafwijking aantal \\ verzoeken per seconde\end{tabular} & 3047.08              & 3779.48  & 3626.49                  & 2529.11              & 3185.40                     & 3022.16               \\ \cline{1-1}
+  \begin{tabular}[c]{@{}c@{}}Latentie \\ (milliseconden)\end{tabular}                        & 1.05                 & 4.68     & 9.96                     & 1.12                 & 5.04                        & 10.41                 \\ \cline{1-1}
+  \begin{tabular}[c]{@{}c@{}}Standaardafwijking\\ latentie\\ (milliseconden)\end{tabular}    & 0.66886              & 1.94     & 3.02                     & 0.70591              & 1.98                        & 3.18                  \\ \cline{1-1}
+  \begin{tabular}[c]{@{}c@{}}Maximale \\ geheugengebruik \\ (MB)\end{tabular}                & 160.5                & 189.9    & 203.3                    & 94.41                & 136.7                       & 149.9                 \\ \cline{1-1}
+  \begin{tabular}[c]{@{}c@{}}Gemiddeld\\ CPU-gebruik\\ (\%)\end{tabular}                     & 111.87               & 117.71   & 122.40                   & 98.30                & 101.82                      & 104.81                \\ \hline
   \end{tabular}
   \caption{\label{tab:getbombardierpostgres}Resultaten metingen waarbij onderwerpen worden opgehaald met een GET request uit de PostgreSQL database.}
   \end{table}
   
   \begin{figure}[H]
     \centering
-    \includegraphics{graphics/GetPostgresVerzoeken.png}
+    \includegraphics[width=0.7\columnwidth]{graphics/GetPostgresVerzoeken.png}
     \caption{\label{fig:getaantalverzoekenpostgres}Visuele voorstelling gemiddeld aantal verzoeken per seconde bij het ophalen van de onderwerpen.}
   \end{figure}
   \begin{figure}[H]
     \centering
-    \includegraphics{graphics/GetPostgresLatentie.png}
+    \includegraphics[width=0.7\columnwidth]{graphics/GetPostgresLatentie.png}
     \caption{\label{fig:getaantallatentienpostgres}Visuele voorstelling gemiddelde latentie bij het ophalen van de onderwerpen.}
   \end{figure}
   \begin{figure}[H]
     \centering
-    \includegraphics{graphics/GetPostgresRAM.png}
+    \includegraphics[width=0.7\columnwidth]{graphics/GetPostgresRAM.png}
     \caption{\label{fig:getgeheugenpostgres}Visuele voorstelling maximale geheugen gebruik bij het ophalen van de onderwerpen.}
   \end{figure}
   \begin{figure}[H]
     \centering
-    \includegraphics{graphics/GetPostgresCpu.png}
+    \includegraphics[width=0.7\columnwidth]{graphics/GetPostgresCpu.png}
     \caption{\label{fig:getcpupostgres}Visuele voorstelling gemiddeld CPU-gebruik bij het ophalen van de onderwerpen.}
   \end{figure}
 
 In tabel \ref{tab:postbombardierpostgres} kunnen de resultaten gezien worden van de metingen waarbij 
-een gebruiker een recensie schrijft over een bepaald onderwerp door gebruik van een POST verzoek.
-In tegenstelling tot de resultaten bij de MySQL database scoort Bun bij de PostgreSQL database wel beter op vlak van gemiddeld aantal verzoeken per seconde en latentie.
-Zo heeft Bun bij 10 connecties een gemiddelde van 5292.63 aantal verzoeken per seconde met een latentie van 1.92 milliseconden. 
-Dit tegenover Node.js met een gemiddelde van 4544.67 verzoeken per seconde en een latentie van 2.20 milliseconden.
-Deze trend zet zich voort voor zowel bij de 100 en 1000 connecties.
-Op vlak van middelengebruik is er ook een groot verschil. Echter scoort Node.js hierbij beter.
- Zo heeft het bijvoorbeeld bij 10 connecties een maximaal geheugengebruik van 103.2MB en een gemiddeld CPU-gebruik van 86.07\%.
-Bij Bun is dit hoger met een geheugengebruik van 189MB en een gemiddeld CPU-gebruik van 117.17\%.
+een gebruiker een recensie schrijft over een bepaald onderwerp door gebruik van een POST verzoek en de PostgreSQL databank.
+Hierbij scoort Bun bij alle aantallen connecties beter dan Node.js
+Zo heeft Bun bij 10 connecties een gemiddelde van 5433.39 aantal verzoeken per seconde met een latentie van 1.84 milliseconden. 
+Dit tegenover Node.js met een gemiddelde van 5221.94 verzoeken per seconde en een latentie van 1.91 milliseconden.
+Deze trend zet zich voort bij zowel de 50 als 100 connecties.
+Op vlak van middelengebruik is er ook hier een verschil. Echter scoort Node.js hierbij beter dan Bun.
+ Zo heeft het bijvoorbeeld bij 100 connecties een maximaal geheugengebruik van 146.4MB en een gemiddeld CPU-gebruik van 104.75\%.
+Bij Bun is dit hoger met een geheugengebruik van 179.2MB en een gemiddeld CPU-gebruik van 118.79\%.
 In figuren \ref{fig:postaantalverzoekenpostgres}, \ref{fig:postaantallatentiepostgres}, \ref{fig:postgeheugenpostgres} en \ref{fig:postcpupostgres} kunnen de visuele voorstellingen 
 voor respectievelijk het aantal verzoeken per seconde, het aantal latentie, het maximale geheugengebruik en het gemiddeld CPU-gebruik worden gevonden.
 \begin{table}[]
   \begin{tabular}{|c|cccccc|}
   \hline
-  \multicolumn{1}{|l|}{}                                                                    & \multicolumn{1}{l}{} & Bun     & \multicolumn{1}{l|}{}     & \multicolumn{1}{l}{} & \multicolumn{1}{l}{Node.js} & \multicolumn{1}{l|}{} \\ \hline
-  Aantal connecties                                                                          & 10                   & 100     & \multicolumn{1}{c|}{1000} & 10                   & 100                         & 1000                  \\ \hline
-  \begin{tabular}[c]{@{}c@{}}Gemiddeld aantal \\ verzoeken per seconde\end{tabular}          & 5292.63              & 4822.01 & 4558.17                   & 4544.67              & 4186.12                     & 3858.06               \\ \cline{1-1}
-  \begin{tabular}[c]{@{}c@{}}Standaardafwijking aantal \\ verzoeken per seconde\end{tabular} & 1292.34              & 1188.03 & 1211.57                   & 1636.54              & 1385.00                     & 1348.82               \\ \cline{1-1}
-  \begin{tabular}[c]{@{}c@{}}Latentie \\ (milliseconden)\end{tabular}                        & 1.92                 & 20.74   & 219.19                    & 2.20                 & 23.90                       & 259.09                \\ \cline{1-1}
-  \begin{tabular}[c]{@{}c@{}}Standaardafwijking\\ latentie\\ (milliseconden)\end{tabular}    & 0.98                 & 3.62    & 20.28                     & 4.89                 & 20.79                       & 97.51                 \\ \cline{1-1}
-  \begin{tabular}[c]{@{}c@{}}Maximale \\ geheugengebruik \\ (MB)\end{tabular}                & 189                  & 220.6   & 213.6                     & 132.8                & 103.2                       & 137.6                 \\ \cline{1-1}
-  \begin{tabular}[c]{@{}c@{}}Gemiddeld\\ CPU-gebruik\\ (\%)\end{tabular}                     & 117.17               & 125.86  & 127.87                    & 86.07                & 96.33                       & 105.22                \\ \hline
+  \multicolumn{1}{|l|}{}                                                                     & \multicolumn{1}{l}{} & Bun     & \multicolumn{1}{l|}{}    & \multicolumn{1}{l}{} & \multicolumn{1}{l}{Node.js} & \multicolumn{1}{l|}{} \\ \hline
+  Aantal connecties                                                                          & 10                   & 50      & \multicolumn{1}{c|}{100} & 10                   & 50                          & 100                   \\ \hline
+  \begin{tabular}[c]{@{}c@{}}Gemiddeld aantal \\ verzoeken per seconde\end{tabular}          & 5433.39              & 6098.80 & 6170                     & 5221.94              & 5864.77                     & 5785.76               \\ \cline{1-1}
+  \begin{tabular}[c]{@{}c@{}}Standaardafwijking aantal \\ verzoeken per seconde\end{tabular} & 1398.06              & 2151.57 & 2186.09                  & 1237.90              & 1866.52                     & 2023.42               \\ \cline{1-1}
+  \begin{tabular}[c]{@{}c@{}}Latentie \\ (milliseconden)\end{tabular}                        & 1.84                 & 8.20    & 16.22                    & 1.91                 & 8.53                        & 17.30                 \\ \cline{1-1}
+  \begin{tabular}[c]{@{}c@{}}Standaardafwijking\\ latentie\\ (milliseconden)\end{tabular}    & 0.97                 & 2.32    & 3.26                     & 0.9                  & 2.71                        & 7.79                  \\ \cline{1-1}
+  \begin{tabular}[c]{@{}c@{}}Maximale \\ geheugengebruik \\ (MB)\end{tabular}                & 154.5                & 168.6   & 179.2                    & 142.9                & 149.6                       & 146.4                 \\ \cline{1-1}
+  \begin{tabular}[c]{@{}c@{}}Gemiddeld\\ CPU-gebruik\\ (\%)\end{tabular}                     & 102.36               & 116.99  & 118.79                   & 91.76                & 103.15                      & 104.45                \\ \hline
   \end{tabular}
   \caption{\label{tab:postbombardierpostgres}Resultaten metingen waarbij door een bepaalde gebruiker een recensie over een onderwerp werd gemaakt in de PostgreSQL database met een POST request.}
   \end{table}
 
   \begin{figure}[H]
     \centering
-    \includegraphics{graphics/PostPostgresVerzoeken.png}
+    \includegraphics[width=0.7\columnwidth]{graphics/PostPostgresVerzoeken.png}
     \caption{\label{fig:postaantalverzoekenpostgres}Visuele voorstelling gemiddeld aantal verzoeken per seconde bij het maken van een recensie.}
   \end{figure}
   \begin{figure}[H]
     \centering
-    \includegraphics{graphics/PostPostgresLatentie.png}
+    \includegraphics[width=0.7\columnwidth]{graphics/PostPostgresLatentie.png}
     \caption{\label{fig:postaantallatentiepostgres}Visuele voorstelling gemiddelde latentie bij het maken van een recensie.}
   \end{figure}
   \begin{figure}[H]
     \centering
-    \includegraphics{graphics/PostPostgresRAM.png}
+    \includegraphics[width=0.7\columnwidth]{graphics/PostPostgresRAM.png}
     \caption{\label{fig:postgeheugenpostgres}Visuele voorstelling maximale geheugen gebruik bij het maken van een recensie.}
   \end{figure}
   \begin{figure}[H]
     \centering
-    \includegraphics{graphics/PostMySqlCpu.png}
+    \includegraphics[width=0.7\columnwidth]{graphics/PostMySqlCpu.png}
     \caption{\label{fig:postcpupostgres}Visuele voorstelling gemiddeld CPU-gebruik bij het maken van een recensie.}
   \end{figure}
 \subsection{Discussie}
 Aan de hand van de Quick Sort algoritme resultaten kan het standpunt dat Bun computationeel sneller is ondersteund worden.
-Zo was de gemiddelde uitvoeringstijd van Bun gemiddeld 2.21 keer sneller dan Node.js. Deze snellere uitvoeringstijd komt door de
+Zo was de gemiddelde uitvoeringstijd van Bun gemiddeld 2.21 keer sneller dan Node.js en lag het middelengebruik bij Bun ook lager. Deze snellere uitvoeringstijd komt door de
 het gebruik van de JavaScriptScore engine in Bun waarbij geoptimaliseerde machine code wordt geproduceerd in 
 samenwerking met 3 JIT compilers en een Low-Level interpreter.
 Deze snelheid is niet enkel zichtbaar bij het algoritme, maar ook bij de installatietijd van de packages.
@@ -1277,13 +1291,11 @@ Bij het ophalen van data scoort Bun bij zowel de MySQL database als de PostgreSQ
 Het verschil in aantal verzoeken per seconde toont aan dat Bun een grotere capaciteit voor verzoeken heeft bij het ophalen van data.
 De latentie toont aan dat Bun sneller de opgehaalde data kan teruggeven. Echter komen deze voordelen met een prijs. 
 Zo heeft Bun telkens een groter gebruik van middelen tegenover Node.js wat aantoont dat Node.js efficiënter is op vlak van geheugen management en CPU-management.
-Bij het invoegen van data was er een verschil afhankelijk van de gebruikte databank. Zo heeft Bun bij de MySQL databank een gelijkaardige performantie
-als Node.js bij zowel het gemiddeld aantal verzoeken als de latentie. 
+Bij het invoegen van data was er een gelijkaardige situatie. 
+Bij de MySQL databank presteert Bun beter dan Node.js op zowel het vlak van het gemiddeld aantal verzoeken als de latentie bij 50 en 100 connecties. 
 Echter zet dit zich niet voort in het middelengebruik waarbij Bun telkens weer meer middelen gebruikt als Node.js.
-Bij de PostgreSQL database is dit ook het geval maar resulteert dit wel in een betere performantie voor Bun. 
-Zo heeft het een hoger gemiddeld aantal verzoeken per seconde en een lagere latentie.
-Het verschil tussen de databases kan liggen aan het feit dat Bun een redelijk nieuw framework is 
-en de driver voor MySQL not niet hiervoor geoptimaliseerd is.
+Bij de PostgreSQL database scoort Bun beter bij 10,50 en 100 connecties op vlak van latentie en verzoeken 
+per seconde maar verbruikt het ook weer meer middelen om deze resultaten te bekomen. 
 Op basis van deze bevindingen kunnen verschillende conclusies worden getrokken. 
 Zo kunnen applicaties met complexe algoritmes en calculaties beter kiezen voor Bun. 
 Deze kan doormiddel van zijn geoptimaliseerde machine code de calculaties sneller uitvoeren dan Node.js.

@@ -8,7 +8,7 @@
 In dit hoofdstuk wordt aan de hand van een requirements-analyse een selectie gemaakt voor de JavaScript runtime omgeving 
 die het meest geschikt zou zijn als potentiële plaatsvervanger van Node.js binnen de context van performante applicaties.
 Er wordt gestart met een oplijsting van de requirements op basis van de MoSCoW-techniek in de categorieën “must-have”, “should-have” en “nice-to-have”. 
-Daarna worden de alternatieven in de lange lijst afgetoetst aan deze requirements om zo tot tot één geschikte omgeving te komen die wordt vergeleken met Node.js.
+Daarna worden de alternatieven in de lijst afgetoetst aan deze requirements om zo tot tot één geschikte omgeving te komen die wordt vergeleken met Node.js.
 
 \section*{Requirements}
 In de volgende sectie wordt eerst uitgelegd wat MoSCoW betekent, 
@@ -29,20 +29,22 @@ In het onderzoek wordt deze methode toegepast om te weten waaraan een gepaste Ja
 In volgende lijst zijn de requirements die zeker nodig zijn bij een JavaScript runtime-omgeving opgesomd:
 \begin{itemize}
     \item De omgeving moet door een aanzienlijk aantal ontwikkelaars worden gebruikt.
-    \item De omgeving moet goede prestaties bieden voor zowel CPU- als I/O-gebaseerde taken.
-    \item De omgeving moet platformonafhankelijk zijn, wat betekent dat het op verschillende besturingssytemen kan draaien.
-    \item De omgeving moet een modulesysteem bieden voor het hergebruiken van code.
+    \item De omgeving moet goede prestaties bieden.
+    \item De omgeving moet platformonafhankelijk zijn.
+    \item De omgeving moet een modulesysteem bieden.
     \item Er moet een verscheidenheid aan bibliotheken en packages beschikbaar zijn voor de omgeving.
     \item De omgeving moet stabiel zijn en regelmatig updates ontvangen.
 \end{itemize}
-Aangezien dit onderzoek kan gebruikt worden als leidraad bij de keuze van een JavaScript runtime omgeving, 
-moet de omgeving platformonafhankelijk zijn en al door een aanzienlijk aantal ontwikkelaars worden gebruikt.
+Aangezien dit onderzoek gebruikt kan worden als leidraad bij de keuze van een JavaScript runtime omgeving, 
+moet de omgeving platformonafhankelijk zijn, wat betekent dat het op verschillende besturingssytemen kan draaien.
+Het moet daarnaast ook door een aanzienlijk aantal ontwikkelaars worden gebruikt.
 Dit wordt bepaald aan de hand van het jaarlijks onderzoek van \textcite{Greif2022} 
 waarbij een minimumgrens van 1\% van de beantwoorden wordt genomen.
 Hierbij moet de omgeving ook stabiel en onderhouden zijn.
 Daarnaast moet de omgeving ook een modulesyteem met een verscheidenheid aan bibliotheken bevatten 
 zodat deze kan uitgebreid worden in functionaliteit. 
-Als laatste moet de omgeving goede prestaties bieden aangezien dit onderzoek zich focust op de performantie van de omgevingen.
+Als laatste moet de omgeving goede prestaties bieden bij zowel computationele berekeningen als I/O-taken
+aangezien dit onderzoek zich focust op de performantie van de omgevingen.
 
 \subsection{Should have requirements}
 In volgende lijst zijn de requirements die belangrijk zijn bij een JavaScript runtime omgeving opgesomd:
@@ -50,7 +52,7 @@ In volgende lijst zijn de requirements die belangrijk zijn bij een JavaScript ru
     \item Er moet documentatie aanwezig zijn over de runtime-omgeving.
     \item De omgeving moet asynchrone I/O-operaties ondersteunen.
 \end{itemize}
-Voor de implementatie van de omgevingen is het belangrijk dat er voldoende documentatie aanwezig zijn.
+Voor de implementatie van de omgevingen is het belangrijk dat er voldoende documentatie aanwezig is.
 Ook moeten deze asynchrone I/O-operaties ondersteunen zodat deze even performant of performanter kunnen werken als Node.js
 
 \subsection{Could have requirements}
@@ -74,11 +76,11 @@ Zo is het verplicht dat de omgeving een JavaScript runtime-omgeving is en dat de
 Daarnaast moet deze ook open-source zijn zodat er transparantie en onafhankelijkheid is.
 
 \section{Selectie}
-Nu dat de requirements bepaald zijn, worden de JavaScript runtime-omgevingen hier tegen over afgetoetst.
-De lange lijst van JavaScript runtime-omgevingen is gebasseerd op de samengestelde lijst van \textcite{Errilaz2023} 
+Nu dat de requirements bepaald zijn, worden de JavaScript runtime-omgevingen hier tegenover afgetoetst.
+Deze lijst van JavaScript runtime-omgevingen is gebasseerd op de samengestelde lijst van \textcite{Errilaz2023} 
 die te vinden zijn in tabel \ref{tab:omgevingen}.
 In tabel \ref{tab:requirements} worden deze omgevingen afgetoetst aan de requirements. 
-Deze zal als basis dienen om uit de lange lijst de runtime-omgeving te kiezen voor de vergelijking met Node.js.
+Deze zal als basis dienen om uit de lijst de runtime-omgeving te kiezen voor de vergelijking met Node.js.
 \begin{table}[H]
     \begin{tabular}{|c|}
     \hline
@@ -100,16 +102,16 @@ Deze zal als basis dienen om uit de lange lijst de runtime-omgeving te kiezen vo
     \textbf{}                                                                                                                               & \multicolumn{6}{c|}{\textbf{Runtime omgevingen}}                                                                                                                       \\ \hline
     \textbf{Requirements}                                                                                                                   & \multicolumn{1}{l}{Bun} & \multicolumn{1}{l}{Deno} & \multicolumn{1}{l}{Just} & \multicolumn{1}{l}{Txiki.js} & \multicolumn{1}{l}{Napa.js} & \multicolumn{1}{l|}{Elsa} \\ \cline{1-1}
     \begin{tabular}[c]{@{}c@{}}De omgeving moet door\\ een aanzienlijk aantal ontwikkelaars\\ worden gebruikt\end{tabular}                  & x                       & x                        &                          &                              &                             &                           \\ \cline{1-1}
-    \begin{tabular}[c]{@{}c@{}}De omgeving moet goede prestaties \\ bieden voor zowel CPU- \\ als I/O-gebaseerde taken\end{tabular}         & x                       & x                        &                          &                              & x                           &                           \\ \cline{1-1}
+    \begin{tabular}[c]{@{}c@{}}De omgeving moet goede prestaties\end{tabular}                                                               & x                       & x                        &                          &                              & x                           &                           \\ \cline{1-1}
     \begin{tabular}[c]{@{}c@{}}De omgeving moet platformonafhankelijk\\  zijn\end{tabular}                                                  & x                       & x                        &                          &                              & x                           & x                         \\ \cline{1-1}
-    \begin{tabular}[c]{@{}c@{}}De omgeving moet een modulesysteem\\  bieden voor het hergebruiken van code\end{tabular}                     & x                       & x                        &                          & x                            & x                           & x                         \\ \cline{1-1}
+    \begin{tabular}[c]{@{}c@{}}De omgeving moet een modulesysteem\\  bieden \end{tabular}                                                   & x                       & x                        &                          & x                            & x                           & x                         \\ \cline{1-1}
     \begin{tabular}[c]{@{}c@{}}Er moet een verscheidenheid \\ aan bibliothekenen packages beschikbaar \\ zijn voor de omgeving\end{tabular} & x                       & x                        &                          & x                            & x                           &                           \\ \cline{1-1}
     \begin{tabular}[c]{@{}c@{}}De omgeving moet stabiel zijn \\ en regelmatig updates ontvangen\end{tabular}                                & x                       & x                        &                          & x                            &                             &                           \\ \cline{1-1}
     \begin{tabular}[c]{@{}c@{}}Er is documentatie \\ aanwezig over de runtime-omgeving\end{tabular}                                         & x                       & x                        &                          & x                            & x                           &                           \\ \cline{1-1}
     \begin{tabular}[c]{@{}c@{}}De omgeving moet asynchrone \\ I/O-operaties ondersteunen\end{tabular}                                       & x                       & x                        &                          & x                            & x                           &                           \\ \cline{1-1}
     \begin{tabular}[c]{@{}c@{}}De omgeving heeft geïntegreerde\\  ondersteuning voor TypeScript\end{tabular}                                & x                       & x                        &                          &                              &                             & x                         \\ \cline{1-1}
-    \begin{tabular}[c]{@{}c@{}}De omgeving heeft een \\ geïntegreerde test-runner.\end{tabular}                                             & x                       & x                        &                          & x                            &                             &                           \\ \cline{1-1}
-    \begin{tabular}[c]{@{}c@{}}De omgeving heeft een \\ geïntegreerde bundler.\end{tabular}                                                 & x                       &                          &                          &                              &                             &                           \\ \hline
+    \begin{tabular}[c]{@{}c@{}}De omgeving heeft een \\ geïntegreerde test-runner\end{tabular}                                              & x                       & x                        &                          & x                            &                             &                           \\ \cline{1-1}
+    \begin{tabular}[c]{@{}c@{}}De omgeving heeft een \\ geïntegreerde bundler\end{tabular}                                                  & x                       &                          &                          &                              &                             &                           \\ \hline
     \end{tabular}
     \caption{\label{tab:requirements}Omgevingen afgetoetst aan de requirements}
     \end{table}

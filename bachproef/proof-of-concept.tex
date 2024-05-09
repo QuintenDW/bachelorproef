@@ -8,10 +8,11 @@ In dit hoofdstuk wordt de proof-of-concept besproken
 waarbij een beoordeling wordt gevormd van de omgevingen op basis van de performantie metingen.
 Allereerst wordt de opzet van de proof-of-concepts voor beide omgevingen besproken.
 Hierna worden de performantie metingen uitgevoerd voor beide omgevingen waarna de resultaten worden besproken.
-Als laatste worden alle resultaten samengevat om zo te bekijken of Bun een geschikte plaatsvervanger van Node.js kan zijn.
+Als laatste worden alle resultaten samengevat in de discussie sectie om zo te bekijken of Bun een geschikte plaatsvervanger
+van Node.js kan zijn.
 
 \subsection{Opzet proof-of-concept}
-Voor de performantie te meten wordt er per omgeving 2 proof-of-concepts gemaakt. 
+Voor de performantie te meten worden er per omgeving 2 proof-of-concepts gemaakt. 
 Deze metingen zullen worden uitgevoerd op een Mac mini met volgende specificaties:
 \begin{itemize}
   \item De Apple M2 chip.
@@ -22,9 +23,10 @@ Deze metingen zullen worden uitgevoerd op een Mac mini met volgende specificatie
   \item Versie 1.1.3 van Bun.
 \end{itemize}
 De eerste proof-of-concept zal bestaan uit een script dat het Quick Sort algoritme bevat. 
-Deze zal dienen om de computationele verwerking van elke omgeving te beoordelen. Hierbij wordt rekening gehouden met de gemiddelde uitvoeringstijd en het maximale geheugengebruik.
+Deze zal dienen om de computationele verwerking van elke omgeving te beoordelen. 
+Hierbij wordt rekening gehouden met de gemiddelde uitvoeringstijd en het maximale geheugengebruik.
 Het Quick Sort algoritme zal een meegegeven array sorteren door een spil element te kiezen binnen de array
-waarna de array in 2 arrays wordt opgesplitst. De eerste array zal elementen bevatten die kleiner zijn dan het spil element 
+waarna de array in twee wordt opgesplitst. De eerste array zal elementen bevatten die kleiner zijn dan het spil element 
 en de andere array zal elementen bevatten die groter zijn. 
 De 2 arrays worden vervolgens telkens recursief gesorteerd met dezelfde methode om zo een gesorteerde array te bekomen.
 In het codevoorbeeld ~\ref{code:quicksort} kan de code voor het Quick Sort algoritme gevonden worden.
@@ -77,7 +79,7 @@ quickSort(myArray);
 \end{listing}
 
 Naast de computationele verwerking te meten, wordt ook de performantie bij I/O-taken gemeten.
-Dit wordt gedaan door een proof-of-concept op te stellen die een applicatie back-end voorstelt in de respectievelijke omgeving.
+Dit wordt gedaan door een proof-of-concept op te stellen die een applicatie backend voorstelt in de respectievelijke omgeving.
 Hierbij kan een gebruiker een lijst van alle onderwerpen ophalen en een recensie creëren over een bepaald onderwerp. 
 Binnen de proof-of-concepts zal hierbij getest worden met zowel een PostgreSQL databank als een MySQL databank.
 Hierbij wordt rekening gehouden met volgende metingen:
@@ -87,12 +89,11 @@ Hierbij wordt rekening gehouden met volgende metingen:
     \item Het maximale geheugengebruik.
     \item De gemiddelde vertraging in de overdracht, ook wel latentie genoemd.
     \item Het aantal gelijktijdige connecties.
-    \item Het aantal verzoeken.
     \item De gemiddelde installatietijd van de packages.
 \end{itemize}
 Bij de proof-of-concepts worden enkel de ingebouwde HTTP servers gebruikt om zo beïnvloeding van externe bibliotheken te minimaliseren.
 Voor de binnengekomen data naar een database te schrijven wordt een Object Relational Mapper (ORM) gebruikt.
-Binnen de applicatie zal voor beide omgevingen gebruikt gemaakt worden van het Sequelize ORM. Deze ondersteunt zowel Postgres als MySQL.
+Binnen de applicatie zal voor beide omgevingen gebruikgemaakt worden van het Sequelize ORM. Deze ondersteunt zowel PostgreSQL als MySQL.
 Hierbij worden eerst 3 modellen gemaakt die de volgende tabellen voorstellen in de databank:
 \begin{itemize}
   \item Het gebruiker model dat een gebruiker voorstelt.
@@ -100,11 +101,11 @@ Hierbij worden eerst 3 modellen gemaakt die de volgende tabellen voorstellen in 
   \item Het recensie model dat de recensie van een bepaalde gebruiker over een bepaald onderwerp voorstelt.
 \end{itemize}
 De code voor het model van de gebruiker is te vinden in ~\ref{code:User}. Deze bevat 3 kolommen namelijk: de primaire sleutel (id), voornaam en achternaam.
-Doormiddel van de sync methode wordt dit model gesynchroniseerd met de database. 
-Het model van het onderwerp is gelijkaardig aan de gebruiker zoals te zien is in ~\ref{code:Subject}. Het recensie model heeft bijkomend 
-ook nog de 1-op-1 relatie met respectievelijk de gebruiker en het onderwerp.
-Om deze relatie tot stand te brengen wordt de belongsTo methode gebruikt in ~\ref{code:Review}. 
-Deze zal in de tabel een vreemde sleutel toevoegen naar zowel de gebruiker tabel als de onderwerp tabel.
+De synchronisatie met de database gebeurt via de 'sync' methode.
+Het model van het onderwerp is gelijkaardig aan het gebruikersmodel zoals te zien is in ~\ref{code:Subject}. Het recensiemodel heeft bijkomend 
+ook nog de 1-op-1 relatie met zowel de gebruiker als het onderwerp.
+Om deze relatie tot stand te brengen wordt de 'belongsTo' methode gebruikt in ~\ref{code:Review}. 
+Deze zal in de tabel een vreemde sleutel toevoegen naar zowel de gebruikerstabel als de onderwerptabel.
 Een visuele voorstelling hiervan is te bekijken in figuur \ref{fig:erd}.
 \begin{figure}[H]
   \centering
@@ -255,11 +256,11 @@ module.exports = async (sequelize) => {
 
 In de code ~\ref{code:Instantie} wordt een connectie aangemaakt met de databank door het gebruik van Sequelize. 
 De benodigde configuratie wordt met behulp van de config package opgehaald. Zo is de 
-gebruikersnaam, databasenaam en de technologie van de database te vinden in de configuratie bestanden.
+gebruikersnaam, databasenaam, de technologie van de database en het wachtwoord te vinden via de configuratie.
+Deze waarden worden via het config package opgehaald uit het environment om zo de veiligheid te waarborgen.
 Voor zowel te kunnen werken met MySQL als Postgres wordt gebruikgemaakt van de packages: mysql2 en pg.
-Het wachtwoord zal dankzij de config package opgehaald worden uit het environment om zo de veiligheid te waarborgen.
-Deze configuratie wordt dan gebruikt om de connectie aan te maken en de tabellen te initializeren.
-Nadien worden ook de gebruiker en onderwerp tabel opgevuld met voorbeeld data zoals te zien is in ~\ref{code:Seed}.
+Deze configuratie wordt dan gebruikt om de connectie aan te maken en de tabellen te initialiseren.
+Nadien  de tabellen voor de gebruiker en de onderwerpen opgevuld met voorbeeldgegevens, zoals weergegeven in ~\ref{code:Seed}.
 
 \begin{listing}[H]
   \centering
@@ -478,7 +479,7 @@ Bun.serve({
 \caption{\label{code:BunServer}Code om de verzoeken te ontvangen binnen server}
 \end{listing}
 \subsection{Uitvoering metingen}
-Voor de metingen wordt gebruikgemaakt van 2 hulpprogramma's: Hyperfine en Bombardier.
+Voor de metingen worden twee hulpprogramma's gebruikt: Hyperfine en Bombardier.
 In \ref{code:HyperfineScript} wordt Hyperfine gebruikt om de gemiddelde uitvoeringstijd over verschillende iteraties van het script te berekenen.
 Ook zal Hyperfine gebruikt worden om de gemiddelde installatietijd van de respectievelijke package managers te vergelijken zoals 
 te zien is in \ref{code:HyperfineInstall}. Specifiek wordt de installatietijd bekeken wanneer het cache geheugen data bevat.
@@ -528,10 +529,10 @@ Bij de metingen wordt telkens versie 1.18 van Hyperfine gebruikt.
 \end{listing}
 Daarnaast wordt voor de HTTP server gebruikgemaakt van Bombardier. 
 Hierbij kan ingesteld worden hoeveel gelijktijdige connecties er zijn en hoeveel verzoeken per test worden verstuurd.
-In de metingen zal getest worden door 500000 verzoeken te sturen met 10, 50 en 100 gelijktijdige connecties.
-De commando's hiervoor zijn terug te vinden in \ref{code:Bombardier10}, \ref{code:Bombardier100} en \ref{code:Bombardier1000}.
-Hierbij wordt telkens een POST verzoek gestuurd, in \ref{code:Bombardier10GET} wordt een voorbeeld getoond om GET verzoeken te sturen.
-Bij de metingen wordt hiervoor gebruikgemaakt van versie 1.2.6 van Bombardier.
+In de metingen worden 500000 verzoeken verzonden met 10, 50 en 100 gelijktijdige verbindingen.
+De commando's hiervoor staan vermeld in \ref{code:Bombardier10}, \ref{code:Bombardier100} en \ref{code:Bombardier1000}.
+Hierbij wordt telkens een POST verzoek gestuurd. In \ref{code:Bombardier10GET} wordt een voorbeeld getoond om GET verzoeken te sturen.
+Voor deze metingen wordt versie 1.2.6 van Bombardier gebruikt.
 \begin{listing}[H]
   \centering
   \begin{minted}[bgcolor=bg,
@@ -617,26 +618,27 @@ Bij de metingen wordt hiervoor gebruikgemaakt van versie 1.2.6 van Bombardier.
       \caption{\label{code:Bombardier10GET}Gebruik Bombardier commando met 500000 verzoeken en 10 gelijktijdige connecties voor een GET verzoek}
 \end{listing}
 Bij de uitvoering wordt gewerkt met een vorm van containervirtualisatie genaamd Docker.
-Hierbij zit elke aplicatie in zijn eigen container waarbij aan de hand van een Dockerfile deze telkens wordt opgezet.
+Hierbij zit elke applicatie in zijn eigen container waarbij aan de hand van een Dockerfile deze telkens wordt opgezet.
 In \ref{code:dockerscript} is de Dockerfile voor het Quick Sort algoritme te zien. 
 Hierbij wordt vertrokken van een omgeving die Node.js al bevat waar nadien Hyperfine en Bun worden geïnstalleerd.
 Hierna wordt dan met behulp van Hyperfine de uitvoeringstijd van Bun en Node.js berekend.
-Dit bestand moet eerst gebouwd worden met het docker build commando waarvan een voorbeeld te vinden is in \ref{code:dockerbuild}.
-Daarna moet de image worden uitgevoerd met het docker run commando zoals het voorbeeld in \ref{code:dockerrun}.
+Dit bestand moet eerst gebouwd worden met het 'docker build' commando waarvan een voorbeeld te vinden is in \ref{code:dockerbuild}.
+Daarna moet de image worden uitgevoerd met het 'docker run' commando zoals het voorbeeld in \ref{code:dockerrun}.
 Voor de HTTP server is er nog een bijkomend
-Docker Compose bestand \ref{code:dockerscript} waar aan de hand van het commando in \ref{code:dockercompose}
-zowel de databank als de server kan worden opgestart. Een voorbeeld hiervan voor zowel een MysSQL database als een PostgreSQL database is 
-respectievelijk te zien in \ref{code:dockercomposefile} en \ref{code:dockercomposepostgres}.
-Hiernaast wordt dan ook een Dockerfile gebruikt om de server te starten. De Dockerfile voor de Node.js en Bun server is te vinden in
-respectievelijk \ref{code:dockernode} en \ref{code:dockerbun}. 
-Om het gemiddelde CPU-gebruik en het maximale geheugengebruik te bepalen wordt het bombardier commando samen met het docker stats commando uitgevoerd in een zsh script.
-Hierbij wordt voordat het bombardier commando wordt uitgevoerd de monitoring gestart van het geheugen en het cpu-gebruik. Nadien wordt het gemiddelde cpu-gebruik en het maximale geheugen gebruik bepaald.
-Een voorbeeld van dit script  is te vinden in \ref{code:zshscript}. 
-In dit voorbeeld wordt zowel de bombardier om de POST methode als de GET methode weergegeven. Afhankelijk van wat gemeten wordt, moet tussen 1 van deze 2 methoden gekozen worden.
+Docker Compose bestand waar aan de hand van het commando in \ref{code:dockercompose}
+zowel de databank als de server kan worden opgestart. Een voorbeeld hiervan voor zowel een MySQL database als een PostgreSQL database is 
+respectievelijk te vinden in \ref{code:dockercomposefile} en \ref{code:dockercomposepostgres}.
+Hierbij wordt dan ook een Dockerfile gebruikt om de server te starten. De Dockerfile voor de Node.js en Bun server 
+zijn respectievelijk te vinden in \ref{code:dockernode} en \ref{code:dockerbun}. 
+Om het gemiddelde CPU-gebruik en het maximale geheugengebruik te bepalen wordt Bombardier samen met het 'docker stats' commando uitgevoerd in een zsh script.
+Hierbij wordt vóór het uitvoeren van Bombardier de monitoring gestart van het geheugen- en CPU-gebruik. 
+Na de uitvoering wordt het gemiddelde CPU-gebruik en het maximale geheugengebruik bepaald.
+Een voorbeeld van dit script is te vinden in \ref{code:zshscript}. 
+In dit voorbeeld wordt zowel de Bombardier om de POST methode als de GET methode weergegeven. Afhankelijk van wat gemeten wordt, moet tussen 1 van deze 2 methoden gekozen worden.
 Het aantal connecties kan als argument meegegeven worden bij de uitvoering van het script.
-Daarnaast wordt bij de server ook de installatietijd van de package managers gemeten met de Dockerfile \ref{code:dockerinstall}.
-Hiervoor wordt ook Hyperfine gebruikt waarbij de cache al wordt opgevuld door de warmup in het commando.
-Tot slot wordt voor het maximaal geheugengebruik bij het script het zsh time commando gebruikt. Hierbij wordt de omgevingsvariabele 
+Bij de server wordt ook de installatietijd van de package managers gemeten met behulp van de Dockerfile \ref{code:dockerinstall}.
+Hiervoor wordt ook Hyperfine gebruikt, waarbij de cache al wordt opgevuld door de 'warmup' in het commando.
+Tot slot wordt voor het maximale geheugengebruik bij het script het zsh time commando gebruikt. Hierbij wordt de omgevingsvariabele 
 ingesteld zodat het maximaal geheugengebruik kan getoond worden zoals in \ref{code:zshmemory}
 \begin{listing}[H]
   \centering
@@ -963,7 +965,6 @@ else
     echo "Docker CLI process not found."
 fi
 
-
 # Bereken gemiddeld CPU-gebruik en hoogste memory
 while IFS= read -r line; do
     if [[ $line =~ ([0-9]+\.[0-9]+)%(.*[0-9]+\.[0-9]+)MiB ]]; then
@@ -978,11 +979,9 @@ while IFS= read -r line; do
 done < container_stats.txt
 
 average_cpu_percent=$((cpu_percent_sum / total_lines))
-
 # Toon resultaten
 echo "Gemiddelde CPU-gebruik: $average_cpu_percent%"
 echo "Maximaal geheugen gebruik: $highest_mem_usage"
-
       \end{minted}
       \caption{\label{code:zshscript}Dockerfile voor het Quick Sort algoritme}
 \end{listing}
@@ -1054,19 +1053,19 @@ CMD ["hyperfine","--prepare", "rm -rf node_modules", "--warmup","1","--runs","10
 \subsection{Resultaten proof-of-concept}
 In deze sectie zullen de resultaten van de performantie testen besproken worden.
 Hierbij worden eerst de resultaten voor de uitvoeringstijd bij het Quick Sort algoritme bekeken.
-Daarna worden de resultaten van de server besproken op vlak van uitvoeringstijd, cpu-gebruik, geheugengebruik, latentie en de installatietijd 
-bij zowel het gebruik van een MySQL database als een PostgreSQL database.
+Vervolgens worden de resultaten van de server besproken op het gebied van uitvoeringstijd, CPU-gebruik, geheugengebruik, latentie en de installatietijd
+zowel bij het gebruik van een MySQL database als een PostgreSQL database.
 
 \subsubsection{Resultaten  Quick Sort algoritme}
 De resultaten voor de gemiddelde uitvoeringstijd bij het Quick Sort algoritme werden bekomen met behulp van Hyperfine.
-Hierbij werd gekeken naar de uitvoeringstijd voor het sorteren van een array bestaande uit 1000 elementen met volgend commando \ref{code:HyperfineScript}..
+Hierbij werd gekeken naar de uitvoeringstijd voor het sorteren van een array bestaande uit 1000 elementen met volgende commando \ref{code:HyperfineScript}.
 Bun heeft hierbij een gemiddelde uitvoeringstijd van 6.4 milliseconden met een standaardafwijking van 0.8 milliseconden. 
-Dit tegenover de gemiddelde uitvoeringstijd van 14.1 milleseconden bij Node.js met een standaardafwijking van 1.3 milliseconden.
+Dit tegenover de gemiddelde uitvoeringstijd van 14.1 milliseconden bij Node.js met een standaardafwijking van 1.3 milliseconden.
 In figuur \ref{fig:uitvoeringstijdscript} wordt de gemiddelde uitvoeringstijd per omgeving visueel voorgesteld
 Daarbij is op te merken dat de gemiddelde uitvoeringstijd van Bun 2.21 keer sneller is dan bij Node.js.
 In figuur \ref{fig:RAMscript} wordt het maximale geheugengebruik voor zowel Bun als Node.js weergegeven. 
 Hierbij werd het time commando telkens 5 keer uitgevoerd.
-Als resultaat heeft Bun met 30.69 MB een lager geheugengebruik dan Node.js met 36.4 MB.
+De resultaten tonen aan dat Bun met 30.69 MB een lager geheugengebruik heeft dan Node.js met 36.4 MB.
 \begin{figure}[H]
   \centering
   \includegraphics{graphics/scriptuitvoeringstijd.png}
@@ -1080,31 +1079,32 @@ Als resultaat heeft Bun met 30.69 MB een lager geheugengebruik dan Node.js met 3
 \end{figure}
 
 \subsection{Resultaten Recensie applicatie}
-De resultaten voor de gemiddelde installatietijd bij de p
-ackage managers werden bekomen met behulp van Hyperfine.
+De resultaten voor de gemiddelde installatietijd bij de package managers werden bekomen met behulp van Hyperfine.
 Hierbij werd eerst een warmup uitvoering gedaan om de cache al op te vullen.
 In figuur \ref{fig:installatietijdapp} zijn de resultaten visueel voorgesteld per omgeving.
 Hierbij is op te merken dat Bun met een gemiddelde installatietijd van 24,9 milliseconden en een standaardafwijking van 2,4 milliseconden 24,5 keer sneller 
-is dan Node.js met een gemiddelde installatietijd van 610,1 milleseconden en een standaardafwijking van 100,1 milliseconden.
+is dan Node.js, met een gemiddelde installatietijd van 610,1 milliseconden en een standaardafwijking van 100,1 milliseconden.
+Voor de overige metingen werd gebruikgemaakt van Bombardier,waarbij
+telkens 500.000 verzoeken naar de server werden gestuurd met 10, 50 en 100 gelijktijdige verbindingen.
 \begin{figure}[H]
   \centering
   \includegraphics{graphics/install.png}
   \caption{\label{fig:installatietijdapp}Gemiddelde installatietijd van de packages in Bun en Node.js}
 \end{figure}
 
-Voor de andere resultaten werd gebruikgemaakt van Bombardier waarbij telkens met 10, 50 en 100 connecties 
-500000 verzoeken werden gestuurd naar de server.
+
 
 \subsubsection{Resultaten voor de applicatie met een MySQL database}
 In deze sectie worden de bekomen resultaten van de applicatie besproken waarbij een MySQL database werd gebruikt.
 In tabel \ref{tab:getbombardier} kunnen de resultaten gezien worden van de metingen waarbij de onderwerpen werden opgehaald aan de hand van een GET verzoek.
-Er wordt gestreefd naar een zo hoog mogelijk aantal verzoeken per seconde met een zo laag mogelijke latentie, geheugengebruik en cpu-gebruik.
+Er wordt gestreefd naar een zo hoog mogelijk aantal verzoeken per seconde met een zo laag mogelijke latentie, geheugengebruik en CPU-gebruik.
 Zoals te zien scoort Bun op het vlak van aantal verzoeken per seconde en latentie beter dan Node.js ongeacht van het aantal connecties. 
 Echter heeft Bun bij het aantal verzoeken per seconde wel telkens een grotere standaardafwijking en zijn er dus meer uitschieters aanwezig zijn.
-Langs de andere kant verbruikt Bun telkens meer resources. Zo heeft Bun bij elke aantal connecties een hoger CPU-gebruik en zijn de pieken van het geheugen consistent hoger dan bij Node.js.
+Langs de andere kant verbruikt Bun meer middelen. Zo heeft Bun telkens een hoger CPU-gebruik en zijn de pieken van het geheugen consistent hoger dan bij Node.js.
 In figuren \ref{fig:getaantalverzoekenmysql}, \ref{fig:getaantallatentienmysql}, \ref{fig:getgeheugenmysql} en \ref{fig:getcpumysql} kunnen de visuele voorstellingen 
-voor respectievelijk het aantal verzoeken per seconde, het aantal latentie, het maximale geheugengebruik en het gemiddeld CPU-gebruik worden gevonden.
+voor respectievelijk het aantal verzoeken per seconde, het aantal latentie, het maximale geheugengebruik en het gemiddelde CPU-gebruik worden gevonden.
 \begin{table}[]
+  \tabcolsep=0.13cm
   \begin{tabular}{|c|cccccc|}
   \hline
   \multicolumn{1}{|l|}{}                                                                     & \multicolumn{1}{l}{} & Bun      & \multicolumn{1}{l|}{}    & \multicolumn{1}{l}{} & \multicolumn{1}{l}{Node.js} & \multicolumn{1}{l|}{} \\ \hline
@@ -1140,19 +1140,22 @@ voor respectievelijk het aantal verzoeken per seconde, het aantal latentie, het 
     \caption{\label{fig:getcpumysql}Visuele voorstelling gemiddeld CPU-gebruik bij het ophalen van de onderwerpen.}
   \end{figure}
 
-In tabel \ref{tab:postbombardier} kunnen de resultaten gezien worden van de metingen waarbij 
-een gebruiker een recensie schrijft over een bepaald onderwerp door gebruik van een POST verzoek.
-Hierbij is op te merken dat Bun op zowel het vlak van gemiddeld aantal verzoeken als latentie gelijkaardig scoort aan Node.js bij 10 connecties. Zo heeft Bun
+In tabel \ref{tab:postbombardier} kunnen de resultaten worden bekeken van de metingen waarbij 
+een gebruiker een recensie schrijft over een bepaald onderwerp door middel van een POST verzoek.
+Hierbij is op te merken dat Bun op zowel bij het gemiddeld aantal verzoeken als latentie gelijkaardig scoort aan Node.js bij 10 connecties. Zo heeft Bun
 een gemiddeld aantal verzoeken van 4483 terwijl Node.js hierbij een gemiddelde heeft van 4504.87 heeft. 
 Ook bij de latentie is dit het geval waarbij Bun een latentie heeft van 2.27 milliseconden en Node.js een latentie van 2.22 milliseconden.
 Deze trend zet zich echter niet voort bij de 50 en 100 connecties waarbij Bun steeds beter presteert op vlak van latentie en aantal verzoeken per seconde.
+Node.js heeft bij latentie ook een substantieel grotere standaardafwijking die merkbaar is bij 100 gelijktijdige connecties.
 Echter zit er wel consistentie bij het geheugengebruik tussen het aantal connecties.
 Bij 10 connecties heeft Bun al een geheugengebruik van 161.2MB terwijl Node.js hier maar een verbruik heeft van 138.2MB.
 Voor de 50 en 100 connecties zit Bun telkens hoger dan Node.js.
-Hetzelfde is te zien bij het gemiddeld CPU-gebruik voor de 50 en 100 connecties, waarbij Bun respectievelijk 109.43\% en 118.56\% heeft terwijl Node.js maar een gemiddelde van 98.4\% en 107.73\% CPU-gebruik heeft.
+Hetzelfde is te zien bij het gemiddeld CPU-gebruik voor de 50 en 100 connecties, waarbij Bun respectievelijk
+een gemiddeld verbruik van 109.43\% en 118.56\% heeft tegenover Node.js met een gemiddelde van 98.4\% en 107.73\% heeft.
 In figuren \ref{fig:postaantalverzoekenmysql}, \ref{fig:postaantallatentienmysql}, \ref{fig:postgeheugenmysql} en \ref{fig:postcpumysql} kunnen de visuele voorstellingen 
 voor respectievelijk het aantal verzoeken per seconde, het aantal latentie, het maximale geheugengebruik en het gemiddeld CPU-gebruik worden gevonden.
-\begin{table}[]
+\begin{table}[H]
+  \tabcolsep=0.13cm
   \begin{tabular}{|c|cccccc|}
   \hline
   \multicolumn{1}{|l|}{}                                                                     & \multicolumn{1}{l}{} & Bun     & \multicolumn{1}{l|}{}    & \multicolumn{1}{l}{} & \multicolumn{1}{l}{Node.js} & \multicolumn{1}{l|}{} \\ \hline
@@ -1186,15 +1189,17 @@ voor respectievelijk het aantal verzoeken per seconde, het aantal latentie, het 
       \includegraphics[width=0.7\columnwidth]{graphics/PostMySqlCpu.png}
       \caption{\label{fig:postcpumysql}Visuele voorstelling gemiddeld CPU-gebruik bij het maken van een recensie.}
     \end{figure}
-\subsection{Resultaten voor de applicatie met een PostgreSQL database}
+\subsubsection{Resultaten voor de applicatie met een PostgreSQL database}
 In deze sectie worden de bekomen resultaten van de applicatie besproken waarbij een PostgreSQL database werd gebruikt.
 In tabel \ref{tab:getbombardierpostgres} kunnen de resultaten gezien worden van de metingen waarbij de onderwerpen werden opgehaald aan de hand van een GET verzoek.
-Er wordt hierbij gestreefd naar een zo hoog mogelijk aantal verzoeken per seconde met een zo laag mogelijke latentie, geheugengebruik en cpu-gebruik.
+Er wordt hierbij gestreefd naar een zo hoog mogelijk aantal verzoeken per seconde met een zo laag mogelijke latentie, geheugengebruik en CPU-gebruik.
 Zoals te zien scoort Bun ook weer hier beter op zowel het vlak van aantal verzoeken per seconde als latentie.
-Langs de andere kant verbruikt Bun telkens meer resources. Zo heeft Bun bij elke aantal connecties een hoger CPU-gebruik en zijn de pieken van het geheugen consistent hoger dan bij Node.js.
+Langs de andere kant verbruikt Bun telkens meer middelen. Bij Bun vertoont het CPU-gebruik, ongeacht het aantal connecties, een hogere waarde dan bij Node.js.
+Bovendien zijn de pieken van het geheugengebruik consistent hoger dan die bij Node.js.
 In figuren \ref{fig:getaantalverzoekenpostgres}, \ref{fig:getaantallatentienpostgres}, \ref{fig:getgeheugenpostgres} en \ref{fig:getcpupostgres} kunnen de visuele voorstellingen 
 voor respectievelijk het aantal verzoeken per seconde, het aantal latentie, het maximale geheugengebruik en het gemiddeld CPU-gebruik worden gevonden.
-\begin{table}[]
+\begin{table}[H]
+  \tabcolsep=0.13cm
   \begin{tabular}{|c|cccccc|}
   \hline
   \multicolumn{1}{|l|}{}                                                                     & \multicolumn{1}{l}{} & Bun      & \multicolumn{1}{l|}{}    & \multicolumn{1}{l}{} & \multicolumn{1}{l}{Node.js} & \multicolumn{1}{l|}{} \\ \hline
@@ -1232,16 +1237,18 @@ voor respectievelijk het aantal verzoeken per seconde, het aantal latentie, het 
 
 In tabel \ref{tab:postbombardierpostgres} kunnen de resultaten gezien worden van de metingen waarbij 
 een gebruiker een recensie schrijft over een bepaald onderwerp door gebruik van een POST verzoek en de PostgreSQL databank.
-Hierbij scoort Bun bij alle aantallen connecties beter dan Node.js
+Hierbij scoort Bun consistent beter dan Node.js bij de latentie en het aantal verzoeken.
 Zo heeft Bun bij 10 connecties een gemiddelde van 5433.39 aantal verzoeken per seconde met een latentie van 1.84 milliseconden. 
 Dit tegenover Node.js met een gemiddelde van 5221.94 verzoeken per seconde en een latentie van 1.91 milliseconden.
-Deze trend zet zich voort bij zowel de 50 als 100 connecties.
+Deze trend zet zich voort bij zowel 50 als 100 gelijktijdige connecties.
+Hierbij heeft Node.js ook een substantieel grotere standaardafwijking voor de latentie die vooral merkbaar is bij 100 gelijktijdige connecties.
 Op vlak van middelengebruik is er ook hier een verschil. Echter scoort Node.js hierbij beter dan Bun.
- Zo heeft het bijvoorbeeld bij 100 connecties een maximaal geheugengebruik van 146.4MB en een gemiddeld CPU-gebruik van 104.75\%.
+Zo heeft het bijvoorbeeld bij 100 connecties een maximaal geheugengebruik van 146.4MB en een gemiddeld CPU-gebruik van 104.75\%.
 Bij Bun is dit hoger met een geheugengebruik van 179.2MB en een gemiddeld CPU-gebruik van 118.79\%.
 In figuren \ref{fig:postaantalverzoekenpostgres}, \ref{fig:postaantallatentiepostgres}, \ref{fig:postgeheugenpostgres} en \ref{fig:postcpupostgres} kunnen de visuele voorstellingen 
 voor respectievelijk het aantal verzoeken per seconde, het aantal latentie, het maximale geheugengebruik en het gemiddeld CPU-gebruik worden gevonden.
-\begin{table}[]
+\begin{table}[H]
+  \tabcolsep=0.13cm
   \begin{tabular}{|c|cccccc|}
   \hline
   \multicolumn{1}{|l|}{}                                                                     & \multicolumn{1}{l}{} & Bun     & \multicolumn{1}{l|}{}    & \multicolumn{1}{l}{} & \multicolumn{1}{l}{Node.js} & \multicolumn{1}{l|}{} \\ \hline
@@ -1283,7 +1290,7 @@ het gebruik van de JavaScriptScore engine in Bun waarbij geoptimaliseerde machin
 samenwerking met 3 JIT compilers en een Low-Level interpreter.
 Deze snelheid is niet enkel zichtbaar bij het algoritme, maar ook bij de installatietijd van de packages.
 Zo is Bun met een gemiddelde installatietijd van 24,9 milliseconden 24,5 keer sneller is dan Node.js met een 
-gemiddelde installatietijd van 610,1 milleseconden. Dit kan een groot verschil betekenen op vlak van efficiëntie in projecten 
+gemiddelde installatietijd van 610,1 milliseconden. Dit kan een groot verschil betekenen op vlak van efficiëntie in projecten 
 met een groot aantal packages.
 Met behulp van de recensie applicatie kan er ook gekeken worden naar de performantie bij I/O-taken.
 In de metingen werd hiervoor een GET en POST endpoint opengezet waarbij telkens met een MySQL database en een PostgreSQL database de metingen werden uitgevoerd.
@@ -1292,14 +1299,15 @@ Het verschil in aantal verzoeken per seconde toont aan dat Bun een grotere capac
 De latentie toont aan dat Bun sneller de opgehaalde data kan teruggeven. Echter komen deze voordelen met een prijs. 
 Zo heeft Bun telkens een groter gebruik van middelen tegenover Node.js wat aantoont dat Node.js efficiënter is op vlak van geheugen management en CPU-management.
 Bij het invoegen van data was er een gelijkaardige situatie. 
-Bij de MySQL databank presteert Bun beter dan Node.js op zowel het vlak van het gemiddeld aantal verzoeken als de latentie bij 50 en 100 connecties. 
-Echter zet dit zich niet voort in het middelengebruik waarbij Bun telkens weer meer middelen gebruikt als Node.js.
-Bij de PostgreSQL database scoort Bun beter bij 10,50 en 100 connecties op vlak van latentie en verzoeken 
-per seconde maar verbruikt het ook weer meer middelen om deze resultaten te bekomen. 
+Bij de MySQL databank presteert Bun beter dan Node.js, zowel wat betreft het gemiddelde aantal verzoeken als de latentie 
+bij 50 en 100 gelijktijdige connecties.
+Echter zet dit zich niet voort in het middelengebruik waarbij Bun telkens weer meer middelen gebruikt dan Node.js.
+Bij de PostgreSQL database scoort Bun beter bij 10,50 en 100 gelijktijdige connecties wat betreft latentie en verzoeken 
+per seconde. Echter, om deze resultaten te behalen, verbruikt Bun ook weer meer middelen.
 Op basis van deze bevindingen kunnen verschillende conclusies worden getrokken. 
 Zo kunnen applicaties met complexe algoritmes en calculaties beter kiezen voor Bun. 
-Deze kan doormiddel van zijn geoptimaliseerde machine code de calculaties sneller uitvoeren dan Node.js.
-Bij I/O-taken moet er echter een afweging gemaakt worden. Zo is Bun in samenwerking met een PostgreSQL database sneller voor het ophalen en invoegen van data.
-Echter komt dit ten koste van een hoger middelengebruik op vlak van geheugen en CPU. 
-Indien de server hardware over voldoende middelen beschikt kan Bun gebruikt worden voor een snellere verwerking van de applicatie.
+Deze kan door middel van zijn geoptimaliseerde machine code de calculaties sneller uitvoeren dan Node.js.
+Bij I/O-taken moet er echter een afweging gemaakt worden. Zo is Bun sneller voor het ophalen en invoegen van data.
+Echter komt dit ten koste van een hoger middelengebruik op vlak van geheugen- en CPU-gebruik. 
+Indien de server hardware over voldoende middelen beschikt kan Bun gebruikt worden voor een snellere verwerking binnen de applicatie.
 

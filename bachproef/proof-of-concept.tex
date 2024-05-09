@@ -22,14 +22,14 @@ Deze metingen zullen worden uitgevoerd op een Mac mini met volgende specificatie
   \item Versie 21 van Node.js.
   \item Versie 1.1.3 van Bun.
 \end{itemize}
-De eerste proof-of-concept zal bestaan uit een script dat het Quick Sort algoritme bevat. 
+De eerste proof-of-concept zal bestaan uit een script dat het QuickSort algoritme bevat. 
 Deze zal dienen om de computationele verwerking van elke omgeving te beoordelen. 
 Hierbij wordt rekening gehouden met de gemiddelde uitvoeringstijd en het maximale geheugengebruik.
-Het Quick Sort algoritme zal een meegegeven array sorteren door een spil element te kiezen binnen de array
+Het QuickSort algoritme zal een meegegeven array sorteren door een spil element te kiezen binnen de array
 waarna de array in twee wordt opgesplitst. De eerste array zal elementen bevatten die kleiner zijn dan het spil element 
 en de andere array zal elementen bevatten die groter zijn. 
 De 2 arrays worden vervolgens telkens recursief gesorteerd met dezelfde methode om zo een gesorteerde array te bekomen.
-In het codevoorbeeld ~\ref{code:quicksort} kan de code voor het Quick Sort algoritme gevonden worden.
+In het codevoorbeeld ~\ref{code:quicksort} kan de code voor het QuickSort algoritme gevonden worden.
 Hierbij is er de mogelijkheid de grootte van de te sorteren array mee te geven via de command-line.
 
 \begin{listing}[H]
@@ -75,7 +75,7 @@ let myArray = Array.from({ length: args[1] }, () =>
 );
 quickSort(myArray);
         \end{minted}
-        \caption{\label{code:quicksort}Code voorbeeld quicksort}
+        \caption[QuickSort algoritme]{\label{code:quicksort}Code voorbeeld QuickSort algoritme}
 \end{listing}
 
 Naast de computationele verwerking te meten, wordt ook de performantie bij I/O-taken gemeten.
@@ -101,16 +101,16 @@ Hierbij worden eerst 3 modellen gemaakt die de volgende tabellen voorstellen in 
   \item Het recensie model dat de recensie van een bepaalde gebruiker over een bepaald onderwerp voorstelt.
 \end{itemize}
 De code voor het model van de gebruiker is te vinden in ~\ref{code:User}. Deze bevat 3 kolommen namelijk: de primaire sleutel (id), voornaam en achternaam.
-De synchronisatie met de database gebeurt via de 'sync' methode.
+De synchronisatie met de database gebeurt via de “sync” methode.
 Het model van het onderwerp is gelijkaardig aan het gebruikersmodel zoals te zien is in ~\ref{code:Subject}. Het recensiemodel heeft bijkomend 
 ook nog de 1-op-1 relatie met zowel de gebruiker als het onderwerp.
-Om deze relatie tot stand te brengen wordt de 'belongsTo' methode gebruikt in ~\ref{code:Review}. 
+Om deze relatie tot stand te brengen wordt de “belongsTo” methode gebruikt in ~\ref{code:Review}. 
 Deze zal in de tabel een vreemde sleutel toevoegen naar zowel de gebruikerstabel als de onderwerptabel.
 Een visuele voorstelling hiervan is te bekijken in figuur \ref{fig:erd}.
 \begin{figure}[H]
   \centering
   \includegraphics{graphics/erd.png}
-  \caption{\label{fig:erd}ERD diagram van de recensie applicatie}
+  \caption[ERD recensie applicatie]{\label{fig:erd}ERD diagram van de recensie applicatie}
 \end{figure}
 \begin{listing}[H]
   \centering
@@ -159,7 +159,7 @@ module.exports = {
   GebruikerInit,
 };
 \end{minted}
-\caption{\label{code:User}Code van het gebruiker model}
+\caption[Model gebruiker]{\label{code:User}Code van het model van de gebruiker}
 \end{listing}
 
 \begin{listing}[H]
@@ -206,7 +206,7 @@ module.exports = {
   OnderwerpInit,
 };
 \end{minted}
-\caption{\label{code:Subject}Code van het onderwerp model}
+\caption[Model onderwerp]{\label{code:Subject}Code van het model van het onderwerp}
 \end{listing}
 
 \begin{listing}[H]
@@ -251,7 +251,7 @@ module.exports = async (sequelize) => {
   await Recensie.sync();
 };
 \end{minted}
-\caption{\label{code:Review}Code van het recensie model}
+\caption[Model recensie]{\label{code:Review}Code van het model van de recensie}
 \end{listing}
 
 In de code ~\ref{code:Instantie} wordt een connectie aangemaakt met de databank door het gebruik van Sequelize. 
@@ -325,7 +325,7 @@ module.exports = {
   getSequelize,
 };
 \end{minted}
-\caption{\label{code:Instantie}Code bij aanmaken instantie sequelize}
+\caption[Sequelize instantie]{\label{code:Instantie}Code bij aanmaken instantie sequelize}
 \end{listing}
 
 \begin{listing}[H]
@@ -356,11 +356,11 @@ async function seed(sequelize) {
   });
   await sequelize.models.Onderwerp.create({
     id: 1,
-    naam: "Cars",
+    naam: "Auto",
   });
   await sequelize.models.Onderwerp.create({
     id: 2,
-    naam: "Planes",
+    naam: "Vliegtuigen",
   });
   await sequelize.models.Onderwerp.create({
     id: 3,
@@ -369,7 +369,7 @@ async function seed(sequelize) {
 }
 module.exports = seed;
 \end{minted}
-\caption{\label{code:Seed}Code bij het opvullen van de tabellen}
+\caption[Opvulling tabellen]{\label{code:Seed}Code bij het opvullen van de tabellen}
 \end{listing}
 
 Als laatste wordt de server aangemaakt om een POST methode op het recensie endpoint en een GET methode op het onderwerpen endpoint aan te nemen.
@@ -434,7 +434,7 @@ async function main() {
 }
 main();
 \end{minted}
-\caption{\label{code:NodeServer}Code om de verzoeken te ontvangen binnen Node.js}
+\caption[Ontvangen van verzoeken in Node.js]{\label{code:NodeServer}Code om de verzoeken te ontvangen binnen Node.js}
 \end{listing}
 \begin{listing}[H]
   \centering
@@ -476,7 +476,7 @@ Bun.serve({
     }
 })
 \end{minted}
-\caption{\label{code:BunServer}Code om de verzoeken te ontvangen binnen server}
+\caption[Ontvangen van verzoeken in Bun]{\label{code:BunServer}Code om de verzoeken te ontvangen binnen Bun}
 \end{listing}
 \subsection{Uitvoering metingen}
 Voor de metingen worden twee hulpprogramma's gebruikt: Hyperfine en Bombardier.
@@ -503,7 +503,7 @@ Bij de metingen wordt telkens versie 1.15 van Hyperfine gebruikt.
       texcl=false]{shell-session}
 > hyperfine --warmup 1 'node index.js 1000' 'bun index.js 1000'
       \end{minted}
-      \caption{\label{code:HyperfineScript}Gebruik Hyperfine commando bij het script}
+      \caption[Gebruik Hyperfine bij het algoritme]{\label{code:HyperfineScript}Gebruik Hyperfine commando bij het algoritme}
 \end{listing}
 
 \begin{listing}[H]
@@ -525,7 +525,7 @@ Bij de metingen wordt telkens versie 1.15 van Hyperfine gebruikt.
       texcl=false]{shell-session}
 > hyperfine --prepare 'rm -rf node_modules' --warmup 1 --runs 100 'npm install' 'bun install'
       \end{minted}
-      \caption{\label{code:HyperfineInstall}Gebruik Hyperfine commando bij het script}
+      \caption[Gebruik Hyperfine bij de installatie]{\label{code:HyperfineInstall}Gebruik Hyperfine commando bij de installtie}
 \end{listing}
 Daarnaast wordt voor de HTTP server gebruikgemaakt van Bombardier. 
 Hierbij kan ingesteld worden hoeveel gelijktijdige connecties er zijn en hoeveel verzoeken per test worden verstuurd.
@@ -552,7 +552,7 @@ Voor deze metingen wordt versie 1.2.6 van Bombardier gebruikt.
       texcl=false]{shell-session}
 > bombardier -c 10 -n 500000 -m POST -b '{"bericht": "test","GebruikerId": 1,"OnderwerpId": 1}' -l http://localhost:3000/recensie
       \end{minted}
-      \caption{\label{code:Bombardier10}Gebruik Bombardier commando met 500000 verzoeken en 10 gelijktijdige connecties voor een POST verzoek}
+      \caption[Gebruik Bombardier POST verzoek met 10 connecties]{\label{code:Bombardier10}Gebruik Bombardier commando met 500000 verzoeken en 10 gelijktijdige connecties voor een POST verzoek}
 \end{listing}
 \begin{listing}[H]
   \centering
@@ -573,7 +573,7 @@ Voor deze metingen wordt versie 1.2.6 van Bombardier gebruikt.
       texcl=false]{shell-session}
 > bombardier -c 50 -n 500000 -m POST -b '{"bericht": "test","GebruikerId": 1,"OnderwerpId": 1}' -l http://localhost:3000/recensie
       \end{minted}
-      \caption{\label{code:Bombardier100}Gebruik Bombardier commando met 500000 verzoeken en 50 gelijktijdige connecties voor een POST verzoek}
+      \caption[Gebruik Bombardier POST verzoek met 50 connecties]{\label{code:Bombardier100}Gebruik Bombardier commando met 500000 verzoeken en 50 gelijktijdige connecties voor een POST verzoek}
 \end{listing}
 \begin{listing}[H]
   \centering
@@ -594,7 +594,7 @@ Voor deze metingen wordt versie 1.2.6 van Bombardier gebruikt.
       texcl=false]{shell-session}
 > bombardier -c 100 -n 500000 -m POST -b '{"bericht": "test","GebruikerId": 1,"OnderwerpId": 1}' -l http://localhost:3000/recensie
       \end{minted}
-      \caption{\label{code:Bombardier1000}Gebruik Bombardier commando met 500000 verzoeken en 100 gelijktijdige connecties voor een POST verzoek}
+      \caption[Gebruik Bombardier POST verzoek met 100 connecties]{\label{code:Bombardier1000}Gebruik Bombardier commando met 500000 verzoeken en 100 gelijktijdige connecties voor een POST verzoek}
 \end{listing}
 \begin{listing}[H]
   \centering
@@ -615,29 +615,29 @@ Voor deze metingen wordt versie 1.2.6 van Bombardier gebruikt.
       texcl=false]{shell-session}
 > bombardier -c 10 -n 500000 -l http://localhost:3000/onderwerpen
       \end{minted}
-      \caption{\label{code:Bombardier10GET}Gebruik Bombardier commando met 500000 verzoeken en 10 gelijktijdige connecties voor een GET verzoek}
+      \caption[Gebruik Bombardier GET verzoek 10 connecties]{\label{code:Bombardier10GET}Gebruik Bombardier commando met 500000 verzoeken en 10 gelijktijdige connecties voor een GET verzoek}
 \end{listing}
 Bij de uitvoering wordt gewerkt met een vorm van containervirtualisatie genaamd Docker.
 Hierbij zit elke applicatie in zijn eigen container waarbij aan de hand van een Dockerfile deze telkens wordt opgezet.
-In \ref{code:dockerscript} is de Dockerfile voor het Quick Sort algoritme te zien. 
+In \ref{code:dockerscript} is de Dockerfile voor het QuickSort algoritme te zien. 
 Hierbij wordt vertrokken van een omgeving die Node.js al bevat waar nadien Hyperfine en Bun worden geïnstalleerd.
 Hierna wordt dan met behulp van Hyperfine de uitvoeringstijd van Bun en Node.js berekend.
-Dit bestand moet eerst gebouwd worden met het 'docker build' commando waarvan een voorbeeld te vinden is in \ref{code:dockerbuild}.
-Daarna moet de image worden uitgevoerd met het 'docker run' commando zoals het voorbeeld in \ref{code:dockerrun}.
+Dit bestand moet eerst gebouwd worden met het “docker build” commando waarvan een voorbeeld te vinden is in \ref{code:dockerbuild}.
+Daarna moet de image worden uitgevoerd met het “docker run” commando zoals het voorbeeld in \ref{code:dockerrun}.
 Voor de HTTP server is er nog een bijkomend
 Docker Compose bestand waar aan de hand van het commando in \ref{code:dockercompose}
 zowel de databank als de server kan worden opgestart. Een voorbeeld hiervan voor zowel een MySQL database als een PostgreSQL database is 
 respectievelijk te vinden in \ref{code:dockercomposefile} en \ref{code:dockercomposepostgres}.
 Hierbij wordt dan ook een Dockerfile gebruikt om de server te starten. De Dockerfile voor de Node.js en Bun server 
 zijn respectievelijk te vinden in \ref{code:dockernode} en \ref{code:dockerbun}. 
-Om het gemiddelde CPU-gebruik en het maximale geheugengebruik te bepalen wordt Bombardier samen met het 'docker stats' commando uitgevoerd in een zsh script.
+Om het gemiddelde CPU-gebruik en het maximale geheugengebruik te bepalen wordt Bombardier samen met het “docker stats” commando uitgevoerd in een zsh script.
 Hierbij wordt vóór het uitvoeren van Bombardier de monitoring gestart van het geheugen- en CPU-gebruik. 
 Na de uitvoering wordt het gemiddelde CPU-gebruik en het maximale geheugengebruik bepaald.
 Een voorbeeld van dit script is te vinden in \ref{code:zshscript}. 
 In dit voorbeeld wordt zowel de Bombardier om de POST methode als de GET methode weergegeven. Afhankelijk van wat gemeten wordt, moet tussen 1 van deze 2 methoden gekozen worden.
 Het aantal connecties kan als argument meegegeven worden bij de uitvoering van het script.
 Bij de server wordt ook de installatietijd van de package managers gemeten met behulp van de Dockerfile \ref{code:dockerinstall}.
-Hiervoor wordt ook Hyperfine gebruikt, waarbij de cache al wordt opgevuld door de 'warmup' in het commando.
+Hiervoor wordt ook Hyperfine gebruikt, waarbij de cache al wordt opgevuld door de “warmup” in het commando.
 Tot slot wordt voor het maximale geheugengebruik bij het script het zsh time commando gebruikt. Hierbij wordt de omgevingsvariabele 
 ingesteld zodat het maximaal geheugengebruik kan getoond worden zoals in \ref{code:zshmemory}
 \begin{listing}[H]
@@ -677,7 +677,7 @@ RUN ~/.bun/bin/bun install
 # Commando dat wordt uitgevoerd wanneer container start
 CMD ["hyperfine","--warmup", "1", "node index.js 1000", "bun index.js 1000"]
       \end{minted}
-      \caption{\label{code:dockerscript}Dockerfile voor het Quick Sort algoritme}
+      \caption[Dockerfile QuickSort algoritme]{\label{code:dockerscript}Dockerfile voor het QuickSort algoritme}
 \end{listing}
 \begin{listing}[H]
   \centering
@@ -698,7 +698,7 @@ CMD ["hyperfine","--warmup", "1", "node index.js 1000", "bun index.js 1000"]
       texcl=false]{shell-session}
 > docker build -f "Dockerfile" -t testimage .
       \end{minted}
-      \caption{\label{code:dockerbuild}Voorbeeld bouwen van een docker image met naam testimage}
+      \caption[Commando voor docker image te bouwen]{\label{code:dockerbuild}Voorbeeld bouwen van een Docker image met naam testimage}
 \end{listing}
 \begin{listing}[H]
   \centering
@@ -719,7 +719,7 @@ CMD ["hyperfine","--warmup", "1", "node index.js 1000", "bun index.js 1000"]
       texcl=false]{shell-session}
 > docker run -it testimage .
       \end{minted}
-      \caption{\label{code:dockerrun}Voorbeeld uitvoeren van een docker image met naam testimage}
+      \caption[Commando voor Docker image uit te voeren]{\label{code:dockerrun}Voorbeeld uitvoeren van een Docker image met naam testimage}
 \end{listing}
 
 \begin{listing}[H]
@@ -741,7 +741,7 @@ CMD ["hyperfine","--warmup", "1", "node index.js 1000", "bun index.js 1000"]
       texcl=false]{shell-session}
 > docker-compose -f docker-compose.yml up --build
       \end{minted}
-      \caption{\label{code:dockercompose}Uitvoeren van een docker compose}
+      \caption[Uitvoering Docker Compose]{\label{code:dockercompose}Uitvoeren van een Docker Compose bestand}
 \end{listing}
 \begin{listing}[H]
   \centering
@@ -790,7 +790,7 @@ services:
       DB_DATABASE: review
       DB_DIALECT: mysql
       \end{minted}
-      \caption{\label{code:dockercomposefile}Docker Compose bestand voor het opstarten van de MySQL database en server}
+      \caption[Docker Compose bestand voor MySQL]{\label{code:dockercomposefile}Docker Compose bestand voor het opstarten van de MySQL database en server}
 \end{listing}
 \begin{listing}[H]
   \centering
@@ -840,7 +840,7 @@ services:
       DB_DATABASE: review
       DB_DIALECT: postgres
       \end{minted}
-      \caption{\label{code:dockercomposepostgres}Docker Compose bestand voor het opstarten van de PostgreSQL database en server}
+      \caption[Docker Compose bestand voor PostgreSQL]{\label{code:dockercomposepostgres}Docker Compose bestand voor het opstarten van de PostgreSQL database en server}
 \end{listing}
 \begin{listing}[H]
   \centering
@@ -880,7 +880,7 @@ EXPOSE 3000
 # Commando dat wordt uitgevoerd wanneer container start
 CMD ["npm", "run", "dev"]
       \end{minted}
-      \caption{\label{code:dockernode}Dockerfile voor de node server}
+      \caption[Dockerfile Node.js server]{\label{code:dockernode}Dockerfile voor de Node.js server}
 \end{listing}
 
 
@@ -921,7 +921,7 @@ EXPOSE 3000
 # Commando dat wordt uitgevoerd wanneer container start
 CMD ["bun", "run", "index.js"]
       \end{minted}
-      \caption{\label{code:dockerbun}Dockerfile voor de bun server}
+      \caption[Dockerfile Bun server]{\label{code:dockerbun}Dockerfile voor de Bun server}
 \end{listing}
 
 \begin{listing}[H]
@@ -983,7 +983,7 @@ average_cpu_percent=$((cpu_percent_sum / total_lines))
 echo "Gemiddelde CPU-gebruik: $average_cpu_percent%"
 echo "Maximaal geheugen gebruik: $highest_mem_usage"
       \end{minted}
-      \caption{\label{code:zshscript}Dockerfile voor het Quick Sort algoritme}
+      \caption[Dockerfile QuickSort algoritme]{\label{code:zshscript}Dockerfile voor het QuickSort algoritme}
 \end{listing}
 
 \begin{listing}[H]
@@ -1022,7 +1022,7 @@ RUN ~/.bun/bin/bun install
 # Commando dat wordt uitgevoerd wanneer container start
 CMD ["hyperfine","--prepare", "rm -rf node_modules", "--warmup","1","--runs","100","bun install","npm install"]
       \end{minted}
-      \caption{\label{code:dockerinstall}Dockerfile voor de installatietijd te meten bij de server}
+      \caption[Dockerfile meting installatietijd]{\label{code:dockerinstall}Dockerfile voor de installatietijd te meten bij de server}
 \end{listing}
 
 \begin{listing}[H]
@@ -1047,17 +1047,17 @@ CMD ["hyperfine","--prepare", "rm -rf node_modules", "--warmup","1","--runs","10
 > time node index.js 1000
 > time bun index.js 1000
       \end{minted}
-      \caption{\label{code:zshmemory}Aanpassing zsh commando voor maximaal geheugengebruik te tonen}
+      \caption[Dockerfile time commando]{\label{code:zshmemory}Aanpassing zsh commando voor maximaal geheugengebruik te tonen}
 \end{listing}
 
 \subsection{Resultaten proof-of-concept}
 In deze sectie zullen de resultaten van de performantie testen besproken worden.
-Hierbij worden eerst de resultaten voor de uitvoeringstijd bij het Quick Sort algoritme bekeken.
+Hierbij worden eerst de resultaten voor de uitvoeringstijd bij het QuickSort algoritme bekeken.
 Vervolgens worden de resultaten van de server besproken op het gebied van uitvoeringstijd, CPU-gebruik, geheugengebruik, latentie en de installatietijd
 zowel bij het gebruik van een MySQL database als een PostgreSQL database.
 
-\subsubsection{Resultaten  Quick Sort algoritme}
-De resultaten voor de gemiddelde uitvoeringstijd bij het Quick Sort algoritme werden bekomen met behulp van Hyperfine.
+\subsubsection{Resultaten  QuickSort algoritme}
+De resultaten voor de gemiddelde uitvoeringstijd bij het QuickSort algoritme werden bekomen met behulp van Hyperfine.
 Hierbij werd gekeken naar de uitvoeringstijd voor het sorteren van een array bestaande uit 1000 elementen met volgende commando \ref{code:HyperfineScript}.
 Bun heeft hierbij een gemiddelde uitvoeringstijd van 6.4 milliseconden met een standaardafwijking van 0.8 milliseconden. 
 Dit tegenover de gemiddelde uitvoeringstijd van 14.1 milliseconden bij Node.js met een standaardafwijking van 1.3 milliseconden.
@@ -1069,13 +1069,13 @@ De resultaten tonen aan dat Bun met 30.69 MB een lager geheugengebruik heeft dan
 \begin{figure}[H]
   \centering
   \includegraphics{graphics/scriptuitvoeringstijd.png}
-  \caption{\label{fig:uitvoeringstijdscript}Gemiddelde uitvoeringstijd van het Quick Sort algoritme voor Bun en Node.js}
+  \caption[Uitvoeringstijd QuickSort algoritme]{\label{fig:uitvoeringstijdscript}Gemiddelde uitvoeringstijd van het QuickSort algoritme voor Bun en Node.js}
 \end{figure}
 
 \begin{figure}[H]
   \centering
   \includegraphics{graphics/RAMScript.png}
-  \caption{\label{fig:RAMscript}Maximale geheugengebruik van het Quick Sort algoritme voor Bun en Node.js}
+  \caption[Geheugengebruik QuickSort algoritme]{\label{fig:RAMscript}Maximale geheugengebruik van het QuickSort algoritme voor Bun en Node.js}
 \end{figure}
 
 \subsection{Resultaten Recensie applicatie}
@@ -1089,7 +1089,7 @@ telkens 500.000 verzoeken naar de server werden gestuurd met 10, 50 en 100 gelij
 \begin{figure}[H]
   \centering
   \includegraphics{graphics/install.png}
-  \caption{\label{fig:installatietijdapp}Gemiddelde installatietijd van de packages in Bun en Node.js}
+  \caption[Gemiddelde Installatietijd]{\label{fig:installatietijdapp}Gemiddelde installatietijd van de packages in Bun en Node.js}
 \end{figure}
 
 
@@ -1116,28 +1116,28 @@ voor respectievelijk het aantal verzoeken per seconde, het aantal latentie, het 
   \begin{tabular}[c]{@{}c@{}}Maximale \\ geheugengebruik \\ (MB)\end{tabular}                & 110.7                & 175.7    & 261.7                    & 104.4                & 114.8                       & 133.3                 \\ \cline{1-1}
   \begin{tabular}[c]{@{}c@{}}Gemiddeld\\ CPU-gebruik\\ (\%)\end{tabular}                     & 110.4                & 112.25   & 116.09                   & 95.24                & 101.64                      & 102.7                 \\ \hline
   \end{tabular}
-  \caption{\label{tab:getbombardier}Resultaten metingen waarbij onderwerpen worden opgehaald met een GET request uit de MySQL database.}
+  \caption[Resultaten GET verzoek met MySQL]{\label{tab:getbombardier}Resultaten metingen waarbij onderwerpen worden opgehaald met een GET verzoek uit de MySQL database.}
   \end{table}
 
   \begin{figure}[H]
     \centering
     \includegraphics[width=0.7\columnwidth]{graphics/GetMySqlVerzoeken.png}
-    \caption{\label{fig:getaantalverzoekenmysql}Visuele voorstelling gemiddeld aantal verzoeken per seconde bij het ophalen van de onderwerpen.}
+    \caption[Aantal verzoeken per seconde GET verzoek met MySQL]{\label{fig:getaantalverzoekenmysql}Visuele voorstelling gemiddeld aantal verzoeken per seconde bij het ophalen van de onderwerpen met MySQL.}
   \end{figure}
   \begin{figure}[H]
     \centering
     \includegraphics[width=0.7\columnwidth]{graphics/GetMySqlLatentie.png}
-    \caption{\label{fig:getaantallatentienmysql}Visuele voorstelling gemiddelde latentie bij het ophalen van de onderwerpen.}
+    \caption[Latentie GET verzoek met MySQL]{\label{fig:getaantallatentienmysql}Visuele voorstelling gemiddelde latentie bij het ophalen van de onderwerpen met MySQL.}
   \end{figure}
   \begin{figure}[H]
     \centering
     \includegraphics[width=0.7\columnwidth]{graphics/GetMySqlRAM.png}
-    \caption{\label{fig:getgeheugenmysql}Visuele voorstelling maximale geheugen gebruik bij het ophalen van de onderwerpen.}
+    \caption[Geheugengebruik GET verzoek met MySQL]{\label{fig:getgeheugenmysql}Visuele voorstelling maximale geheugengebruik bij het ophalen van de onderwerpen met MySQL.}
   \end{figure}
   \begin{figure}[H]
     \centering
     \includegraphics[width=0.7\columnwidth]{graphics/GetMySqlCpu.png}
-    \caption{\label{fig:getcpumysql}Visuele voorstelling gemiddeld CPU-gebruik bij het ophalen van de onderwerpen.}
+    \caption[CPU-gebruik GET verzoek met MySQL]{\label{fig:getcpumysql}Visuele voorstelling gemiddeld CPU-gebruik bij het ophalen van de onderwerpen met MySQL.}
   \end{figure}
 
 In tabel \ref{tab:postbombardier} kunnen de resultaten worden bekeken van de metingen waarbij 
@@ -1167,27 +1167,27 @@ voor respectievelijk het aantal verzoeken per seconde, het aantal latentie, het 
   \begin{tabular}[c]{@{}c@{}}Maximale \\ geheugengebruik \\ (MB)\end{tabular}                & 161.2                & 196.4   & 238.8                    & 138.2                & 115.85                      & 174.6                 \\ \cline{1-1}
   \begin{tabular}[c]{@{}c@{}}Gemiddeld\\ CPU-gebruik\\ (\%)\end{tabular}                     & 63.30                & 109.43  & 118.56                   & 66.26                & 98.4                        & 107.73                \\ \hline
   \end{tabular}
-  \caption{\label{tab:postbombardier}Resultaten metingen waarbij door een bepaalde gebruiker een recensie over een onderwerp werd gemaakt in de MySQL database met een POST request.}
+  \caption[Resultaten POST verzoek met MySQL]{\label{tab:postbombardier}Resultaten metingen waarbij door een bepaalde gebruiker een recensie over een onderwerp werd gemaakt in de MySQL database met een POST verzoek.}
   \end{table}
     \begin{figure}[H]
       \centering
       \includegraphics[width=0.7\columnwidth]{graphics/PostMySqlVerzoeken.png}
-      \caption{\label{fig:postaantalverzoekenmysql}Visuele voorstelling gemiddeld aantal verzoeken per seconde bij het maken van een recensie.}
+      \caption[Aantal verzoeken per seconde POST verzoek met MySQL]{\label{fig:postaantalverzoekenmysql}Visuele voorstelling gemiddeld aantal verzoeken per seconde bij het maken van een recensie met MySQL.}
     \end{figure}
     \begin{figure}[H]
       \centering
       \includegraphics[width=0.7\columnwidth]{graphics/PostMySqlLatentie.png}
-      \caption{\label{fig:postaantallatentienmysql}Visuele voorstelling gemiddelde latentie bij het maken van een recensie.}
+      \caption[Latentie POST verzoek met MySQL]{\label{fig:postaantallatentienmysql}Visuele voorstelling gemiddelde latentie bij het maken van een recensie met MySQL.}
     \end{figure}
     \begin{figure}[H]
       \centering
       \includegraphics[width=0.7\columnwidth]{graphics/PostMySqlRAM.png}
-      \caption{\label{fig:postgeheugenmysql}Visuele voorstelling maximale geheugen gebruik bij het maken van een recensie.}
+      \caption[Geheugengebruik POST verzoek met MySQL]{\label{fig:postgeheugenmysql}Visuele voorstelling maximale geheugen gebruik bij het maken van een recensie met MySQL.}
     \end{figure}
     \begin{figure}[H]
       \centering
       \includegraphics[width=0.7\columnwidth]{graphics/PostMySqlCpu.png}
-      \caption{\label{fig:postcpumysql}Visuele voorstelling gemiddeld CPU-gebruik bij het maken van een recensie.}
+      \caption[CPU-gebruik POST verzoek met MySQL]{\label{fig:postcpumysql}Visuele voorstelling gemiddeld CPU-gebruik bij het maken van een recensie met MySQL.}
     \end{figure}
 \subsubsection{Resultaten voor de applicatie met een PostgreSQL database}
 In deze sectie worden de bekomen resultaten van de applicatie besproken waarbij een PostgreSQL database werd gebruikt.
@@ -1211,28 +1211,28 @@ voor respectievelijk het aantal verzoeken per seconde, het aantal latentie, het 
   \begin{tabular}[c]{@{}c@{}}Maximale \\ geheugengebruik \\ (MB)\end{tabular}                & 160.5                & 189.9    & 203.3                    & 94.41                & 136.7                       & 149.9                 \\ \cline{1-1}
   \begin{tabular}[c]{@{}c@{}}Gemiddeld\\ CPU-gebruik\\ (\%)\end{tabular}                     & 111.87               & 117.71   & 122.40                   & 98.30                & 101.82                      & 104.81                \\ \hline
   \end{tabular}
-  \caption{\label{tab:getbombardierpostgres}Resultaten metingen waarbij onderwerpen worden opgehaald met een GET request uit de PostgreSQL database.}
+  \caption[Resultaten GET verzoek met PostgreSQL]{\label{tab:getbombardierpostgres}Resultaten metingen waarbij onderwerpen worden opgehaald met een GET request uit de PostgreSQL database.}
   \end{table}
   
   \begin{figure}[H]
     \centering
     \includegraphics[width=0.7\columnwidth]{graphics/GetPostgresVerzoeken.png}
-    \caption{\label{fig:getaantalverzoekenpostgres}Visuele voorstelling gemiddeld aantal verzoeken per seconde bij het ophalen van de onderwerpen.}
+    \caption[Aantal verzoeken per seconde GET verzoek met PostgreSQL]{\label{fig:getaantalverzoekenpostgres}Visuele voorstelling gemiddeld aantal verzoeken per seconde bij het ophalen van de onderwerpen met PostgreSQL.}
   \end{figure}
   \begin{figure}[H]
     \centering
     \includegraphics[width=0.7\columnwidth]{graphics/GetPostgresLatentie.png}
-    \caption{\label{fig:getaantallatentienpostgres}Visuele voorstelling gemiddelde latentie bij het ophalen van de onderwerpen.}
+    \caption[Latentie GET verzoek met PostgreSQL]{\label{fig:getaantallatentienpostgres}Visuele voorstelling gemiddelde latentie bij het ophalen van de onderwerpen met PostgreSQL.}
   \end{figure}
   \begin{figure}[H]
     \centering
     \includegraphics[width=0.7\columnwidth]{graphics/GetPostgresRAM.png}
-    \caption{\label{fig:getgeheugenpostgres}Visuele voorstelling maximale geheugen gebruik bij het ophalen van de onderwerpen.}
+    \caption[Geheugengebruik GET verzoek met PostgreSQL]{\label{fig:getgeheugenpostgres}Visuele voorstelling maximale geheugen gebruik bij het ophalen van de onderwerpen met PostgreSQL.}
   \end{figure}
   \begin{figure}[H]
     \centering
     \includegraphics[width=0.7\columnwidth]{graphics/GetPostgresCpu.png}
-    \caption{\label{fig:getcpupostgres}Visuele voorstelling gemiddeld CPU-gebruik bij het ophalen van de onderwerpen.}
+    \caption[CPU-gebruik GET verzoek met PostgreSQL]{\label{fig:getcpupostgres}Visuele voorstelling gemiddeld CPU-gebruik bij het ophalen van de onderwerpen met PostgreSQL.}
   \end{figure}
 
 In tabel \ref{tab:postbombardierpostgres} kunnen de resultaten gezien worden van de metingen waarbij 
@@ -1260,31 +1260,31 @@ voor respectievelijk het aantal verzoeken per seconde, het aantal latentie, het 
   \begin{tabular}[c]{@{}c@{}}Maximale \\ geheugengebruik \\ (MB)\end{tabular}                & 154.5                & 168.6   & 179.2                    & 142.9                & 149.6                       & 146.4                 \\ \cline{1-1}
   \begin{tabular}[c]{@{}c@{}}Gemiddeld\\ CPU-gebruik\\ (\%)\end{tabular}                     & 102.36               & 116.99  & 118.79                   & 91.76                & 103.15                      & 104.45                \\ \hline
   \end{tabular}
-  \caption{\label{tab:postbombardierpostgres}Resultaten metingen waarbij door een bepaalde gebruiker een recensie over een onderwerp werd gemaakt in de PostgreSQL database met een POST request.}
+  \caption[Resultaten POST verzoek met PostgreSQL]{\label{tab:postbombardierpostgres}Resultaten metingen waarbij door een bepaalde gebruiker een recensie over een onderwerp werd gemaakt in de PostgreSQL database met een POST request.}
   \end{table}
 
   \begin{figure}[H]
     \centering
     \includegraphics[width=0.7\columnwidth]{graphics/PostPostgresVerzoeken.png}
-    \caption{\label{fig:postaantalverzoekenpostgres}Visuele voorstelling gemiddeld aantal verzoeken per seconde bij het maken van een recensie.}
+    \caption[Aantal verzoeken per seconde POST verzoek met PostgreSQL]{\label{fig:postaantalverzoekenpostgres}Visuele voorstelling gemiddeld aantal verzoeken per seconde bij het maken van een recensie met PostgreSQL.}
   \end{figure}
   \begin{figure}[H]
     \centering
     \includegraphics[width=0.7\columnwidth]{graphics/PostPostgresLatentie.png}
-    \caption{\label{fig:postaantallatentiepostgres}Visuele voorstelling gemiddelde latentie bij het maken van een recensie.}
+    \caption[Latentie POST verzoek met PostgreSQL]{\label{fig:postaantallatentiepostgres}Visuele voorstelling gemiddelde latentie bij het maken van een recensie met PostgreSQL.}
   \end{figure}
   \begin{figure}[H]
     \centering
     \includegraphics[width=0.7\columnwidth]{graphics/PostPostgresRAM.png}
-    \caption{\label{fig:postgeheugenpostgres}Visuele voorstelling maximale geheugen gebruik bij het maken van een recensie.}
+    \caption[Geheugengebruik POST verzoek met PostgreSQL]{\label{fig:postgeheugenpostgres}Visuele voorstelling maximale geheugen gebruik bij het maken van een recensie met PostgreSQL.}
   \end{figure}
   \begin{figure}[H]
     \centering
     \includegraphics[width=0.7\columnwidth]{graphics/PostMySqlCpu.png}
-    \caption{\label{fig:postcpupostgres}Visuele voorstelling gemiddeld CPU-gebruik bij het maken van een recensie.}
+    \caption[CPU-gebruik POST verzoek met PostgreSQL]{\label{fig:postcpupostgres}Visuele voorstelling gemiddeld CPU-gebruik bij het maken van een recensie met PostgreSQL.}
   \end{figure}
 \subsection{Discussie}
-Aan de hand van de Quick Sort algoritme resultaten kan het standpunt dat Bun computationeel sneller is ondersteund worden.
+Aan de hand van de QuickSort algoritme resultaten kan het standpunt dat Bun computationeel sneller is ondersteund worden.
 Zo was de gemiddelde uitvoeringstijd van Bun gemiddeld 2.21 keer sneller dan Node.js en lag het middelengebruik bij Bun ook lager. Deze snellere uitvoeringstijd komt door de
 het gebruik van de JavaScriptScore engine in Bun waarbij geoptimaliseerde machine code wordt geproduceerd in 
 samenwerking met 3 JIT compilers en een Low-Level interpreter.

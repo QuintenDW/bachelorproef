@@ -31,7 +31,7 @@ De eerste fase bestaat uit het verzamelen van informatie over het onderzoeksdome
 Dit wordt gedaan aan de hand van een literatuurstudie die te vinden is in hoofdstuk \ref{ch:stand-van-zaken}. 
 Hierbij wordt eerst een algemene beschrijving over Javascript runtime-omgevingen besproken waarna 
 er dieper wordt ingegaan op Node.js alsook zijn opvolger Deno en de nieuwe runtime Bun. 
-Specifiek worden hun respectievelijke package managers, javascript engines, bundlers en extra functionaliteiten besproken.
+Specifiek worden hun respectievelijke package managers, Javascript engines, bundlers en extra functionaliteiten besproken.
 Nadat er een duidelijker beeld is over het onderzoeksdomein wordt in de tweede fase, aan de hand van een requirements-analyse, 
 één omgeving geselecteerd die het meest geschikt is als potentiële plaatsvervanger voor Node.js binnen de context van performante applicaties.
 De requirements worden hier onderverdeeld via de MoSCoW-techniek in de categorieën “must-have”, “should-have”, “could-have” en “won't-have”. 
@@ -40,16 +40,15 @@ In de derde fase worden zelfgemaakte proof-of-concepts opgesteld en getest (zie 
 Hierbij wordt een applicatie ontwikkeld waarbij een gebruiker onderwerpen kan ophalen en 
 een recensie kan creëren over een bepaald onderwerp,
 alsook een script dat een algoritme bevat. Hierdoor kunnen zowel metingen gedaan worden op computationele taken als I/O-taken (Input/Output).
-De metingen worden uitgevoerd door 2 benchmark tools, Hyperfine en Bombardier, om volgende zaken te meten:
+De metingen worden uitgevoerd met behulp van 2 benchmark tools, Hyperfine en Bombardier, om volgende zaken te meten:
 \begin{itemize}
-    \item De latentie van de applicatie HTTP-verzoeken.
+    \item De latentie van de applicatie.
     \item Het aantal verzoeken per seconde bij de applicatie.
     \item De uitvoeringstijd van de berekeningen van het Quick Sort algoritme.
     \item Het geheugengebruik bij de applicatie.
     \item De installatietijd voor de respectievelijke package managers.
     \item Het CPU-gebruik bij de applicatie.
 \end{itemize}
-Daarnaast zal ook gekeken worden naar de extra functionaliteiten en hoe deze de complexiteit beïnvloeden.
 Aan de hand van deze resultaten komen we tot de laatste fase namelijk de conclusie. 
 Hierbij worden de data geanalyseerd om zo een antwoord te formuleren op de onderzoeksvragen.
 Hieruit wordt afgeleid of het gekozen framework een geschikte plaatsvervanger kan zijn voor Node.js binnen 

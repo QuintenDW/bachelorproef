@@ -7,10 +7,10 @@
 
 
 Door de jaren heen zijn applicaties alsmaar complexer geworden. Hierbij worden vaak achterliggend netwerkverzoeken afgehandeld door een 
-een back-end applicatie. Deze applicatie wordt uitgevoerd door een runtime omgeving die zich buiten de browser bevindt.
-Hierdoor krijgt de applicatie toegang tot databases en netwerken van de server waar het op wordt uitgevoerd.
-Een manier om zo een back-end te maken is met behulp van de programmeertaal JavaScript. 
-Back-end JavaScript applicaties worden dan uitgevoerd in een JavaScript runtime omgeving.
+een backend applicatie. Deze applicatie draait in een runtime-omgeving buiten de browser, 
+waardoor deze toegang heeft tot databanken en netwerken van de server waarop het wordt uitgevoerd.
+Een manier om zo een backend te ontwikkelen is met behulp van de programmeertaal JavaScript. 
+Backend JavaScript applicaties worden dan uitgevoerd in een JavaScript runtime omgeving.
 De meest populaire omgeving is Node.js. Zo toont onderzoek van ~\textcite{Greif2022} aan dat 93.6\% van de 29888 bevraagden Node.js 
 regulier gebruiken.
 Dit tegenover de 11.2\% en 4.3\% van de mensen die andere omgevingen zoals respectievelijk Deno en Bun gebruiken.
@@ -21,19 +21,19 @@ Deze 2 omgevingen zijn relatief jonger dan Node.js.
 
 Performantie is doorheen de tijd alsmaar belangrijker geworden. 
 Een performante applicatie zorgt hierbij voor een betere gebruikerservaring. 
-Momenteel wordt Node.js nog altijd als standaard gebruikt bij elk project. Echter zijn er nog tal van andere JavaScript runtime-omgevingen
-, zoals Bun en Deno, die in staat zijn om specifieke noden te vervullen waar Node.js niet aan kan voldoen. In dit onderzoek wordt geprobeerd 
-een inzicht te verschaffen over de performantie van Node.js en één van deze nieuwe omgevingen
-om zo een correcte keuze te kunnen maken bij de ontwikkeling van performante applicaties.
-Dit onderzoek is relevant voor bedrijven waar performantie centraal staat binnen hun ontwikkeling van JavaScript back-end applicaties en kan gebruikt worden als basis 
-voor het maken van een doordachte back-end keuze. Dit onderzoek 
-biedt ook inzicht in de capaciteiten van Bun voor andere betrokkenen binnen het vakgebied van JavaScript back-end ontwikkeling.
+Momenteel blijft Node.js de standaard keuze voor veel projecten. Niettemin zijn er nog tal van andere JavaScript runtime-omgevingen
+, zoals Bun en Deno, die in staat zijn om de specifieke noden te vervullen waar Node.js niet aan kan voldoen. In dit onderzoek wordt geprobeerd 
+een inzicht te verschaffen in de performantie van Node.js en één van deze nieuwe omgevingen,
+om zo een weloverwogen keuze te kunnen maken bij de ontwikkeling van performante applicaties.
+Dit onderzoek is relevant voor bedrijven waar performantie een essentiële rol speelt binnen de ontwikkeling van JavaScript backend applicaties en kan dienen als basis 
+voor het maken van een doordachte backend keuze. Dit onderzoek 
+biedt ook inzicht in de capaciteiten van Bun voor andere betrokkenen binnen het vakgebied van JavaScript backend ontwikkeling.
 
 \section{\IfLanguageName{dutch}{Onderzoeksvraag}{Research question}}%
 \label{sec:onderzoeksvraag}
 
 In dit onderzoek wordt bestudeerd of één van deze nieuwe omgevingen
-een correcte plaatsvervanger kan zijn voor Node.js bij de ontwikkeling van performant applicaties binnen bedrijven 
+een correcte plaatsvervanger kan zijn voor Node.js bij de ontwikkeling van performante applicaties binnen bedrijven 
 waar een JavaScript runtime wordt gebruikt.
 Hierbij spelen verschillende aspecten een rol die aan de hand van volgende deelvragen worden onderzocht:
 \begin{itemize}
@@ -46,11 +46,11 @@ Hierbij spelen verschillende aspecten een rol die aan de hand van volgende deelv
 \section{\IfLanguageName{dutch}{Onderzoeksdoelstelling}{Research objective}}%
 \label{sec:onderzoeksdoelstelling}
 
-
-Het doel van de bachelorproef is te bepalen of de gekozen omgeving een betere keuze is dan Node.js bij het
-ontwikkelen van performante back-end applicaties. Dit wordt bepaald door middel van een vergelijkende studie.
-Hierbij wordt voor zowel de geselecteerde omgeving als Node.js een proof-of-concept gemaakt waarbij de performantie wordt gemeten bij het uitvoeren van computationele berekeningen 
-en netwerkverzoeken. Specifiek wordt responstijd, installatietijd en uitvoeringstijd gemeten. 
+Dit onderzoek heeft als doel inzicht te verschaffen in de performantie van Node.js en één van deze nieuwe omgevingen
+om zo een correcte keuze te kunnen maken bij de ontwikkeling van performante applicaties. Dit wordt bereikt door middel van een vergelijkende studie
+waarbij zowel de geselecteerde omgeving als Node.js worden getest aan de hand proof-of-concepts. 
+Hierbij worden de prestaties gemeten tijdens computationele berekeningen en het afhandelen van netwerkverzoeken, waarbij specifiek gekeken wordt naar
+de latentie, aantal verzoeken per seconde, installatietijd en uitvoeringstijd. 
 Het doel is deze resultaten te gebruiken om vast te stellen of de gekozen omgeving performanter is dan Node.js. 
 Het onderzoek wordt als succesvol beschouwd als er aan de hand van deze resultaten een duidelijk verschil tussen de omgevingen zichtbaar is.
 \section{\IfLanguageName{dutch}{Opzet van deze bachelorproef}{Structure of this bachelor thesis}}%
@@ -70,7 +70,7 @@ op de onderzoeksvragen.
 
 In hoofdstuk~\ref{ch:selectie} wordt de lijst van omgevingen afgetoetst aan de opgegegeven requirements om uiteindelijk een geschikte omgeving te selecteren.
 
-In hoofdstuk~\ref{ch:proof-of-concept} wordt de opzet en metingen van de proof-of-concept toegelicht. Op het einde worden de bekomen resultaten besproken.
+In hoofdstuk~\ref{ch:proof-of-concept} wordt de opzet en metingen van de proof-of-concepts toegelicht. Op het einde worden de bekomen resultaten besproken.
 
 In hoofdstuk~\ref{ch:conclusie}, tenslotte, 
 wordt de conclusie gegeven en een antwoord geformuleerd op de onderzoeksvragen. 

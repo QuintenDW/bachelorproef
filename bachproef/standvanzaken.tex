@@ -51,7 +51,7 @@ In figuur ~\ref{fig:JavaScriptengine} wordt hiervan een visuele voorstelling get
 \begin{figure}[H]
     \centering
     \includegraphics[width=.9\textwidth]{graphics/javascriptengine.jpeg}
-    \caption{\label{fig:JavaScriptengine}Visuele voorstelling van werking JavaScript engine ~\autocite{Christopher}}
+    \caption[Werking JavaScript engine]{\label{fig:JavaScriptengine}Visuele voorstelling van werking JavaScript engine ~\autocite{Christopher}}
 \end{figure}
 
 Naast een JavaScript engine bevat een runtime-omgeving ook WEB APIs en een callback queue. 
@@ -89,7 +89,7 @@ In figuur ~\ref{fig:eventloop} wordt hiervan een visuele voorstelling getoond.
 \begin{figure}[h]
     \centering
     \includegraphics[width=.9\textwidth]{graphics/eventloop.png}
-    \caption{\label{fig:eventloop}Visuele voorstelling van de event loop ~\autocite{Luxembourg2023}}
+    \caption[Voorstelling event loop]{\label{fig:eventloop}Visuele voorstelling van de event loop ~\autocite{Luxembourg2023}}
 \end{figure}
 
 \subsection{Node Package Manager}
@@ -134,7 +134,7 @@ Aan de hand van een package.json bestand kunnen packages toegevoegd worden aan e
             }
         }
         \end{minted}
-        \caption{Voorbeeld package.json \autocite{Kaplan2024}}
+        \caption[Voorbeeld package.json]{Voorbeeld package.json \autocite{Kaplan2024}}
 \end{listing}
 
 \subsection{V8 JavaScript Engine}
@@ -162,7 +162,7 @@ In figuur ~\ref{fig:v8} wordt dit proces nog eens visueel voorgesteld.
 \begin{figure}[h]
     \centering
     \includegraphics[width=.9\textwidth]{graphics/v8.png}
-    \caption{\label{fig:v8}Visuele voorstelling van de werking van V8 ~\autocite{Lyamkin2020}}
+    \caption[Werking V8 engine]{\label{fig:v8}Visuele voorstelling van de werking van V8 ~\autocite{Lyamkin2020}}
 \end{figure}
 
 \subsection{Bundler}
@@ -207,7 +207,7 @@ Hierbij wordt gebruikgemaakt van permissie vlaggen die toegang geven tot specifi
         texcl=false]{shell}
         deno run --allow-net hello.ts
         \end{minted}
-        \caption{\label{fig:denocli}Voorbeeld toelaten netwerk permissie met de --alow-net vlag \autocite{DenoLand2023}}
+        \caption[Toelaten netwerk permissie]{\label{fig:denocli}Voorbeeld toelaten netwerk permissie met de --alow-net vlag \autocite{DenoLand2023}}
 \end{listing}
 
 \subsection{Package manager}
@@ -242,7 +242,7 @@ export * as httpServer from "https://deno.land/std@0.96.0/http/server.ts";
 //From Deno's third-party module service
 export * as jwt from "https://deno.land/x/djwt@v2.2/mod.ts";
         \end{minted}
-        \caption{\label{list:dept.ts}Voorbeeld bestand waar alle packages worden gedownload en geexporteerd om te gebruiken binnen de applicatie  ~\autocite{Choubey2021}} 
+        \caption[Deno packages downloaden]{\label{list:dept.ts}Voorbeeld bestand waar alle packages worden gedownload en geexporteerd om te gebruiken binnen de applicatie  ~\autocite{Choubey2021}} 
 \end{listing}
 
 \subsection{Bundler}
@@ -275,7 +275,7 @@ const result = await bundle(
 const { code } = result;
 console.log(code);
         \end{minted}
-        \caption{\label{list:bundle}Voorbeeld bundling via emit module  ~\autocite{DenoLand2023a}} 
+        \caption[Bundling via emit module]{\label{list:bundle}Voorbeeld bundling via emit module  ~\autocite{DenoLand2023a}} 
 \end{listing}
 \subsection{TypeScript ondersteuning}
 In tegenstelling tot Node.js ondersteunt Deno TypeScript als standaard. 
@@ -312,7 +312,7 @@ const url = new URL("./foo.js", "https://deno.land/");
 assertEquals(url.href, "https://deno.land/foo.js");
 });
         \end{minted}
-        \caption{\label{list:test}Voorbeeld test bestand in Deno ~\autocite{DenoLand2023}} 
+        \caption[Deno test]{\label{list:test}Voorbeeld test bestand in Deno ~\autocite{DenoLand2023}} 
 \end{listing}
 
 \section{Deno tegenover Node.js}
@@ -372,7 +372,7 @@ waar naarmate meerdere malen over een stuk code wordt geïtereerd, door middel v
 \begin{figure}[H]
     \centering
     \includegraphics[width=.9\textwidth]{graphics/javascriptcore.png}
-    \caption{\label{fig:JavaScriptcore}Voorbeeld tijdslijn van een simpele loop uitgevoerd in JavaScriptCore ~\autocite{Pizlo2020}}
+    \caption[JavaScriptCore loop]{\label{fig:JavaScriptcore}Voorbeeld tijdslijn van een simpele loop uitgevoerd in JavaScriptCore ~\autocite{Pizlo2020}}
 \end{figure}
 
 \subsection{Zig}
@@ -411,7 +411,7 @@ test("1 + 1", () => {
     expect(1 + 1).toBe(2);
 });
         \end{minted}
-        \caption{\label{list:testbun}Voorbeeld test binnen Bun ~\autocite{McDonnel2023}}
+        \caption[Bun test]{\label{list:testbun}Voorbeeld test binnen Bun ~\autocite{McDonnel2023}}
 \end{listing}
 
 \subsection{Package manager}
@@ -445,7 +445,7 @@ In figuur ~\ref{fig:nodevbun} wordt nog eens een visuele voorstelling getoond va
 \begin{figure}[H]
     \centering
     \includegraphics[width=.9\textwidth]{graphics/nodevbun.png}
-    \caption{\label{fig:nodevbun}Visuele voorstelling van de verschillen tussen Node.js en Bun ~\autocite{Aghdasi2023}}
+    \caption[Verschillen Node.js en Bun]{\label{fig:nodevbun}Visuele voorstelling van de verschillen tussen Node.js en Bun ~\autocite{Aghdasi2023}}
 \end{figure}
 
 \section{Bun tegenover Node.js}
@@ -501,7 +501,7 @@ Om de server te testen werd gebruikgemaakt van Bombardier. Dit is een HTTP bench
             others - 0
           Throughput:   292.92MB/s
         \end{minted}
-        \caption{Voorbeeld gebruik bombardier \autocite{Fedoseev2023}}
+        \caption[Gebruik Bombardier]{Voorbeeld gebruik Bombardier \autocite{Fedoseev2023}}
 \end{listing}
 Hiernaast werd ook het ingebouwde time-commando gebruikt om het geheugengebruik tijdens zware belastingen te meten.
 Bij de testen werd gewerkt met 3 aparte scenario's waarbij telkens 10 miljoen verzoeken werden verstuurd met eerst 10 gelijktijdige connecties, 
@@ -535,7 +535,7 @@ Het script werd 10 keer uitgevoerd waarbij de gemiddelde tijd werd genomen.
         texcl=false]{shell-session}
         > hyperfine 'sleep 0.3'
         \end{minted}
-        \caption{Voorbeeld gebruik hyperfine commando \autocite{Pompeii2024}}
+        \caption[Gebruik Hyperfine]{Voorbeeld gebruik Hyperfine commando \autocite{Pompeii2024}}
 \end{listing}
 Ook bij deze test presteerde Bun beter op vlak van executie tijd wat volgens de onderzoeker aantoont dat Bun effectiever is in het voltooien van computationele taken.
 De resultaten tonen aan dat 
@@ -550,25 +550,25 @@ en I/O-gebonden processen, en andere performantie factoren.
 \subsection{Docker}
 Voor omgevingen op te zetten wordt vaak een vorm van automatisatie gebruikt. 
 Hierdoor wordt repliceerbaarheid van de omgeving bereikt. Een manier om dit te doen is met behulp van de tool Docker.
-Deze tool laat containerisatie van een applicatie toe samen met de bijhorende configuratie \textcite{Ibrahim2021}.
-Hierbij wordt een applicatie gedraaid in een container waarbij het besturingssysteem van de machine zelf wordt gebruikt \textcite{Boettiger2015}.
-Als basis wordt een Docker image gebruikt. Dit is een binaire image waarin alle software al geïnstalleerd, geconfigureerd en getest is \textcite{Boettiger2015}.
+Deze tool laat containerisatie van een applicatie toe samen met de bijhorende configuratie \autocite{Ibrahim2021}.
+Hierbij wordt een applicatie gedraaid in een container waarbij het besturingssysteem van de machine zelf wordt gebruikt \autocite{Boettiger2015}.
+Als basis wordt een Docker image gebruikt. Dit is een binaire image waarin alle software al geïnstalleerd, geconfigureerd en getest is \autocite{Boettiger2015}.
 Zo bestaan er voor zowel Node.js, Deno als Bun Docker images die kunnen gebruikt worden om de respectievelijke omgeving te installeren in de container.
-Via een Dockerfile kan dan verder gebouwd worden op deze images om zo andere zaken toe te voegen en een nieuwe zelfgemaakte image te bekomen \textcite{Boettiger2015}.
+Via een Dockerfile kan dan verder gebouwd worden op deze images om zo andere zaken toe te voegen en een nieuwe zelfgemaakte image te bekomen \autocite{Boettiger2015}.
 Een visuele voorstelling van dit proces is te vinden in figuur ~\ref{fig:dockerproces}.
-Veel applicaties bestaan uit meerdere zaken zoals een database, server etc. 
+Veel applicaties bestaan uit meerdere zaken zoals een databank, server etc. 
 Met behulp van Docker compose kunnen deze complexe applicaties worden samengesteld. 
 Hierbij worden de verschillende componenten beschreven in een Docker Compose bestand waarbij specifiek hun
-respectievelijke image en configuratie omschreven wordt \textcite{Ibrahim2021}.
+respectievelijke image en configuratie omschreven wordt \autocite{Ibrahim2021}.
 \begin{figure}[H]
     \centering
     \includegraphics[width=.9\textwidth]{graphics/docker_proces.png}
-    \caption{\label{fig:dockerproces}Visuele voorstelling van het Docker proces ~\autocite{Ibrahim2021}}
+    \caption[Docker proces]{\label{fig:dockerproces}Visuele voorstelling van het Docker proces ~\autocite{Ibrahim2021}}
 \end{figure}
 
 \subsection{ORM}
 Binnen een applicatie wordt persistentie bereikt door gebruik te maken van een achterliggende database. 
 Er zijn veel manieren om deze persistentie af te handelen in een applicatie.
 Een bekende en makkelijke manier is door het gebruiken van een Object Relational Mapper (ORM).
-Hierbij wordt persistentie bereikt door de objecten binnen de applicatie te koppelen aan tabellen in de database \autocite{Lorenz2017}.
+Hierbij wordt persistentie bereikt door de objecten binnen de applicatie te koppelen aan tabellen in de databank \autocite{Lorenz2017}.
 De ORM zal deze koppeling afhandelen en zo een abstractie creëren die de technische details van de mappingimplementatie verbergt \autocite{Lorenz2017}.

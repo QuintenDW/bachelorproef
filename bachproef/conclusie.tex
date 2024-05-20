@@ -14,10 +14,12 @@
 % Heeft het onderzoek geleid tot nieuwe vragen die uitnodigen tot verder 
 %onderzoek?
 
-In dit onderzoek werd aan de hand van een selectie gekozen om de performantie van Bun te vergelijken met Node.js om zo een antwoord te vinden op de 
-onderzoeksvraag of Bun een correcte plaatsvervanger is van Node.js binnen de ontwikkeling van performante JavaScript applicaties.
-In deze selectie werden de omgevingen afgetoetst aan een lijst van voorgedefinieerde requirements. Hierbij voldeed enkel Bun aan alle requirements.
-Om deze onderzoeksvraag te kunnen beantwoorden werd aan de hand van de literatuurstudie en proof-of-concept een antwoord gezocht op volgende deelvragen:
+In dit onderzoek werd aan de hand van een selectie gekozen om de performantie van Bun te vergelijken met die van Node.js. 
+Dit wordt gedaan om een antwoord te vinden op de 
+onderzoeksvraag of Bun een geschikte plaatsvervanger is voor Node.js binnen de ontwikkeling van performante JavaScript applicaties.
+In deze selectie werden de omgevingen afgetoetst aan een lijst van voorgedefinieerde requirements. Hierbij voldeed enkel Bun aan alle 
+requirements en werd het gekozen om te vergelijken met Node.js.
+Om de onderzoeksvraag te kunnen beantwoorden werd aan de hand van de literatuurstudie en proof-of-concept een antwoord gezocht op volgende deelvragen:
 \begin{itemize}
     \item Wat zijn de onderliggende verschillen tussen Node.js en Bun?
     \item Is Bun performanter dan Node.js bij het uitvoeren van computationele berekeningen?
@@ -28,23 +30,23 @@ Om deze onderzoeksvraag te kunnen beantwoorden werd aan de hand van de literatuu
 De deelvraag betreffende de onderliggende verschillen werd beantwoord door middel van de literatuurstudie.
 Hierbij werd uitgelegd dat Bun een andere JavaScript engine gebruikt dan Node.js om zo onder andere een snellere opstarttijd te bereiken.
 Zo gebruikt Bun de JavaScriptCore engine in plaats van de V8 JavaScript engine die Node.js gebruikt.
-Deze engine kan geoptimaliseerde machine code produceren in samenwerking met 3 JIT compilers en een Low-Level interpreter.
-Daarnaast wordt ook een andere programmeertaal gebruik bij beide omgevingen. Zo wordt C gebruikt bij Node.js, terwijl Bij Bun werd gekozen voor Zig.
+Deze engine kan geoptimaliseerde machine code produceren in samenwerking met 3 JIT compilers en een Low-Level Interpreter.
+Daarnaast wordt ook een andere programmeertaal gebruikt bij beide omgevingen. Zo wordt voornamelijk C gebruikt bij Node.js, terwijl Bij Bun werd gekozen voor Zig.
 Tot slot heeft Bun veel zaken ingebouwd die bij Node.js extra moeten worden toegevoegd.
 Het gaat hierbij over:
 \begin{itemize}
-    \item Een ingebouwde Test runner.
+    \item Een ingebouwde test runner.
     \item Een ingebouwde bundler.
     \item Standaard TypeScript ondersteuning.
 \end{itemize}
 Uit de metingen van de proof-of-concepts kon een antwoord gevonden worden op de overige 3 deelvragen.
 Hierbij werd voor zowel Bun als Node.js telkens 2 proof-of-concepts opgezet. 
-Eén van deze proof-of-concept bestond uit een script dat het Quick Sort algoritme uitvoert om zo de performantie van computationele berekeningen te meten.
+Eén van deze proof-of-concept bestond uit een script dat het QuickSort algoritme uitvoert om zo de performantie van computationele berekeningen bij beiden te meten.
 Daarnaast werd voor de performantie bij netwerkverzoeken te meten een applicatie backend opgesteld. Met deze applicatie kunnen gebruikers
 een lijst van onderwerpen ophalen en zelf recensies schrijven over een van deze onderwerpen.
 Bij deze backend wordt het Sequelize ORM gebruikt in combinatie met zowel een MySQL databank als een PostgreSQL databank.
-Uit de resultaten van het Quick Sort algoritme bleek dat Bun performanter is bij het uitvoeren van computationele berekeningen.
-Zo had Bun een gemiddelde uitvoeringstijd die 2,21 keer sneller was dan Node.js.
+Uit de resultaten van het QuickSort algoritme bleek dat Bun performanter is bij het uitvoeren van computationele berekeningen.
+Zo had Bun een gemiddelde uitvoeringstijd die 2.21 keer sneller was dan Node.js.
 Bij het ophalen van data was er ook een groot performantie verschil tussen beiden. Zo had Bun met zowel de MySQL database als de PostgreSQL database 
 een beter gemiddelde op vlak van aantal verzoeken per seconde en latentie. Echter, deze betere prestaties werden behaald ten koste van een hoger gebruik van CPU- en geheugenmiddelen.
 Bij het invoegen van data scoorde Bun beter dan Node.js op vlak van gemiddeld aantal verzoeken en latentie.
@@ -53,7 +55,7 @@ Echter gebruikte Bun telkens meer middelen dan Node.js.
 Uit deze resultaten kan geconcludeerd worden dat Bun algemeen sneller netwerkverzoeken kan afhandelen
 ten koste van een hoger middelengebruik.
 Als laatste werd ook de installatietijd onderzocht bij de package managers. Hierbij had Bun een 
-gemiddelde installatietijd van 24,9 milliseconden, wat 24,5 keer sneller was dan Node.js, met een gemiddelde installatietijd van 610,1 milliseconden.
+gemiddelde installatietijd van 24.9 milliseconden, wat 24.5 keer sneller was dan Node.js, met een gemiddelde installatietijd van 610.1 milliseconden.
 Dit toont een significant verschil tussen de respectievelijke package managers waarbij Bun beter presteert.
 
 Het onderzoek geeft een leidraad bij de keuze van een JavaScript runtime-omgeving.
@@ -64,7 +66,7 @@ Echter moet bij applicaties waarbij I/O-taken worden uitgevoerd telkens een afwe
 Voor de metingen werden uitgevoerd, was er de verwachting dat Bun beter ging presteren op basis van eerder uitgevoerd onderzoek vanuit de literatuurstudie en de selectie.
 Op vlak van computationele berekeningen en package managers zit dit in lijn met de bekomen resultaten, echter spreken de resultaten bij de server de verwachte conclusie enigszins tegen.
 Zo presteert Bun wel beter bij het verwerken van verzoeken maar scoort het slechter op vlak van middelengebruik wat ook onderdeel uitmaakt van de performantie van een omgeving.
-Bij 10 connecties in combinatie met een MySQL databank presteert Bun bij het invoegen van data zelfs vergelijkbaar met Node.js, 
+Bij 10 connecties in combinatie met een MySQL databank presteert Bun bij het invoegen van data zelfs vergelijkbaar met Node.js op vlak van latentie en aantal verzoeken per seconde, 
 terwijl het wel een hoger gebruik van middelen heeft.
 Dit verschil ten opzichte van de verwachtingen kan te maken hebben met het feit dat eerdere onderzoeken alleen op kleine schaal werden uitgevoerd zonder ORM of databanken.
 

@@ -52,13 +52,13 @@ zo de noden van de alsmaar complexere applicaties te vervullen.
 Ondanks deze nieuwe ontwikkelingen worden weinig ervan effectief in de praktijk gebruikt.
 Zo wordt het oudere Node.js vaak nog gekozen als JavaScript runtime-omgeving bij de ontwikkeling van applicaties.
 Dit onderzoek heeft als doel inzicht te verschaffen in de performantie van Node.js en één van deze nieuwe omgevingen
-om zo een correcte keuze te kunnen maken bij de ontwikkeling van performante applicaties.
+om zo een geschikte keuze te kunnen maken tussen de omgevingen.
 De onderzoeksvraag hierbij is of één van deze nieuwe frameworks  
 een correcte plaatsvervanger kan zijn voor Node.js bij de ontwikkeling van applicaties binnen bedrijven 
 waar performantie centraal staat. Het onderzoek kan dan gebruikt worden als basis 
 voor het maken van een doordachte backend keuze.
 Om een antwoord te bekomen werd eerst informatie over het onderzoeksdomein verzameld om zo een duidelijk beeld ervan te schetsen.
-Hierbij werden in de literatuurstudie Javascript runtime-omgevingen zoals Node.js, Deno en Bun besproken.
+Hierbij werden in de literatuurstudie JavaScript runtime-omgevingen zoals Node.js, Deno en Bun besproken.
 Nadien wordt aan de hand van een requirements-analyse één omgeving geselecteerd die het meest geschikt is als potentiële plaatsvervanger voor Node.js.
 Hierbij voldeed Bun aan alle requirements en werd er gekozen om deze omgeving te vergelijken met Node.js in de proof-of-concepts.
 Aan de hand van het Quick Sort algoritme werd de performantie bij computationele berekeningen gemeten.
@@ -66,10 +66,10 @@ Daarnaast werd ook een applicatie opgesteld met de mogelijkheid om data op te ha
 Hierbij werd de performantie van beide omgevingen gemeten bij het afhandelen van netwerkverzoeken.
 Dezelfde applicatie werd ook gebruikt om de installatietijd van de respectievelijke package managers te meten.
 Hierbij heeft Bun een snellere installatietijd dan Node.js.
-Bij het meten van het Quick Sort algoritme heeft Bun ook een snellere uitvoeringstijd wat het standpunt 
+Bij het meten van het QuickSort algoritme heeft Bun ook een snellere uitvoeringstijd wat het standpunt 
 ondersteunt dat Bun beter presteert bij het uitvoeren van computationele berekeningen.
 Tot slot heeft Bun een lagere latentie en een betere verwerking van het aantal verzoeken per seconde bij het ophalen en
-invoegen van data ten koste van het CPU-gebruik en geheugengebruik.
+invoegen van data ten koste van het CPU- en geheugengebruik.
 Dit leidt tot de conclusie dat Bun een optimale keuze kan zijn voor applicaties met complexe algoritmes en calculaties. Echter, 
 bij applicaties waarbij I/O-taken worden uitgevoerd, moet telkens een afweging gemaakt worden tussen de snellere verwerking van Bun
 en het hogere middelengebruik dat hiermee gepaard gaat.

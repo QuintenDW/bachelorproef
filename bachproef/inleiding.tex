@@ -6,11 +6,11 @@
 \label{ch:inleiding}
 
 
-Door de jaren heen zijn applicaties alsmaar complexer geworden. Hierbij worden vaak achterliggend netwerkverzoeken afgehandeld door een 
-een backend applicatie. Deze applicatie draait in een runtime-omgeving buiten de browser, 
+In de loop der jaren zijn applicaties steeds complexer geworden. Hierbij worden achterliggend netwerkverzoeken afgehandeld door een backend applicatie. Deze applicatie draait in een runtime-omgeving buiten de browser, 
 waardoor deze toegang heeft tot databanken en netwerken van de server waarop het wordt uitgevoerd.
-Een manier om zo een backend te ontwikkelen is met behulp van de programmeertaal JavaScript. 
-Backend JavaScript applicaties worden dan uitgevoerd in een JavaScript runtime omgeving.
+Een manier om zo een backend te ontwikkelen is met behulp van JavaScript, 
+een programmeertaal die zowel voor server als client toepassingen kan gebruikt worden.
+Backend JavaScript applicaties worden dan uitgevoerd in een JavaScript runtime-omgeving.
 De meest populaire omgeving is Node.js. Zo toont onderzoek van ~\textcite{Greif2022} aan dat 93.6\% van de 29888 bevraagden Node.js 
 regulier gebruiken.
 Dit tegenover de 11.2\% en 4.3\% van de mensen die andere omgevingen zoals respectievelijk Deno en Bun gebruiken.
@@ -25,16 +25,17 @@ Momenteel blijft Node.js de standaard keuze voor veel projecten. Niettemin zijn 
 , zoals Bun en Deno, die in staat zijn om de specifieke noden te vervullen waar Node.js niet aan kan voldoen. 
 In dit onderzoek wordt dieper ingegaan op de performantie van Node.js en één van deze nieuwe omgevingen,
 om zo een weloverwogen keuze te kunnen maken bij de ontwikkeling van performante applicaties.
-Dit onderzoek is relevant voor bedrijven waar performantie een essentiële rol speelt binnen de ontwikkeling van JavaScript backend applicaties en kan dienen als basis 
+Dit onderzoek is relevant voor bedrijven zoals Codifly, waar performantie een essentiële rol speelt binnen de ontwikkeling van JavaScript backend applicaties.
+De bevindingen kunnen dienen als basis 
 voor het maken van een doordachte backend keuze. Dit onderzoek 
-biedt ook inzicht in de capaciteiten van Bun voor andere betrokkenen binnen het vakgebied van JavaScript backend ontwikkeling.
+biedt ook inzicht in de capaciteiten van Bun voor andere betrokkenen binnen het vakgebied.
 
 \section{\IfLanguageName{dutch}{Onderzoeksvraag}{Research question}}%
 \label{sec:onderzoeksvraag}
 
 In dit onderzoek wordt bestudeerd of één van deze nieuwe omgevingen
 een correcte plaatsvervanger kan zijn voor Node.js bij de ontwikkeling van performante applicaties binnen bedrijven 
-waar een JavaScript runtime wordt gebruikt.
+waar een backend JavaScript runtime wordt gebruikt.
 Hierbij spelen verschillende aspecten een rol die aan de hand van volgende deelvragen worden onderzocht:
 \begin{itemize}
   \item Wat zijn de onderliggende verschillen tussen Node.js en de andere omgeving?
@@ -48,7 +49,7 @@ Hierbij spelen verschillende aspecten een rol die aan de hand van volgende deelv
 
 Dit onderzoek heeft als doel inzicht te verschaffen in de performantie van Node.js en één van deze nieuwe omgevingen,
 zodat een correcte keuze kan worden gemaakt bij het ontwikkelen van performante applicaties. Dit wordt bereikt door middel van een vergelijkende studie
-waarbij zowel de geselecteerde omgeving als Node.js worden getest aan de hand proof-of-concepts. 
+waarbij zowel de geselecteerde omgeving als Node.js worden getest aan de hand van proof-of-concepts. 
 Hierbij worden de prestaties gemeten tijdens computationele berekeningen en het afhandelen van netwerkverzoeken, waarbij specifiek gekeken wordt naar
 de latentie, aantal verzoeken per seconde, installatietijd en uitvoeringstijd. 
 Het doel is deze resultaten te gebruiken om vast te stellen of de gekozen omgeving performanter is dan Node.js. 

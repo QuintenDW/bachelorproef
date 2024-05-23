@@ -71,7 +71,7 @@ Na de transformatie van de modules worden er ook nog optimalisaties gedaan zoals
 Daarnaast zorgt het bundelen van modules ervoor dat er minder netwerkverzoeken gedaan moeten worden.
 
 \section{Node.js}
-De afgelopen jaren is het aantal runtime-omgevingen sterk toegenomen. De meest bekende en oudste hiervan is Node.js.
+Het aantal runtime-omgevingen neemt elk jaar toe. De meest bekende en oudste hiervan is Node.js.
 Node.js is een server-side framework dat wordt gebruikt voor schaalbare applicaties te maken ~\autocite{Gackenheimer2013}.
 Het maakt gebruik van de V8 JavaScript engine ontwikkeld door Google en heeft zijn eigen package manager genaamd Node Package Manager (npm).
 Node.js is hoofdzakelijk geschreven in de programmeertalen C en C++.
@@ -171,7 +171,7 @@ Binnen Node.js zijn er verschillende mogelijkheden voor een bundler. De meest be
 Deze kan bestanden zoals JavaScript, SASS en andere bundelen naar hun respectievelijke bestandstype ~\autocite{Laurila2020}. 
 Webpack kan daarnaast ook nog aangevuld worden met andere loaders om een bepaald soort bestand te bundelen ~\autocite{Laurila2020}. Een andere populaire bundler is Esbuild.
 Hierbij wordt de focus gelegd op snelheid en performantie. Zo wordt er beweerd dat deze bundler 10 tot 100 keer sneller is dan de andere bundlers ~\autocite{Couriol2020}.
-Het kan deze snelheid behalen doordat het geschreven is in de programmeertaal Go waarbij taken worden geparallelliseerd om zo gebruik te maken van meerkernige processors ~\autocite{Couriol2020}.
+Het kan deze snelheid behalen doordat het geschreven is in de programmeertaal Go waarbij taken worden geparallelliseerd om zo gebruik te maken van multicoreprocessors ~\autocite{Couriol2020}.
 
 \section{Deno}
 In 2021 werd een nieuw runtime-omgeving geïntroduceerd door ~\textcite{Dahl2021} genaamd Deno.
@@ -323,8 +323,9 @@ Eén van deze onderzoeken werd uitgevoerd door \textcite{VanKerkvoorde2021}.
 Hierbij werd Node.js vergeleken met Deno op verschillende vlakken zoals performantie en beveiliging.
 De onderzoeker concludeert dat op vlak van beveiliging Deno beter scoort dan Node.js. Dit komt doordat Deno
 standaard geen toegang geeft tot de folderstructuur en omgeving. Ook kunnen er standaard geen netwerk connecties worden gemaakt.
-Voor de performantie  van beide omgevingen te testen werd allereerst een logica test
-uitgevoerd met een functie die de Zeef van Erathostenes implementeert. De onderzoeker heeft hierbij
+Voor de performantie van beide omgevingen te testen werd allereerst een logica test
+uitgevoerd met een functie die de Zeef van Erathostenes implementeert. 
+Hierbij worden alle priemgetallen die kleiner zijn dan een gegeven getal berekend. De onderzoeker heeft
 ondervonden dat Deno gemiddeld 31.98\% sneller
 was dan Node.js. Ook gebruikte Node.js hier 10.81 keer meer geheugen en was Node slechts in 10.58\% van de gevallen sneller dan Deno.
 Als tweede test werden de HTTP modules van beide frameworks vergeleken.
@@ -340,7 +341,7 @@ wel op dat door het gebrek aan bepaalde metrieken binnen Deno, zaken zoals CPU- 
 \section{Bun}
 Performantie is één van de belangrijkste zaken bij een server-side framework. 
 Daarom is Node.js dankzij zijn event-gedreven I/O model een veelvoorkomende keuze als het gaat om server-side frameworks.
-Echter wil Bun dit veranderen door nog meer focus te leggen op snelheid en performantie.
+Bun wil hierop verder bouwen door nog meer focus te leggen op snelheid en performantie.
 
 
 \subsection{JavaScriptCore}
@@ -570,7 +571,7 @@ respectievelijke image en configuratie omschreven wordt \autocite{Ibrahim2021}.
 
 \subsection{ORM}
 Binnen een applicatie wordt persistentie bereikt door gebruik te maken van een achterliggende database. 
-Er zijn veel manieren om deze persistentie af te handelen in een applicatie.
+Er zijn veel manieren om communicatie met de database af te handelen in een applicatie.
 Een bekende en makkelijke manier is door het gebruiken van een Object Relational Mapper (ORM).
-Hierbij wordt persistentie bereikt door de objecten binnen de applicatie te koppelen aan tabellen in de databank \autocite{Lorenz2017}.
-De ORM zal deze koppeling afhandelen en zo een abstractie te creëren die de technische details van de mappingimplementatie verbergt \autocite{Lorenz2017}.
+Hierbij wordt de communicatie bereikt door de objecten binnen de applicatie te koppelen aan tabellen in de databank \autocite{Lorenz2017}.
+De ORM zal deze koppeling afhandelen en zo een abstractie creëren die de technische details van de mappingimplementatie verbergt \autocite{Lorenz2017}.

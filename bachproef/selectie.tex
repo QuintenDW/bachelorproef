@@ -53,7 +53,7 @@ In volgende lijst zijn de requirements die belangrijk zijn bij een JavaScript ru
     \item De omgeving moet asynchrone I/O-operaties ondersteunen.
 \end{itemize}
 Voor de implementatie van de omgevingen is het belangrijk dat er voldoende documentatie aanwezig is.
-Ook moeten deze asynchrone I/O-operaties ondersteunen zodat deze even performant of performanter kunnen werken als Node.js.
+Ook moeten deze asynchrone I/O-operaties ondersteunen zodat deze even performant als Node.js kunnen werken of zelfs performanter.
 
 \subsection{Could have requirements}
 In volgende lijst staan de requirements die “nice-to-have” zijn:
@@ -102,7 +102,7 @@ Deze zal als basis dienen voor de selectie van een runtime-omgeving voor de verg
     \textbf{}                                                                                                                               & \multicolumn{6}{c|}{\textbf{Runtime omgevingen}}                                                                                                                       \\ \hline
     \textbf{Requirements}                                                                                                                   & \multicolumn{1}{l}{Bun} & \multicolumn{1}{l}{Deno} & \multicolumn{1}{l}{Just} & \multicolumn{1}{l}{Txiki.js} & \multicolumn{1}{l}{Napa.js} & \multicolumn{1}{l|}{Elsa} \\ \cline{1-1}
     \begin{tabular}[c]{@{}c@{}}De omgeving moet door\\ een aanzienlijk aantal ontwikkelaars\\ worden gebruikt\end{tabular}                  & x                       & x                        &                          &                              &                             &                           \\ \cline{1-1}
-    \begin{tabular}[c]{@{}c@{}}De omgeving moet goede prestaties\end{tabular}                                                               & x                       & x                        &                          &                              & x                           &                           \\ \cline{1-1}
+    \begin{tabular}[c]{@{}c@{}}De omgeving moet goede prestaties bieden\end{tabular}                                                               & x                       & x                        &                          &                              & x                           &                           \\ \cline{1-1}
     \begin{tabular}[c]{@{}c@{}}De omgeving moet platformonafhankelijk\\  zijn\end{tabular}                                                  & x                       & x                        &                          &                              & x                           & x                         \\ \cline{1-1}
     \begin{tabular}[c]{@{}c@{}}De omgeving moet een modulesysteem\\  bieden \end{tabular}                                                   & x                       & x                        &                          & x                            & x                           & x                         \\ \cline{1-1}
     \begin{tabular}[c]{@{}c@{}}Er moet een verscheidenheid \\ aan bibliothekenen packages beschikbaar \\ zijn voor de omgeving\end{tabular} & x                       & x                        &                          & x                            & x                           &                           \\ \cline{1-1}
@@ -164,12 +164,12 @@ Echter heeft deze runtime al 2 jaar geen updates gehad waardoor deze niet actief
 \subsection{De geschikte omgeving}
 Door de omgevingen te toetsen aan de requirements kan een geschikte 
 omgeving gevonden worden als mogelijke plaatsvervanger voor Node.js.
-Deze omgeving wordt, samen met Node.js, in de proof-of-concept verwerkt om hierop dan performantie metingen uit te voeren.
+Deze omgeving wordt, samen met Node.js, in het proof-of-concept verwerkt om hierop dan performantie metingen uit te voeren.
 Op basis van deze metingen kan dan een conclusie getrokken worden.
 Zoals te zien in tabel \ref{tab:requirements} zijn er maar 2 omgevingen die voldoen aan alle must have requirements namelijk Bun en Deno. 
 Deze requirements zijn van cruciaal belang om een omgeving te kunnen vergelijken met Node.js. 
 Daarnaast zijn het ook twee van de weinige omgevingen die stabiel zijn en regelmatig updates ontvangen. 
-De overige omgevingen voldoen niet aan de minimum requirements waardoor ze al zeker niet zullen worden opgenomen in de proof-of-concept.
+De overige omgevingen voldoen niet aan de minimum requirements waardoor ze al zeker niet zullen worden opgenomen in het proof-of-concept.
 Als dieper wordt ingegaan op de omgevingen blijkt dat Bun zich meer focust op de performantie terwijl Deno meer de focus legt op de beveiliging.
 Bovendien voldoet Bun aan alle requirements, terwijl Deno er juist één ontbreekt, namelijk het beschikken over een geïntegreerde bundler. 
-Aangezien dit onderzoek zich focust op de performantie van de omgevingen, wordt gekozen om Bun op te nemen in de proof-of-concept.
+Aangezien dit onderzoek zich focust op de performantie van de omgevingen, wordt gekozen om Bun op te nemen in het proof-of-concept.

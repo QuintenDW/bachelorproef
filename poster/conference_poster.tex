@@ -5,7 +5,7 @@
 % Aangepast voor gebruik aan HOGENT door Jens Buysse en Bert Van Vreckem
 
 \documentclass[a0,portrait]{hogent-poster}
-
+\usepackage{graphicx}
 % Info over de opleiding
 \course{Bachelorproef}
 \studyprogramme{toegepaste informatica}
@@ -62,23 +62,17 @@ Specifiek worden aan de hand van de metingen bij de proof-of-concepts volgende v
   \item Is de Bun performanter dan Node.js bij het afhandelen van netwerkverzoeken?
   \item Wat is het verschil tussen hun respectievelijke package managers?
 \end{itemize}
-\section{Methodologie}
-Het onderzoek bevat 4 fasen. 
-In de eerste fase wordt een beter begrip over de JavaScript runtime-omgevingen en het onderzoeksdomein bekomen aan de hand van een literatuurstudie.
-In de tweede fase wordt, aan de hand van een requirementsanalyse, één omgeving geselecteerd om performantie te vergelijken met Node.js.
-In de derde fase worden de zelfgemaakte proof-of-concepts opgesteld en getest voor beide omgevingen. 
-Hierbij wordt een applicatie ontwikkeld waarbij een gebruiker onderwerpen kan ophalen en beoordelen, alsook een script dat het QuickSort algoritme uitvoert.
-Aan de hand van de resultaten komen we tot de laatste namelijk de conclusie. Hierbij wordt de data geïnterpreteerd om een antwoord te formuleren op de onderzoeksvragen.
-Uit deze antwoorden kan afgeleid worden of Bun een geschikte plaatsvervangen kan zijn voor Node.js binnen de ontwikkeling van performantie backend applicaties.
+\section{Experimenten}
 \begin{center}
   \captionsetup{type=figure}
-  \includegraphics[width=1.0\linewidth]{flowchart}
+  \includegraphics[width=0.7\linewidth]{flowchart}
   \captionof{figure}{Flowchart van de methodologie}
 \end{center}
-
-
-\section{Experimenten}
-
+Het onderzoek bevat 4 fasen. 
+In de eerste fase wordt een beter begrip over de JavaScript runtime-omgevingen en het onderzoeksdomein bekomen aan de hand van een literatuurstudie.
+In de tweede fase wordt, aan de hand van een requirementsanalyse, één omgeving geselecteerd om de performantie te vergelijken met Node.js.
+In de derde fase worden de zelfgemaakte proof-of-concepts opgesteld en getest voor beide omgevingen. 
+Hierbij wordt een applicatie ontwikkeld waarbij een gebruiker onderwerpen kan ophalen en beoordelen, alsook een script dat het QuickSort algoritme uitvoert.
 De metingen worden uitgevoerd met behulp van 2 benchmark tools, Hyperfine en Bombardier, om volgende zaken te kunnen meten:
 \begin{itemize}
     \item De latentie van de applicatie.
@@ -89,23 +83,51 @@ De metingen worden uitgevoerd met behulp van 2 benchmark tools, Hyperfine en Bom
     \item Het CPU-gebruik bij de applicatie.
 \end{itemize}
 Bij de applicatie worden de metingen zowel bij een MySQL databank als bij een PostgreSQL databank uitgevoerd met behulp van een ORM.
+Aan de hand van de resultaten komen we tot bij de laatste fase namelijk de conclusie. Hierbij wordt de data geïnterpreteerd om een antwoord te formuleren op de onderzoeksvragen.
+Uit deze antwoorden kan afgeleid worden of Bun een geschikte plaatsvervanger kan zijn voor Node.js binnen de ontwikkeling van performantie backend applicaties.
+Bij het QuickSort algoritme had Bun een snellere uitvoeringstijd dan Node.js, met name 2.21 keer sneller.
+Bij de applicatie scoorde Bun beter bij het ophalen en invoegen van data op vlak van
+aantal verzoeken per seconde en latentie maar verbruikte hiervoor wel telkens meer middelen.
 \begin{center}
   \captionsetup{type=figure}
-  \includegraphics[width=1.0\linewidth]{scriptuitvoeringstijd}
-  \captionof{figure}{Uitvoeringstijd van het QuickSort algoritme}
+  \begin{minipage}{0.20\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{scriptuitvoeringstijd}
+    \caption{Uitvoeringstijd van het QuickSort algoritme}
+  \end{minipage}%
+  \hfill
+  \begin{minipage}{0.20\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{requests}
+    \caption{Visuele voorstelling gemiddeld aantal verzoeken per seconde met PostgreSQL}
+  \end{minipage}%
 \end{center}
-Bij het QuickSort algoritme had Bun een snellere uitvoeringstijd dan Node.js, wat aantoont dat Bun computationeel sneller is dan Node.js.
-
+\begin{center}
+  \captionsetup{type=figure}
+  \begin{minipage}{0.20\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{latentie}
+    \caption{Visuele voorstelling gemiddelde latentie met PostgreSQL}
+  \end{minipage}%
+  \hfill
+  \begin{minipage}{0.20\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{geheugen}
+    \caption{Visuele voorstelling maximale geheugengebruik met PostgreSQL}
+  \end{minipage}
+\end{center}
 
 \section{Conclusies}
-
-Don't underestimate the Force. Oh God, my uncle. How am I ever gonna explain this? I suggest you try it again, Luke. This time, let go your conscious self and act on instinct. Don't be too proud of this technological terror you've constructed. The ability to destroy a planet is insignificant next to the power of the Force.
-
+De onderzoeksvraag betreffende de onderliggende verschillen tussen beide omgevingen werd beantwoord door de literatuurstudie.
+Zo gebruikt Bun de JavaScriptCore engine die 3 JIT compiler en een Low-Level Interpreter bevat in plaats van de V8 JavaScript engine die Node.js gebruikt.
+Bun gebruikt ook Zig als programmeertaal in plaats van C. Deze keuzes zorgen voor een verschil in computationele en I/O performantie tussen beide omgevingen.
+Zo tonen de metingen van het QuickSort algoritme aan dat Bun computationeel sneller is dan Node.js. 
+Bij de I/O performantie scoort Bun ook beter op vlak het verwerken van verzoeken maar komt dit ten koste van een hoger middelengebruik.
+Uit de metingen blijkt Bun een optimale keuze te zijn voor applicaties met complexe algoritmes en calculaties. 
+Echter moet bij applicaties met veel I/O-taken een afweging gemaakt worden tussen de snellere verwerking van Bun en het hogere middelengebruik dat hiermee gepaard gaat.
 \section{Toekomstig onderzoek}
-
-I care. So, what do you think of her, Han? No! Alderaan is peaceful. We have no weapons. You can't possibly… I have traced the Rebel spies to her. Now she is my only link to finding their secret base.
-
-Kid, I've flown from one side of this galaxy to the other. I've seen a lot of strange stuff, but I've never seen anything to make me believe there's one all-powerful Force controlling everything. There's no mystical energy field that controls my destiny. It's all a lot of simple tricks and nonsense. You are a part of the Rebel Alliance and a traitor! Take her away! 
+Toekomstig onderzoek kan verder gaan op de bekomen resultaten door in plaats van relationele databanken ook NoSQL databanken te testen.
+Daarnaast werden in dit onderzoek de test runner en bundler van Bun niet vergeleken. Verder onderzoek zou zich hierop kunnen richten om deze te vergelijken met andere alternatieven.
 
 \end{multicols}
 \end{document}

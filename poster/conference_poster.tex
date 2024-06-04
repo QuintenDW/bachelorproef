@@ -60,11 +60,6 @@ Specifiek worden aan de hand van de metingen bij de proof-of-concepts volgende v
   \item Wat is het verschil tussen hun respectievelijke package managers?
 \end{itemize}
 \section{Experimenten}
-\begin{center}
-  \captionsetup{type=figure}
-  \includegraphics[width=0.7\linewidth]{flowchart}
-  \captionof{figure}{Flowchart van de methodologie}
-\end{center}
 Het onderzoek bevat 4 fasen. 
 In de eerste fase wordt een beter begrip over de JavaScript runtime-omgevingen en het onderzoeksdomein bekomen aan de hand van een literatuurstudie.
 In de tweede fase wordt, aan de hand van een requirementsanalyse, één omgeving geselecteerd om de performantie te vergelijken met Node.js.
@@ -81,19 +76,33 @@ De metingen worden uitgevoerd met behulp van 2 benchmark tools, Hyperfine en Bom
 \end{itemize}
 Bij de applicatie worden de metingen zowel bij een MySQL databank als bij een PostgreSQL databank uitgevoerd met behulp van een ORM.
 Aan de hand van de resultaten komen we tot bij de laatste fase namelijk de conclusie. Hierbij wordt de data geïnterpreteerd om een antwoord te formuleren op de onderzoeksvragen.
-Uit deze antwoorden kan afgeleid worden of Bun een geschikte plaatsvervanger kan zijn voor Node.js binnen de ontwikkeling van performantie backend applicaties.
-Bij het QuickSort algoritme had Bun een snellere uitvoeringstijd dan Node.js, met name 2.21 keer sneller.
-Bij de applicatie scoorde Bun beter bij het ophalen en invoegen van data op vlak van
-aantal verzoeken per seconde en latentie maar verbruikte hiervoor wel telkens meer middelen.
+Uit deze antwoorden kan afgeleid worden of Bun een geschikte vervangen kan zijn voor Node.js binnen de ontwikkeling van performantie backend applicaties.
+Bij het QuickSort algoritme had Bun een snellere uitvoeringstijd dan Node.js, met name 2,21 keer sneller.
+Bij de applicatie presteerde Bun beter bij het ophalen en invoegen van data, gemeten in aantal verzoeken per seconde en latentie.
+Dit ging echter gepaard met een hoger middelengebruik van geheugen en CPU.
 \begin{center}
   \captionsetup{type=figure}
-  \begin{minipage}{0.20\textwidth}
+  \begin{minipage}{0.23\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{flowchart}
+    \caption{Flowchart van de methodologie}
+  \end{minipage}%
+  \hfill
+  \begin{minipage}{0.23\textwidth}
     \centering
     \includegraphics[width=\linewidth]{scriptuitvoeringstijd}
     \caption{Uitvoeringstijd van het QuickSort algoritme}
   \end{minipage}%
+\end{center}
+\begin{center}
+  \captionsetup{type=figure}
+  \begin{minipage}{0.23\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{cpu}
+    \caption{Visuele voorstelling gemiddeld CPU-gebruik met PostgreSQL}
+  \end{minipage}%
   \hfill
-  \begin{minipage}{0.20\textwidth}
+  \begin{minipage}{0.23\textwidth}
     \centering
     \includegraphics[width=\linewidth]{requests}
     \caption{Visuele voorstelling gemiddeld aantal verzoeken per seconde met PostgreSQL}
@@ -101,13 +110,13 @@ aantal verzoeken per seconde en latentie maar verbruikte hiervoor wel telkens me
 \end{center}
 \begin{center}
   \captionsetup{type=figure}
-  \begin{minipage}{0.20\textwidth}
+  \begin{minipage}{0.23\textwidth}
     \centering
     \includegraphics[width=\linewidth]{latentie}
     \caption{Visuele voorstelling gemiddelde latentie met PostgreSQL}
   \end{minipage}%
   \hfill
-  \begin{minipage}{0.20\textwidth}
+  \begin{minipage}{0.23\textwidth}
     \centering
     \includegraphics[width=\linewidth]{geheugen}
     \caption{Visuele voorstelling maximale geheugengebruik met PostgreSQL}
@@ -116,14 +125,15 @@ aantal verzoeken per seconde en latentie maar verbruikte hiervoor wel telkens me
 
 \section{Conclusies}
 De onderzoeksvraag betreffende de onderliggende verschillen tussen beide omgevingen werd beantwoord door de literatuurstudie.
-Zo gebruikt Bun de JavaScriptCore engine die 3 JIT compiler en een Low-Level Interpreter bevat in plaats van de V8 JavaScript engine die Node.js gebruikt.
-Bun gebruikt ook Zig als programmeertaal in plaats van C. Deze keuzes zorgen voor een verschil in computationele en I/O performantie tussen beide omgevingen.
-Zo tonen de metingen van het QuickSort algoritme aan dat Bun computationeel sneller is dan Node.js. 
-Bij de I/O performantie scoort Bun ook beter op vlak het verwerken van verzoeken maar komt dit ten koste van een hoger middelengebruik.
+Zo gebruikt Bun de JavaScriptCore engine, die 3 JIT compilers en een Low-Level Interpreter bevat, in plaats van de V8 JavaScript engine die Node.js gebruikt.
+Daarnaast gebruikt Bun Zig als programmeertaal in plaats van C. Deze keuzes leiden tot een verschil in computationele en I/O-performantie tussen beide omgevingen.
+Zo tonen de metingen van het QuickSort algoritme aan dat Bun computationeel sneller is dan Node.js, dankzij de beter geoptimaliseerde machinecode die Bun kan produceren. 
+Deze snelheid is ook zichtbaar bij de package manager, waarbij de installatietijd van Bun 24,5 keer sneller is dan Node.js.
+Bij de I/O-performantie scoort Bun beter in het verwerken van verzoeken, maar komt dit ten koste van een hoger middelengebruik.
 Uit de metingen blijkt Bun een optimale keuze te zijn voor applicaties met complexe algoritmes en calculaties. 
 Echter moet bij applicaties met veel I/O-taken een afweging gemaakt worden tussen de snellere verwerking van Bun en het hogere middelengebruik dat hiermee gepaard gaat.
 \section{Toekomstig onderzoek}
-Toekomstig onderzoek kan verder gaan op de bekomen resultaten door in plaats van relationele databanken ook NoSQL databanken te testen.
+Toekomstig onderzoek kan voortbouwen op de bekomen resultaten door naast relationele databanken ook NoSQL databanken te testen.
 Daarnaast werden in dit onderzoek de test runner en bundler van Bun niet vergeleken. Verder onderzoek zou zich hierop kunnen richten om deze te vergelijken met andere alternatieven.
 
 \end{multicols}

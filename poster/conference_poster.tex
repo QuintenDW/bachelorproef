@@ -31,35 +31,32 @@
 \maketitle
 
 \begin{abstract}
-In de voorbije jaren zijn er voortdurend nieuwe javascript runtime-omgevingen ontwikkeld met telkens nieuwe verbeteringen. 
+Er worden voortdurend nieuwe JavaScript runtime-omgevingen ontwikkeld met telkens nieuwe verbeteringen. 
 Echter worden weinig van deze nieuwe ontwikkelingen effectief in de praktijk gebruikt.
 Zo is het oudere Node.js nog altijd de standaard in de industrie. 
-In dit onderzoek wordt bestudeerd of deze nieuwere frameworks een meerwaarde bieden op vlak van performantie.
-De onderzoeksvraag hierbij is of één van deze nieuwe frameworks  
-een correcte plaatsvervanger kan zijn voor Node.js bij de ontwikkeling van webapplicaties binnen bedrijven 
-waar performantie centraal staat.
-Hiervoor werd voor beide frameworks een proof-of-concept gemaakt waarop performantie testen werden uitgevoerd.
-Doormiddel van de testresultaten kon de performantie tussen de twee frameworks worden vergeleken.
-Daarnaast werden ook een vergelijking tussen hun respectievelijke package managers uitgewerkt. 
-Het resultaat zijn verschillende metingen van beide frameworks die kunnen worden vergeleken.
-Er wordt hierbij verwacht dat het nieuwe framework Bun beter presteert dan Node.js door zijn focus op performantie.
-Op basis van deze vergelijking kan een onderbouwde keuze worden gemaakt bij de selectie van een javascript runtime-omgeving.
+In dit onderzoek wordt inzicht verschaft in de performantie van Node.js en één van deze nieuwe omgevingen 
+om zo een geschikte keuze te kunnen maken bij de ontwikkeling van performante JavaScript applicaties.
+Aan de hand van een requirements analyse werd gekozen om Bun te vergelijken met Node.js.
+Voor deze vergelijking werden proof-of-concepts gemaakt voor beide omgeving waarop performantie metingen werden uitgevoerd.
+Het resultaat toont aan dat Bun een optimale keuze blijkt te zijn voor applicaties met complexe algoritmes en calculaties door de snellere uitvoeringstijd.
+Daarnaast presteert Bun beter bij I/O-taken, zoals het verwerken van verzoeken en het verminderen van latentie. Dit gaat echter gepaard met een hoger middelengebruik.
+Hierbij moet dus de afweging gemaakt worden tussen de snellere verwerking van Bun en het hogere middelengebruik dat hiermee gepaard gaat.
 \end{abstract}
 
 \begin{multicols}{2} % This is how many columns your poster will be broken into, a portrait poster is generally split into 2 columns
 
 \section{Introductie}
 Node.js is nog altijd de standaard keuze bij JavaScript runtime-omgevingen. 
-Echter zijn er tal van andere omgevingen die de specifieke noden vervullen waar Node.js niet kan aan voldoen.
-Zo is de nood voor een goede performantie doorheen de tijd alsmaar belangrijker geworden bij JavaScript backend applicaties.
+Er zijn echter tal van andere omgevingen die kunnen voldoen aan de specifieke behoeften waar Node.js tekortschiet.
+Zo is de nood aan goede performantie doorheen de tijd alsmaar belangrijker geworden voor JavaScript backend applicaties.
 Bun probeert hierop in te spelen door een performantere omgeving aan te bieden. 
-In dit onderzoek wordt dieper ingegaan op deze performantie en wordt deze vergeleken met de performantie van Node.js.
-Op basis van de resultaten kan een weloverwogen keuze gemaakt worden bij de ontwikkeling van JavaScript backend applicaties.
+In dit onderzoek wordt dieper ingegaan op deze performantie en wordt deze vergeleken met Node.js.
+Op basis van de resultaten kan een weloverwogen keuze gemaakt worden bij de ontwikkeling van performante JavaScript backend applicaties.
 Specifiek worden aan de hand van de metingen bij de proof-of-concepts volgende vragen beantwoord:
 \begin{itemize}
   \item Wat zijn de onderliggende verschillen tussen Node.js en Bun?
-  \item Is de Bun performanter dan Node.js bij het uitvoeren van computationele berekeningen?
-  \item Is de Bun performanter dan Node.js bij het afhandelen van netwerkverzoeken?
+  \item Is Bun performanter dan Node.js bij het uitvoeren van computationele berekeningen?
+  \item Is Bun performanter dan Node.js bij het afhandelen van netwerkverzoeken?
   \item Wat is het verschil tussen hun respectievelijke package managers?
 \end{itemize}
 \section{Experimenten}
